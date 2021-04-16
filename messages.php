@@ -1,46 +1,17 @@
-
 <?php
-session_start();
-ob_start();
+include("security.php");
 $host="localhost";
 $user="root";
 $password="";
 $db="boi";
 
 $link=mysqli_connect($host,$user,$password,$db);
-
-if(!empty($_GET["book"])){
-$book=$_GET["book"];
-}
-else {
-  $car=1;
-}
-
-$sql="";
-
-$sql="SELECT * FROM books where book_id=$book";
-
-$result=mysqli_query($link,$sql) or die(mysqli_error($link));
-$data=array();
-$noOfRows=mysqli_num_rows($result);
-if($noOfRows){
-  while($row=mysqli_fetch_assoc($result)){
-
-      /*echo "<pre>";
-      print_r($row);*/
-      array_push($data,$row);
-      //echo "</pre>";
-
-  }
-}
- ?>
-
-
+?>
 
 <!DOCTYPE html>
 <html>
 <head>
-		<title>Details | বই</title>
+		<title>Messages | বই</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width-device-width, initial scale = 1.0">
 		<script src = "https://code.jquery.com/jquery-2.1.3.min.js"></script>
@@ -129,77 +100,103 @@ if($noOfRows){
           margin: 50px auto 0 auto;
           width: 80%;
         }
+        .header1 {
+  background-color: #666;
+  padding: 30px;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+
+
+.container1 {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.darker {
+  border-color: #ccc;
+  background-color: #ddd;
+}
+
+.container1::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.container1 img {
+  float: left;
+  max-width: 60px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+.container1 img.right {
+  float: right;
+  margin-left: 20px;
+  margin-right:0;
+}
+
+.time-right {
+  float: right;
+  color: #aaa;
+}
+
+.time-left {
+  float: left;
+  color: #999;
+}
     </style>
 </head>
-
 
 <body style="background:#fff">
   <?php
   include('includes/nav.php');
    ?>
 
-    <div class="container-fluid">
-      <div class="row">
-        <?php foreach ($data as $row) {
-        ?>
-        <div class="col-md-6 col-lg-6" style="margin: 15px">
-          <div class="main_view">
-            <img src="<?php echo $row['image']; ?>" id="main" alt="IMAGE">
-        </div>
-        </div>
-        <div class="col-md-5 col-lg-5" style="margin: 15px; text-align: center; background:#EEEEEE">
-          <h6 style="font-weight: bold;padding: 10px; font-size: 25px"><?php echo $row['name'];?></h6>
-          <span class="badge badge-pill badge-secondary" ><?php echo $row['category'];;?></span>
-          <br>
+<div class="header1" style="text-align:center;">
+<h1>Recent Contacts</h1>
+</div>
+<?php
+$user = $_SESSION['user_id'];
 
-          <div class="row">
-            <div class="col-sm-12 col-lg-12 col-md-12">
-              <ul class="info" style="text-align: left">
-                <li>
-                  <span style="font-weight: bold">Auther:   </span>
-                  <?php echo $row['auther'];?>
-                </li>
+$sql = "SELECT distinct receiver_id from messages order by datesent desc";
+$result = mysqli_query($link, $sql);
 
-                <li>
-                  <span style="font-weight: bold">Condition:   </span>
-                  <?php echo $row['present_condition'];;?>
+if (mysqli_num_rows($result) > 0) {
+ // output data of each row
+ while($row = mysqli_fetch_assoc($result)) {
 
-                </li>
-                <li>
-                  <span style="font-weight: bold">Location:   </span>
-                  <?php echo $row['location'];;?>
+   $receiver_id=$row["receiver_id"];
+   $sql1 = "SELECT name from user where user_id='$receiver_id'";
+   $result1 = mysqli_query($link, $sql1);
+   if (mysqli_num_rows($result1) > 0) {
+     while($row1 = mysqli_fetch_assoc($result1)) {
 
-                </li>
-
-            </ul>
-
-            <button onclick="document.location='messages.php'" class="btn btn-danger">Message to Owner</button>
-            <button onclick="document.location='wishlist.php?book=<?php echo $row['book_id'];?>'" class="btn btn-danger">Add to Wishlist</button>
-
-
-            </div>
-          </div>
-
-        </div>
-        <script type="text/javascript">
-        const change = src => {
-            document.getElementById('main').src = src;
-        }
-    </script>
-      <?php } ?>
-
-      </div>
-
-    </div>
-
+?>
+<form class="form-container" action="message_sent.php" method="POST" enctype="multipart/form-data">
+<div onclick="location.href='message_sent.php'" class="container1" style="text-align: center;cursor: pointer;">
+<h3><?php echo $row1["name"] ?></h3>
+</div>
+</form>
+<?php
+}} }
+}else {
+echo "0 Results";
+} ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-    </body>
+   </body>
 
-    <div class="progress-container fixed-bottom">
-      <div class="progress-bar" id="myBar">
-        </div>
-    </div>
-    <?php
-    include('includes/footer.php');
-     ?>
+<div class="progress-container fixed-bottom">
+ <div class="progress-bar" id="myBar">
+   </div>
+</div>
+<?php
+include('includes/footer.php');
+?>

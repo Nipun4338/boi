@@ -25,7 +25,16 @@
     		$message= '<a class="nav-item nav-link" href = "login.php"> LOGIN </a>';
 			}
 			else {
-				$message='<a class="nav-item nav-link" href = "profile.php"> PROFILE </a>';
+				$message='<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          PROFILE
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="profile.php">Profile</a>
+					<a class="dropdown-item" href="messages.php">Inbox</a>
+					<a class="dropdown-item" href="wishlist.php">Wishlist</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" name="logout_btn" href="logout.php">Logout</a>
+        </div>';
 			}
 
 				echo ($message);?>

@@ -21,7 +21,7 @@ else {
   $page1=($page*16)-16;
 }
 $sql="";
-$sql="SELECT * FROM books limit $page1,16";
+$sql="SELECT * FROM books where status=1 limit $page1,16";
 $result=mysqli_query($link,$sql) or die(mysqli_error($link));
 unset($data);
 $data=array();
@@ -36,7 +36,8 @@ if($noOfRows){
 
   }
 }
-$sql='SELECT * FROM books';
+shuffle($data);
+$sql='SELECT * FROM books where status=1';
 $result2=mysqli_query($link,$sql) or die(mysqli_error($link));
 $noOfRows2=mysqli_num_rows($result2);
 $a=$noOfRows2/16;
@@ -77,14 +78,14 @@ if(isset($_REQUEST['advancesearch']))
     }
     if($book=="" && $auther!="")
     {
-      $sql="SELECT * FROM books where price BETWEEN '$min' AND '$max' And auther LIKE '$auther%'";
+      $sql="SELECT * FROM books where status=1 AND price BETWEEN '$min' AND '$max' And auther LIKE '$auther%'";
     }
     else if($book!="" && $auther=="")
     {
-      $sql="SELECT * FROM books where price BETWEEN '$min' AND '$max' And name LIKE '$book%'";
+      $sql="SELECT * FROM books where status=1 AND price BETWEEN '$min' AND '$max' And name LIKE '$book%'";
     }
     else {
-      $sql="SELECT * FROM books where price BETWEEN '$min' AND '$max'";
+      $sql="SELECT * FROM books where status=1 AND price BETWEEN '$min' AND '$max'";
     }
 
     $result=mysqli_query($link,$sql) or die(mysqli_error($link));
@@ -113,23 +114,17 @@ if(isset($_REQUEST['advancesearch']))
 		<script src = "https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-	  <link rel="stylesheet" href="A.assets,,_royalslider,,_royalslider.css+assets,,_royalslider,,_skins,,_default,,_rs-default.css+assets,,_royalslider,,_skins,,_minimal-white,,_rs-minimal-white.css+css,,_bootstrap.min.css+css,,_normalize.css+css,,_jquery-ui.css,Mcc.y-DhrddGnN.css.pagespeed.cf.Hfy0poW2iH.css"/>
+
+    <link rel="stylesheet" href="A.assets,,_royalslider,,_royalslider.css+assets,,_royalslider,,_skins,,_default,,_rs-default.css+assets,,_royalslider,,_skins,,_minimal-white,,_rs-minimal-white.css+css,,_bootstrap.min.css+css,,_normalize.css+css,,_jquery-ui.css,Mcc.y-DhrddGnN.css.pagespeed.cf.Hfy0poW2iH.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="Iconsmind-Outline-Books-2.ico">
 
 
-		<!-- Bootstrap Stylesheet -->
-<link rel="stylesheet" href="/path/to/bootstrap.min.css" />
-<!-- Bootstrap JS -->
-<script src="/path/to/jquery.min.js"></script>
-<script src="/path/to/bootstrap.min.js"></script>
-<link rel="stylesheet" href="jquery.range.css">
-<script src="jquery.range.js"></script>
+
 <!-- <a href="https://www.jqueryscript.net/tags.php?/Carousel/">Carousel</a> Extension -->
 
 <style>
@@ -241,7 +236,6 @@ if(isset($_REQUEST['advancesearch']))
   color: #00acc1;
 }
 
-
 .header {
   position: fixed;
   top: 0;
@@ -270,6 +264,7 @@ if(isset($_REQUEST['advancesearch']))
   margin: 50px auto 0 auto;
   width: 80%;
 }
+
 </style>
 <script src="carousel.js"></script>
 </head>
@@ -292,7 +287,7 @@ if(isset($_REQUEST['advancesearch']))
 
      }
    }
-
+   shuffle($data1);
     ?>
    <section id="home-featured">
     <div class="container-fluid">

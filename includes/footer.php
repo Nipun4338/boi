@@ -10,7 +10,7 @@ function myFunction() {
   document.getElementById("myBar").style.width = scrolled + "%";
 }
 </script>
-<footer id="footer" class="footer-wrapper" style="box-shadow: 0px 10px 5px #888, 0px -10px 5px #888;background-color:#abcdef;margin-top:5%">
+<footer id="footer" class="footer-wrapper" style="box-shadow: 0px 10px 5px #888, 0px -10px 5px #888;background-color:#abcdef;margin-top:5%;">
 	 <div class="container">
 			 <div class="row">
 					 <div class="col-lg-8 col-md-8 col-sm-8" style="padding:25px">
