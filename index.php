@@ -62,10 +62,10 @@ if($noOfRows){
 if(isset($_REQUEST['advancesearch']))
 {
   $book=$_POST["book"];
-  $auther=$_POST["auther"];
+  $author=$_POST["author"];
   $min=$_POST["min"];
   $max=$_POST["max"];
-  if($book!="" || $auther!="" || $min!="" || $max!="")
+  if($book!="" || $author!="" || $min!="" || $max!="")
   {
     $sql="";
     if($min=="")
@@ -76,11 +76,11 @@ if(isset($_REQUEST['advancesearch']))
     {
       $max=-1;
     }
-    if($book=="" && $auther!="")
+    if($book=="" && $author!="")
     {
-      $sql="SELECT * FROM books where status=1 AND price BETWEEN '$min' AND '$max' And auther LIKE '$auther%'";
+      $sql="SELECT * FROM books where status=1 AND price BETWEEN '$min' AND '$max' And author LIKE '$author%'";
     }
-    else if($book!="" && $auther=="")
+    else if($book!="" && $author=="")
     {
       $sql="SELECT * FROM books where status=1 AND price BETWEEN '$min' AND '$max' And name LIKE '$book%'";
     }
@@ -352,9 +352,9 @@ if(isset($_REQUEST['advancesearch']))
                <div class="col-lg-11">
                  <input type="text" class="form-control" name="book" placeholder="Book Name">
                </div>
-               <label class="col-lg-11 control-label">Auther Name</label>
+               <label class="col-lg-11 control-label">Author Name</label>
                <div class="col-lg-11">
-                 <input type="text" class="form-control" name="auther" placeholder="Auther Name">
+                 <input type="text" class="form-control" name="author" placeholder="Author Name">
                </div>
                <label class="col-lg-11 control-label">Price Range</label>
 
@@ -439,7 +439,7 @@ if(isset($_REQUEST['advancesearch']))
                  </div>
                  <div class="text-container">
                  <h6 style="font-weight: bold;"><?php echo $row1['name'];?></h6>
-                 <p><?php echo $row1['auther'];?></p>
+                 <p><?php echo $row1['author'];?></p>
                  <p style="font-weight: bold;">TK. <?php echo $row1['price'];?></p>
                 </div>
                 </div>

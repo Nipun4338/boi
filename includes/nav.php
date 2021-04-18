@@ -14,7 +14,7 @@
 
 			 <a class="nav-item nav-link" href = "index.php"> HOME </a>
 
-			 <a class="nav-item nav-link" href = "selling.php"> SELLING </a>
+			 <a class="nav-item nav-link" href = "sell.php"> SELL </a>
 
 			 <a class=" nav-item nav-link" href = "aboutus.php"> ABOUT US </a>
 

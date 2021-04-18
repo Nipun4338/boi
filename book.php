@@ -129,6 +129,142 @@ if($noOfRows){
           margin: 50px auto 0 auto;
           width: 80%;
         }
+
+
+* {
+  box-sizing: border-box;
+}
+
+.row > .column {
+  padding: 0 8px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+  float: left;
+  width: 25%;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: black;
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  width: 90%;
+  max-width: 1200px;
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #999;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mySlides {
+  display: none;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+img {
+  margin-bottom: -4px;
+}
+
+.caption-container {
+  text-align: center;
+  background-color: black;
+  padding: 2px 16px;
+  color: white;
+}
+
+.demo {
+  opacity: 0.6;
+}
+
+.active,
+.demo:hover {
+  opacity: 1;
+}
+
+img.hover-shadow {
+  transition: 0.3s;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
     </style>
 </head>
 
@@ -137,15 +273,112 @@ if($noOfRows){
   <?php
   include('includes/nav.php');
    ?>
+   <?php
+   $sql3="SELECT * FROM images where book_id=$book";
+
+   $result3=mysqli_query($link,$sql3) or die(mysqli_error($link));
+   $data3=array();
+   $noOfRows3=mysqli_num_rows($result3);
+   if($noOfRows3){
+     while($row3=mysqli_fetch_assoc($result3)){
+
+         /*echo "<pre>";
+         print_r($row);*/
+         array_push($data3,$row3);
+         //echo "</pre>";
+
+     }
+   }
+   $i=0;
+   ?>
 
     <div class="container-fluid">
       <div class="row">
+        <div class="col-md-6 col-lg-6" style="margin: 15px">
+        <div class="row">
         <?php foreach ($data as $row) {
         ?>
-        <div class="col-md-6 col-lg-6" style="margin: 15px">
-          <div class="main_view">
-            <img src="<?php echo $row['image']; ?>" id="main" alt="IMAGE">
+        <?php foreach ($data3 as $row3) {
+          $i++;
+        ?>
+        <div class="column">
+          <img src="<?php echo $row3['image']; ?>" style="width:100%" onclick="openModal();currentSlide(<?php echo $i; ?>)" class="hover-shadow cursor">
         </div>
+      <?php } ?>
+        </div>
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <?php $j=0;
+    foreach ($data3 as $row3) {
+      $j++;
+    ?>
+    <div class="mySlides">
+      <img src="<?php echo $row3['image']; ?>" style="width:100%">
+      <div class="numbertext" style="font-weight:bold;font-size:20px"><?php echo $j; ?> / <?php echo $i; ?></div>
+    </div>
+    <?php } ?>
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+    <div class="caption-container">
+      <p id="caption"></p>
+    </div>
+    <div class="row">
+
+
+    <?php $k=0;
+    foreach ($data3 as $row3) {
+
+      $k++;
+    ?>
+    <div class="column">
+      <img class="demo cursor" src="<?php echo $row3['image']; ?>" style="width:100%" onclick="currentSlide(<?php echo $k; ?>)" alt="">
+    </div>
+    <?php } ?>
+    </div>
+    <span class="close cursor" onclick="closeModal()">&times;</span>
+  </div>
+  </div>
+  <script>
+function openModal() {
+  document.getElementById("myModal").style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("myModal").style.display = "none";
+}
+
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("demo");
+  var captionText = document.getElementById("caption");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+  captionText.innerHTML = dots[slideIndex-1].alt;
+}
+</script>
+
+
         </div>
         <div class="col-md-5 col-lg-5" style="margin: 15px; text-align: center; background:#EEEEEE">
           <h6 style="font-weight: bold;padding: 10px; font-size: 25px"><?php echo $row['name'];?></h6>
@@ -156,8 +389,8 @@ if($noOfRows){
             <div class="col-sm-12 col-lg-12 col-md-12">
               <ul class="info" style="text-align: left">
                 <li>
-                  <span style="font-weight: bold">Auther:   </span>
-                  <?php echo $row['auther'];?>
+                  <span style="font-weight: bold">Author:   </span>
+                  <?php echo $row['author'];?>
                 </li>
 
                 <li>
@@ -170,11 +403,30 @@ if($noOfRows){
                   <?php echo $row['location'];;?>
 
                 </li>
+                <li>
+                  <span style="font-weight: bold">Details:   </span>
+                  <?php echo $row['present_condition'];;?>
+
+                </li>
 
             </ul>
-
-            <button onclick="document.location='messages.php'" class="btn btn-danger">Message to Owner</button>
-            <button onclick="document.location='wishlist.php?book=<?php echo $row['book_id'];?>'" class="btn btn-danger">Add to Wishlist</button>
+            <form class="form-container" action="chat.php" method="POST" enctype="multipart/form-data">
+              <input type="hidden" name="user_id1" value="<?php echo $row["owner_id"] ?>">
+              <?php $_SESSION["receive"]=$row["owner_id"];
+                $receiver_id1=$_SESSION["receive"];
+               ?>
+              <?php
+              $sql1 = "SELECT name,user_id from user where user_id='$receiver_id1'";
+              $result1 = mysqli_query($link, $sql1);
+              if (mysqli_num_rows($result1) > 0) {
+                while($row1 = mysqli_fetch_assoc($result1)) { ?>
+                  <input type="hidden" name="user_name" value="<?php echo $row1["name"] ?>">
+                	<?php $_SESSION["receive_name"]=$row1["name"];
+                }}
+                  ?>
+            <button onclick="document.location='chat.php'" class="btn btn-danger">Message to Owner</button>
+          </form>
+            <button style="margin:10px" onclick="document.location='wishlist.php?book=<?php echo $row['book_id'];?>'" class="btn btn-danger">Add to Wishlist</button>
 
 
             </div>

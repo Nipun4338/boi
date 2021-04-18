@@ -55,6 +55,10 @@ session_start();
     margin: 50px auto 0 auto;
     width: 80%;
   }
+	.hello {
+	    height: 51vh;
+	}
+
 	</style>
 
 </head>
@@ -63,6 +67,7 @@ session_start();
 	<?php
 	include('includes/nav.php');
 	 ?>
+	 <div class="hello">
 
 <div class="container-fluid">
   <div class="row">
@@ -108,7 +113,7 @@ session_start();
 
   </div>
 </div>
-
+</div>
 </body>
 <div class="progress-container fixed-bottom">
   <div class="progress-bar" id="myBar">

@@ -92,6 +92,7 @@ $datetime = '';
         	curl_close($ch);
 
 				echo ("Successfully Registered! Please Confirm your email!");
+        header('Location: login.php');
 
 			 }
     }
@@ -150,6 +151,7 @@ $datetime = '';
     margin: 50px auto 0 auto;
     width: 80%;
   }
+
   </style>
 
 

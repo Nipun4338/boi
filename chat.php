@@ -11,7 +11,7 @@ $link=mysqli_connect($host,$user,$password,$db);
 <!DOCTYPE html>
 <html>
 <head>
-		<title>Messages | বই</title>
+		<title>Chat | বই</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width-device-width, initial scale = 1.0">
 		<script src = "https://code.jquery.com/jquery-2.1.3.min.js"></script>
@@ -26,10 +26,20 @@ $link=mysqli_connect($host,$user,$password,$db);
     <link rel="icon" href="Iconsmind-Outline-Books-2.ico">
 
 
+
+		<!-- Bootstrap Stylesheet -->
+<link rel="stylesheet" href="/path/to/bootstrap.min.css" />
+<!-- Bootstrap JS -->
+<script src="/path/to/jquery.min.js"></script>
+<script src="/path/to/bootstrap.min.js"></script>
+<!-- <a href="https://www.jqueryscript.net/tags.php?/Carousel/">Carousel</a> Extension -->
+<script src="carousel.js"></script>
+
+
+
 <style type="text/css">
         /*Setting Basic Dimensions to give
         gallary view */
-
         .container{
             margin: 0 auto;
             width: 90%;
@@ -153,47 +163,87 @@ $link=mysqli_connect($host,$user,$password,$db);
   include('includes/nav.php');
    ?>
 <div class="hello">
+<script type="text/javascript">
+function scrollToBottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+    history.scrollRestoration = "manual";
+    window.onload = scrollToBottom;
+</script>
 <div class="header1" style="text-align:center;">
-<h1>Recent Contacts</h1>
+<h1>Chat</h1>
 </div>
 <?php
 $user = $_SESSION['user_id'];
+$receiver=$_SESSION["receive"];
+unset($row1);
+unset($row);
+if(isset($_POST['commenton']))
+{
+  date_default_timezone_set("Asia/Dhaka");
+  $datetime = '';
+  $datetime=date('Y-m-d H:i:s');
+  $message1=htmlspecialchars($_POST["commenton"]);
+  $sql2="insert into messages(message,sender_id,receiver_id,datesent)
+  values('$message1','$user','$receiver','$datetime')";
+  $result2=mysqli_query($link,$sql2) or die(mysqli_error($link));
 
-$sql = "SELECT distinct concat(receiver_id,sender_id) as final from messages where (sender_id='$user' and receiver_id!='$user')  or (sender_id!='$user' and receiver_id='$user') order by datesent desc";
+}
+$sql = "SELECT * from messages where receiver_id='$receiver' and sender_id='$user'";
 $result = mysqli_query($link, $sql);
-
+$sql1="SELECT * from messages where receiver_id='$user' and sender_id='$receiver'";
+$result1 = mysqli_query($link, $sql1);
 if (mysqli_num_rows($result) > 0) {
  // output data of each row
  while($row = mysqli_fetch_assoc($result)) {
 
-	 if($row["final"]!=$_SESSION["user_id"])
-	 {
-		 $receiver_id=$row["final"];
-	 }
-
-
-   $sql1 = "SELECT name,user_id from user where user_id='$receiver_id'";
-   $result1 = mysqli_query($link, $sql1);
+   $receiver_id=$row["receiver_id"];
    if (mysqli_num_rows($result1) > 0) {
      while($row1 = mysqli_fetch_assoc($result1)) {
 
+
 ?>
-<form class="form-container" action="chat.php" method="POST" enctype="multipart/form-data">
-	<input type="hidden" name="user_id1" value="<?php echo $row1["user_id"] ?>">
-	<?php $_SESSION["receive"]=$row1["user_id"]; ?>
-	<input type="hidden" name="user_name" value="<?php echo $row1["name"] ?>">
-	<?php $_SESSION["receive_name"]=$row1["name"]; ?>
-<button type="submit" class="container1" style="text-align: center;cursor: pointer;width:100%"><h3><?php echo $row1["name"] ?></h3></button>
-</form>
+
+<div  class="container1">
+  <h6 style="font-weight:bold"><?php echo $_SESSION["receive_name"] ?></h6>
+<p><?php echo $row["message"] ?></p>
+<span class="time-right"><?php echo $row["datesent"] ?></span>
+</div>
+<div  class="container1 darker" >
+<p style="text-align:right"><?php echo $row1["message"] ?></p>
+<span class="time-left"><?php echo $row1["datesent"] ?></span>
+</div>
 <?php
 }} }
 }else {
 echo "0 Results";
 } ?>
 
+<form class="form-container" action="chat.php" method="POST" enctype="multipart/form-data">
+<textarea class="form-control" rows="2" style="width:100%" name="commenton" placeholder="Enter text here..."></textarea>
+<input type="submit" name="submit" class="btn btn-primary" value="SEND"  style="float:right"/>
+</form>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('input[type="submit"]').attr('disabled', true);
+
+  $('textarea').on('keyup',function() {
+      var textarea_value = $("#texta").val();
+
+      if(textarea_value != '') {
+          $('input[type="submit"]').attr('disabled', false);
+      } else {
+          $('input[type="submit"]').attr('disabled', true);
+      }
+  });
+});
+</script>
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 </div>
-	 </body>
+   </body>
 
 <div class="progress-container fixed-bottom">
  <div class="progress-bar" id="myBar">

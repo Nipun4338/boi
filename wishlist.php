@@ -96,6 +96,10 @@ if(isset($_REQUEST['delete']))
   width: 80%;
 }
 
+.hello {
+    margin: 120px 0 120px 0;
+}
+
 </style>
 <script src="carousel.js"></script>
 </head>
@@ -105,6 +109,7 @@ if(isset($_REQUEST['delete']))
   <?php
 	include('includes/nav.php');
 	 ?>
+   <div class="hello">
 
    <div class="container" style="color:#000;text-align:center">
        <h2 class='text-center'>My Wishlist</h2>
@@ -119,6 +124,7 @@ if(isset($_REQUEST['delete']))
    				<thead>
    					<tr>
    						<th>Book Name</th>
+              <th>Author</th>
    						<th>Price</th>
 
    						<th>Date and Time</th>
@@ -129,8 +135,8 @@ if(isset($_REQUEST['delete']))
    				<?php
    				$c_id = $_SESSION['user_id'];
 
-   				$sql = "SELECT wishlist.wishlist_id as wishlist_id, wishlist.book_id as book_id, books.name as name
-          , wishlist.created_date as wishlist_date, books.price as price FROM wishlist JOIN books on books.book_id=wishlist.book_id";
+   				$sql = "SELECT wishlist.wishlist_id as wishlist_id, wishlist.book_id as book_id, books.name as name, books.author as author
+          , wishlist.created_date as wishlist_date, books.price as price FROM wishlist JOIN books on books.book_id=wishlist.book_id WHERE wishlist.user_id='$c_id'";
    				$result2 = mysqli_query($link, $sql);
 
    				if (mysqli_num_rows($result2) > 0) {
@@ -142,6 +148,9 @@ if(isset($_REQUEST['delete']))
                            <a href="book.php?book=<?php echo $row["book_id"] ?>">	<?php echo $row["name"] ?></a>
 
    						</td>
+              <td>
+   						<?php echo $row["author"] ?>
+   						</td>
    						<td>
    						<?php echo $row["price"] ?>
    						</td>
@@ -149,7 +158,7 @@ if(isset($_REQUEST['delete']))
    						<td>
 
 
-   						<?php echo date('M j g:i A', strtotime($row["wishlist_date"]));  ?>
+   						<?php echo date('M j, Y g:i A', strtotime($row["wishlist_date"]));  ?>
    						</td>
    						<td>
                 <form class="form-container" action="wishlist.php" method="POST" enctype="multipart/form-data">
@@ -180,6 +189,7 @@ if(isset($_REQUEST['delete']))
    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+</div>
     </body>
 
 

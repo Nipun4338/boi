@@ -6,12 +6,26 @@ $password="";
 $db="boi";
 
 $link=mysqli_connect($host,$user,$password,$db);
+$sql="SELECT distinct author FROM author order by author";
+$result=mysqli_query($link,$sql) or die(mysqli_error($link));
+$data=array();
+$noOfRows=mysqli_num_rows($result);
+if($noOfRows){
+  while($row=mysqli_fetch_assoc($result)){
+
+      /*echo "<pre>";
+      print_r($row);*/
+      array_push($data,$row);
+      //echo "</pre>";
+
+  }
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-		<title>Messages | বই</title>
+		<title>Sell | বই</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width-device-width, initial scale = 1.0">
 		<script src = "https://code.jquery.com/jquery-2.1.3.min.js"></script>
@@ -99,51 +113,6 @@ $link=mysqli_connect($host,$user,$password,$db);
 }
 
 
-.container1 {
-  border: 2px solid #dedede;
-  background-color: #f1f1f1;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 10px 0;
-}
-
-.darker {
-  border-color: #ccc;
-  background-color: #ddd;
-}
-
-.container1::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.container1 img {
-  float: left;
-  max-width: 60px;
-  width: 100%;
-  margin-right: 20px;
-  border-radius: 50%;
-}
-
-.container1 img.right {
-  float: right;
-  margin-left: 20px;
-  margin-right:0;
-}
-
-.time-right {
-  float: right;
-  color: #aaa;
-}
-
-.time-left {
-  float: left;
-  color: #999;
-}
-.hello {
-    margin: 0px 0 200px 0;
-}
 
     </style>
 </head>
@@ -152,47 +121,62 @@ $link=mysqli_connect($host,$user,$password,$db);
   <?php
   include('includes/nav.php');
    ?>
-<div class="hello">
-<div class="header1" style="text-align:center;">
-<h1>Recent Contacts</h1>
+
+<h1 style="text-align:center;border: 2px solid #8989;margin:10px">Select Your Book</h1>
+<div class="darker" style="text-align:center;border: 2px solid #8989;margin:10px">
+  <form action="script.php" enctype="multipart/form-data" method="POST">
+  <div class="form-group" style="margin:3% 10% 2% 10%">
+      <h4>Select Author</h4>
+      <select name="authorselect" class="form-select" aria-label="Default select example">
+        <?php foreach($data as $row){
+
+        ?>
+        <option value="<?php echo $row['author']; ?>"><?php echo $row['author'] ?></option>
+      <?php } ?>
+      </select>
+  </div>
+  <div class="form-group" style="margin:3% 10% 2% 10%">
+
+      <h4>Book Name</h4>
+      <input type="text" class="form-control" name="book" value="" placeholder="Enter Book Name" required>
+  </div>
+  <div class="form-group" style="margin:3% 10% 2% 10%">
+
+      <h4>Category</h4>
+      <input type="text" class="form-control" name="category" value="" placeholder="Enter Category" required>
+  </div>
+  <div class="form-group" style="margin:3% 10% 2% 10%">
+
+      <h4>Price</h4>
+      <input type="text" class="form-control" name="price" value="" placeholder="Enter Price" required>
+  </div>
+  <div class="form-group" style="margin:3% 10% 2% 10%">
+
+      <h4>Details</h4>
+      <input type="text" class="form-control" name="details" value="" placeholder="Details" required>
+  </div>
+  <div class="form-group" style="margin:3% 10% 2% 10%">
+
+      <h4>Location</h4>
+      <input type="text" class="form-control" name="location" value="" placeholder="Enter Location" required>
+  </div>
+  <div class="form-group" style="margin:3% 10% 2% 10%">
+    <h4>Upload Book Image/s</h4>
+    <input type="file" name="file_upload[]" class="form-control"required multiple/>
+    *Your first choosen image will be the cover image in the advertise.
+  </div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+    <button type="submit" name="registerbtnbook" class="btn btn-primary">Save</button>
 </div>
-<?php
-$user = $_SESSION['user_id'];
-
-$sql = "SELECT distinct concat(receiver_id,sender_id) as final from messages where (sender_id='$user' and receiver_id!='$user')  or (sender_id!='$user' and receiver_id='$user') order by datesent desc";
-$result = mysqli_query($link, $sql);
-
-if (mysqli_num_rows($result) > 0) {
- // output data of each row
- while($row = mysqli_fetch_assoc($result)) {
-
-	 if($row["final"]!=$_SESSION["user_id"])
-	 {
-		 $receiver_id=$row["final"];
-	 }
-
-
-   $sql1 = "SELECT name,user_id from user where user_id='$receiver_id'";
-   $result1 = mysqli_query($link, $sql1);
-   if (mysqli_num_rows($result1) > 0) {
-     while($row1 = mysqli_fetch_assoc($result1)) {
-
-?>
-<form class="form-container" action="chat.php" method="POST" enctype="multipart/form-data">
-	<input type="hidden" name="user_id1" value="<?php echo $row1["user_id"] ?>">
-	<?php $_SESSION["receive"]=$row1["user_id"]; ?>
-	<input type="hidden" name="user_name" value="<?php echo $row1["name"] ?>">
-	<?php $_SESSION["receive_name"]=$row1["name"]; ?>
-<button type="submit" class="container1" style="text-align: center;cursor: pointer;width:100%"><h3><?php echo $row1["name"] ?></h3></button>
 </form>
-<?php
-}} }
-}else {
-echo "0 Results";
-} ?>
+</div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-</div>
+
 	 </body>
 
 <div class="progress-container fixed-bottom">
