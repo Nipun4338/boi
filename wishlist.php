@@ -111,17 +111,21 @@ if(isset($_REQUEST['delete']))
 	 ?>
    <div class="hello">
 
-   <div class="container" style="color:#000;text-align:center">
-       <h2 class='text-center'>My Wishlist</h2>
-       <section id="content">
-   		<div class="content-blog content-account">
-   			<div class="container">
-   				<div class="row">
+     <div class="container-fluid" style="text-align:center">
 
-   					<div class="col-md-12">
-   			<br>
-   			<table class="cart-table account-table table table-bordered bg-white text-dark">
-   				<thead>
+     <!-- DataTales Example -->
+     <div class="card shadow mb-4">
+       <div class="card-header py-3">
+         <h1 class="m-0 font-weight-bold text-primary">My Wishlist
+         </h1>
+       </div>
+
+       <div class="card-body">
+
+
+         <div class="table-responsive">
+           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+             <thead>
    					<tr>
    						<th>Book Name</th>
               <th>Author</th>
@@ -180,12 +184,11 @@ if(isset($_REQUEST['delete']))
    			 ?>
        </tbody>
    			</table>
-   			</div>
-   					</div>
-   				</div>
-   			</div>
-   		</div>
-   	</section>
+      </div>
+    </div>
+  </div>
+
+  </div>
    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>

@@ -85,6 +85,64 @@ $connection = mysqli_connect("localhost","root","","boi");
   }
 }
 
+if (isset($_POST["updatebtnbook"])) {
+  $id=$_POST['edit_id_book'];
+  $price=$_POST['edit_price'];
+  $details=$_POST['edit_details'];
+  date_default_timezone_set("Asia/Dhaka");
+  $datetime = '';
+  $datetime=date('Y-m-d H:i:s');
+  $query="update books set price='$price',present_condition='$details', updated_date='$datetime' where book_id='$id'";
+  $query_run=mysqli_query($connection, $query);
+
+  if($query_run)
+  {
+    $_SESSION['success']="Book is updated!";
+    header('Location: profile.php');
+  }
+  else {
+    $_SESSION['success']="Book is not updated!";
+    header('Location: profile.php');
+  }
+
+
+}
+
+
+
+if (isset($_POST["delete_btn"])) {
+  $id=$_POST['delete_book'];
+  $query="delete from books where book_id='$id'";
+  $query_run=mysqli_query($connection, $query);
+  $query="select image from images where book_id='$id'";
+  $query_run=mysqli_query($connection, $query);
+  $data=array();
+  $noOfRows=mysqli_num_rows($query_run);
+  if($noOfRows){
+    while($row=mysqli_fetch_assoc($query_run)){
+
+        unlink($row["image"]);
+
+    }
+  }
+
+  $query="delete from images where book_id='$id'";
+  $query_run=mysqli_query($connection, $query);
+
+  if($query_run)
+  {
+    $_SESSION['success']="Book is deleted!";
+    header('Location: profile.php');
+  }
+  else {
+    $_SESSION['success']="Book is not updated!";
+    header('Location: profile.php');
+  }
+
+
+}
+
+
 
 
 

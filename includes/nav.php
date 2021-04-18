@@ -16,9 +16,9 @@
 
 			 <a class="nav-item nav-link" href = "sell.php"> SELL </a>
 
-			 <a class=" nav-item nav-link" href = "aboutus.php"> ABOUT US </a>
+			 <a class=" nav-item nav-link" href = "contact.php"> CONTACT US </a>
 
-			 <a class=" nav-item nav-link" href = "contactus.php"> CONTACT US </a>
+			 <a class=" nav-item nav-link" href = "instructions.php"> INSTRUCTIONS </a>
 
 			 <?php if (!isset($_SESSION["username"])) {
 

@@ -81,6 +81,7 @@ if($noOfRows){
     margin: 50px auto 0 auto;
     width: 80%;
   }
+  
 
   </style>
 
@@ -112,36 +113,107 @@ if($noOfRows){
 				<h4>Name:  <?php echo $row['name']?></h4>
 				<h4>Email: <?php echo $row['email']?></h4>
 				<h4>Cell: <?php echo $row['phone']?></h4>
+
 			</div>
 
 			<?php
+      $user=$_SESSION["user_id"];
 		}
 			?>
 			</div>
 		</div>
 	</div>
-
-
-
-
-
 	</section>
 
+  <div class="container-fluid" style="text-align:center;margin-top:10px">
 
-	<section>
-		<div class="container order-table-div">
-			<table class="order-table">
-				<tr>
-					<th>Order #</th>
-					<th>Order Date</th>
-					<th>Product</th>
-					<th>Price</th>
-					<th>State</th>
-				</tr>
-			</table>
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Book By You
+      </h6>
+    </div>
 
-		</div>
-	</section>
+    <div class="card-body">
+      <?php
+      if(isset($_SESSION['success']) && $_SESSION['success']!='')
+      {
+        echo '<h2>'.$_SESSION['success'].'</h2>';
+        unset($_SESSION['success']);
+      }
+      if(isset($_SESSION['status']) && $_SESSION['status']!='')
+      {
+        echo '<h2 class="bg-info">'.$_SESSION['status'].'</h2>';
+        unset($_SESSION['status']);
+      }
+       ?>
+
+      <div class="table-responsive">
+        <?php
+        $connection = mysqli_connect("localhost","root","","boi");
+        $query1 = "SELECT * FROM books where owner_id='$user'";
+        $query_run1 = mysqli_query($connection, $query1);
+    ?>
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th> Book Name </th>
+              <th>Author</th>
+              <th>Price</th>
+              <th>Details</th>
+              <th>Location</th>
+              <th>Created Date</th>
+              <th>EDIT </th>
+              <th>DELETE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+
+                          if(mysqli_num_rows($query_run1) > 0)
+                          {
+                              while($row = mysqli_fetch_assoc($query_run1))
+                              {
+                          ?>
+                              <tr>
+                                  <td><a href="book.php?book=<?php echo $row["book_id"] ?>">	<?php echo $row["name"] ?></a></td>
+                                  <td><?php  echo $row['author']; ?></td>
+                                  <td><?php  echo $row['price']; ?></td>
+                                  <td><?php  echo $row['present_condition']; ?></td>
+                                  <td><?php  echo $row['location']; ?></td>
+                                  <td><?php echo date('M j, Y g:i A', strtotime($row["created_date"]));  ?></td>
+                                  <td>
+                                      <form action="book_edit.php" method="post">
+                                          <input type="hidden" name="edit_id_book" value="<?php echo $row['book_id']; ?>">
+                                          <button type="submit" name="edit_btn_book" class="btn btn-success"> EDIT</button>
+                                      </form>
+                                  </td>
+                                  <td>
+                                    <form action="script.php" method="post">
+                                        <input type="hidden" name="delete_book" value="<?php echo $row['book_id']; ?>">
+                                        <button type="submit" name="delete_btn" class="btn btn-danger"> DELETE</button>
+
+                                    </form>
+                                </td>
+                              </tr>
+                          <?php
+                              }
+                          }
+                          else {
+                              echo "No Record Found";
+                          }
+                          ?>
+
+          </tbody>
+        </table>
+        *Once deleted, it can not be undone.
+
+      </div>
+    </div>
+  </div>
+
+  </div>
+  <!-- /.container-fluid -->
 
 </body>
 
