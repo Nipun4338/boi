@@ -2,6 +2,7 @@
 include("security.php");
 include('includes/header.php');
 include('includes/navbar.php');
+include('database/dbconfig.php');
 
 ?>
 
@@ -48,7 +49,6 @@ include('includes/navbar.php');
 
     <div class="table-responsive">
       <?php
-      $connection = mysqli_connect("localhost","root","","carhub");
       $query = "SELECT * FROM user";
       $query_run = mysqli_query($connection, $query);
   ?>
@@ -75,7 +75,7 @@ include('includes/navbar.php');
                             {
                         ?>
                             <tr>
-                                <td><?php  echo $row['customer_id']; ?></td>
+                                <td><?php  echo $row['user_id']; ?></td>
                                 <td><?php  echo $row['name']; ?></td>
                                 <td><?php  echo $row['email']; ?></td>
                                 <td><img src="../<?php echo $row['image']; ?>" height="50px" width="50px"/></td>
@@ -85,7 +85,7 @@ include('includes/navbar.php');
                                 <td><?php  echo $row['updated_date']; ?></td>
                                 <td>
                                     <form action="user_edit.php" method="post">
-                                        <input type="hidden" name="edit_id_user" value="<?php echo $row['customer_id']; ?>">
+                                        <input type="hidden" name="edit_id_user" value="<?php echo $row['user_id']; ?>">
                                         <button type="submit" name="edit_btn_user" class="btn btn-success"> EDIT</button>
                                     </form>
                                 </td>

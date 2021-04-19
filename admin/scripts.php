@@ -3,6 +3,7 @@
     {
         include("security.php");
     }
+    include('database/dbconfig.php');
 ?>
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
@@ -23,8 +24,6 @@
 
 
   <?php
-
-$connection = mysqli_connect("localhost","root","","carhub");
 
 if(isset($_POST['registerbtn']))
 {
@@ -280,7 +279,7 @@ if (isset($_POST["updatebtnuser"])) {
   date_default_timezone_set("Asia/Dhaka");
   $datetime = '';
   $datetime=date('Y-m-d H:i:s');
-  $query="update user set status='$status', updated_date='$datetime' where customer_id='$id'";
+  $query="update user set status='$status', updated_date='$datetime' where user_id='$id'";
   $query_run=mysqli_query($connection, $query);
 
   if($query_run)

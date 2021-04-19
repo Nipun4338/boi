@@ -2,6 +2,7 @@
 include("security.php");
 include('includes/header.php');
 include('includes/navbar.php');
+include('database/dbconfig.php');
 ?>
 
   <div class="container-fluid">
@@ -15,11 +16,10 @@ include('includes/navbar.php');
 
     <div class="card-body">
       <?php
-      $connection = mysqli_connect("localhost","root","","carhub");
       if(isset($_POST['edit_btn_user']))
       {
         $id=$_POST['edit_id_user'];
-        $query = "SELECT * FROM user WHERE customer_id='$id' ";
+        $query = "SELECT * FROM user WHERE user_id='$id' ";
         $query_run = mysqli_query($connection, $query);
         foreach ($query_run as $row) {
           ?>
