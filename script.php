@@ -5,8 +5,11 @@
     }
 ?>
 <?php
-
-$connection = mysqli_connect("localhost","root","","boi");
+$host="us-cdbr-east-03.cleardb.com";
+$user="ba1268b5ca99c6";
+$password="557bfa4e";
+$db="heroku_923aa6dacc1b73c";
+$connection = mysqli_connect($host,$user,$password,$db);
 
 
   if(isset($_POST['registerbtnbook']))
