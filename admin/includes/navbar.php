@@ -4,7 +4,10 @@
 <!-- Sidebar - Brand -->
 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
 
-  <div class="sidebar-brand-text mx-3">CarHub</div>
+  
+<a href="index.php" class = "navbar-brand" style="font-weight:bold;padding:0 0 0 5%"><img src="favicon.svg" style="padding:5px; border-right:2px solid #ddd">
+			বই
+	</a>
 </a>
 
 <!-- Divider -->
