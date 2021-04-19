@@ -18,7 +18,6 @@ else {
 $sql="";
 $sql="SELECT * FROM books where status=1 limit $page1,16";
 $result=mysqli_query($link,$sql) or die(mysqli_error($link));
-unset($data);
 $data=array();
 $noOfRows=mysqli_num_rows($result);
 if($noOfRows){
@@ -56,6 +55,7 @@ if($noOfRows){
 
 if(isset($_REQUEST['advancesearch']))
 {
+  unset($data);
   $book=$_POST["book"];
   $author=$_POST["author"];
   $min=$_POST["min"];
