@@ -4,7 +4,7 @@
 <!-- Sidebar - Brand -->
 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
 
-  <img src="favicon.svg" style="padding:5px; border-right:2px solid #ddd"><div class="sidebar-brand-text mx-3">বই</div>
+  <img src="favicon.svg" style="padding:5px;"><div class="sidebar-brand-text mx-3">বই</div>
 </a>
 
 <!-- Divider -->
