@@ -145,7 +145,6 @@ if($noOfRows){
 
       <div class="table-responsive">
         <?php
-        $connection = mysqli_connect("localhost","root","","boi");
         $query1 = "SELECT * FROM books where owner_id='$user'";
         $query_run1 = mysqli_query($connection, $query1);
     ?>
