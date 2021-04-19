@@ -2,12 +2,7 @@
 include("security.php");
 ?>
 <?php
-$host="us-cdbr-east-03.cleardb.com";
-$user="ba1268b5ca99c6";
-$password="557bfa4e";
-$db="heroku_923aa6dacc1b73c";
-
-$link=mysqli_connect($host,$user,$password,$db);
+include('database/dbconfig.php');
 $email=$_SESSION['username'];
 
 $sql="SELECT * FROM user where email='$email'";
@@ -33,7 +28,7 @@ if($noOfRows){
 	<title>Profile | বই</title>
 	<meta charset="UTF-8">
 
-	<meta name="viewport" content="width-device-width, initial scale = 1.0">
+	<meta name="viewport" content="width=device-width, initial-scale = 1.0">
 
 	<script src = "https://code.jquery.com/jquery-2.1.3.min.js"></script>
 

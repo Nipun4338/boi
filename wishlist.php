@@ -1,13 +1,7 @@
 
 <?php
 include("security.php");
-$host="us-cdbr-east-03.cleardb.com";
-$user="ba1268b5ca99c6";
-$password="557bfa4e";
-$db="heroku_923aa6dacc1b73c";
-
-
-$link=mysqli_connect($host,$user,$password,$db);
+include('database/dbconfig.php');
 if(isset($_SESSION["username"]) && isset($_GET["book"]))
 {
   $user=$_SESSION["user_id"];

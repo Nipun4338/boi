@@ -1,12 +1,6 @@
 <?php
 include("security.php");
-$host="us-cdbr-east-03.cleardb.com";
-$user="ba1268b5ca99c6";
-$password="557bfa4e";
-$db="heroku_923aa6dacc1b73c";
-
-
-$link=mysqli_connect($host,$user,$password,$db);
+include('database/dbconfig.php');
 $sql="SELECT distinct author FROM author order by author";
 $result=mysqli_query($link,$sql) or die(mysqli_error($link));
 $data=array();
@@ -28,7 +22,7 @@ if($noOfRows){
 <head>
 		<title>Sell | বই</title>
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width-device-width, initial scale = 1.0">
+		<meta name="viewport" content="width=device-width, initial-scale = 1.0">
 		<script src = "https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">

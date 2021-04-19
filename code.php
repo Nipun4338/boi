@@ -1,15 +1,11 @@
 <?php
 include("security.php");
+include('database/dbconfig.php');
 
 if (isset($_POST["login"])) {
     $email_login=$_POST['email'];
     $password_login=md5($_POST['password']);
     $query="select * from user where email='$email_login' and password='$password_login'";
-    $host="us-cdbr-east-03.cleardb.com";
-    $user="ba1268b5ca99c6";
-    $password="557bfa4e";
-    $db="heroku_923aa6dacc1b73c";
-    $connection = mysqli_connect($host,$user,$password,$db);
     $query_run=mysqli_query($connection, $query);
     $data=array();
     $noOfRows=mysqli_num_rows($query_run);

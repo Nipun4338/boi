@@ -1,9 +1,6 @@
 <?php session_start();
+include('database/dbconfig.php');
 if (isset($_POST["submit"])) {
-  $host="us-cdbr-east-03.cleardb.com";
-  $user="ba1268b5ca99c6";
-  $password="557bfa4e";
-  $db="heroku_923aa6dacc1b73c";
 
   $connection = mysqli_connect($host,$user,$password,$db);
   if (!isset($_SESSION["username"]))
@@ -75,7 +72,7 @@ if (isset($_POST["submit"])) {
 	<title>Contact Us | বই</title>
 	<meta charset="UTF-8">
 
-	<meta name="viewport" content="width-device-width, initial scale = 1.0">
+	<meta name="viewport" content="width=device-width, initial-scale = 1.0">
 
 	<script src = "https://code.jquery.com/jquery-2.1.3.min.js"></script>
 

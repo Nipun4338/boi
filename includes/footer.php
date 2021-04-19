@@ -22,7 +22,7 @@ function myFunction() {
 							 <ul class="quick-links">
 									 <li><a href="index.php">Home</a></li>
 									 <li><a href="sell.php">Sell</a></li>
-									 <li><a href="aboutus.php">About Us</a></li>
+									 <li><a href="contact.php">Contact Us</a></li>
 							 </ul>
 					 </div>
 

@@ -2,12 +2,8 @@
 <?php
 session_start();
 ob_start();
-$host="us-cdbr-east-03.cleardb.com";
-$user="ba1268b5ca99c6";
-$password="557bfa4e";
-$db="heroku_923aa6dacc1b73c";
+include('database/dbconfig.php');
 
-$link=mysqli_connect($host,$user,$password,$db);
 
 if(!empty($_GET["book"])){
 $book=$_GET["book"];
@@ -42,7 +38,7 @@ if($noOfRows){
 <head>
 		<title>Details | বই</title>
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width-device-width, initial scale = 1.0">
+		<meta name="viewport" content="width=device-width, initial-scale = 1.0">
 		<script src = "https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
