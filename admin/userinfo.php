@@ -10,7 +10,7 @@ if(isset($_REQUEST['delete']))
   $result=mysqli_query($link,$sql) or die(mysqli_error($link));
   if($result)
   {
-    $_SESSION['success']="Book is deleted!";
+    $_SESSION['success']="User is deleted!";
   }
 }
 ?>
