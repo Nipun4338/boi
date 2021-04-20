@@ -60,6 +60,7 @@ include('database/dbconfig.php');
             <th> Email </th>
             <th>Image</th>
             <th>Phone</th>
+            <th>Image Path</th>
             <th>Status</th>
             <th>Created Date</th>
             <th>Updated Date</th>
@@ -80,6 +81,7 @@ include('database/dbconfig.php');
                                 <td><?php  echo $row['email']; ?></td>
                                 <td><img src="../<?php echo $row['image']; ?>" height="50px" width="50px"/></td>
                                 <td><?php  echo $row['phone']; ?></td>
+                                <td><?php  echo $row['image']; ?></td>
                                 <td><?php  echo $row['status']; ?></td>
                                 <td><?php echo date('M j, Y g:i A', strtotime($row["created_date"]));  ?></td>
                                 <td><?php echo date('M j, Y g:i A', strtotime($row["updated_date"]));  ?></td>
