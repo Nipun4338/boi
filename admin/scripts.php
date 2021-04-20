@@ -86,99 +86,26 @@ if (isset($_POST["updatebtn"])) {
 }
 
 
-  if(isset($_POST['registerbtncar']))
-  {
-      $name = $_POST['car_name'];
-      $brand = $_POST['brandselect'];
-      $model = $_POST['car_model'];
-      $seats = $_POST['car_seats'];
-      $build = $_POST['car_build'];
-      $cost = $_POST['car_cost'];
-      $color = $_POST['car_color'];
-      $details = $_POST['car_details'];
-      $status = $_POST['status'];
-
-      $target_dir2="";
-      if(!isset($_FILES['file_upload']) || $_FILES['file_upload']['error'] == UPLOAD_ERR_NO_FILE)
-      {
-        $target_dir2="images/cars/default-image.jpg";
-      }
-      else{
-
-        $userFileName='car_pic_'.$name;
-         $imageType=strtolower(pathinfo($_FILES['file_upload']['name'], PATHINFO_EXTENSION));
-         $target_dir="../images/cars/".$userFileName.".".$imageType;
-         $target_dir2="images/cars/".$userFileName.".".$imageType;
-         $target_file=$target_dir;
-         $temp_file=$_FILES['file_upload']['tmp_name'];
-         move_uploaded_file($temp_file, $target_file);
-      }
-
-
-
-      date_default_timezone_set("Asia/Dhaka");
-      $datetime = '';
-      $datetime=date('Y-m-d H:i:s');
-      $query = "INSERT INTO cars (car_name,car_brand_id,car_model,car_image,car_seats,car_build,car_cost,car_color,car_details,status,created_date,update_date)
-      VALUES ('$name','$brand','$model','$target_dir2','$seats','$build','$cost','$color','$details','$status','$datetime','$datetime')";
-      $query_run = mysqli_query($connection, $query);
-
-      if($query_run)
-      {
-          echo "done";
-          $_SESSION['success'] =  "Car is Added Successfully";
-          header('Location: registercar.php');
-      }
-      else
-      {
-          echo "not done";
-          $_SESSION['status'] =  "Car is Not Added";
-          header('Location: registercar.php');
-      }
-
-  }
-
-  if (isset($_POST["updatebtncar"])) {
-    $id=$_POST['edit_id_car'];
-    $name = $_POST['edit_car_name'];
-    $brand = $_POST['edit_brand'];
-    $model = $_POST['edit_car_model'];
-    $seats = $_POST['edit_car_seats'];
-    $image = $_POST['edit_image'];
-    $build = $_POST['edit_car_build'];
-    $cost = $_POST['edit_car_cost'];
-    $color = $_POST['edit_car_color'];
-    $details = $_POST['edit_car_details'];
+  if (isset($_POST["updatebtnbook"])) {
+    $id=$_POST['edit_id_book'];
+    $details = $_POST['edit_details'];
     $status = $_POST['edit_status'];
-    $target_dir2="";
+
     date_default_timezone_set("Asia/Dhaka");
     $datetime = '';
     $datetime=date('Y-m-d H:i:s');
-    if(!isset($_FILES['file_upload']) || $_FILES['file_upload']['error'] == UPLOAD_ERR_NO_FILE)
-    {
-      $target_dir2=$image;
-    }
-    else{
 
-      $userFileName='car_pic_'.$name;
-       $imageType=strtolower(pathinfo($_FILES['file_upload']['name'], PATHINFO_EXTENSION));
-       $target_dir="../images/cars/".$userFileName.".".$imageType;
-       $target_dir2="images/cars/".$userFileName.".".$imageType;
-       $target_file=$target_dir;
-       $temp_file=$_FILES['file_upload']['tmp_name'];
-       move_uploaded_file($temp_file, $target_file);
-    }
-    $query="update cars set car_name='$name',car_brand_id='$brand',car_model='$model',car_seats='$seats',car_image='$target_dir2',car_build='$build',car_cost='$cost',car_color='$color',car_details='$details' ,status='$status', update_date='$datetime' where car_id='$id'";
+    $query="update books set present_condition='$details', status='$status', updated_date='$datetime' where book_id='$id'";
     $query_run=mysqli_query($connection, $query);
 
     if($query_run)
     {
-      $_SESSION['success']="Car data is updated";
-      header('Location: registercar.php');
+      $_SESSION['success']="Book data is updated";
+      header('Location: bookinfo.php');
     }
     else {
-      $_SESSION['success']="Car data is not updated";
-      header('Location: registercar.php');
+      $_SESSION['success']="Book data is not updated";
+      header('Location: bookinfo.php');
     }
 
 

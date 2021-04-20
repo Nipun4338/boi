@@ -35,24 +35,14 @@
     <span>Admin Profile</span></a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="registerteam.php">
+  <a class="nav-link" href="bookinfo.php">
     <i class="fas fa-fw fa-chart-area"></i>
-    <span>Team Info</span></a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="registercar.php">
-    <i class="fas fa-fw fa-chart-area"></i>
-    <span>Car Info</span></a>
+    <span>Book Info</span></a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="userinfo.php">
     <i class="fas fa-fw fa-chart-area"></i>
     <span>User Info</span></a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="brand.php">
-    <i class="fas fa-fw fa-chart-area"></i>
-    <span>Brand Info</span></a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="contact.php">

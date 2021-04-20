@@ -2,13 +2,12 @@
 include("security.php");
 include('includes/header.php');
 include('includes/navbar.php');
-
-
+include('database/dbconfig.php');
 ?>
 
 
 
-<div class="container-fluid">
+<div class="container-fluid" style="text-align:center">
 
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
@@ -33,8 +32,7 @@ include('includes/navbar.php');
 
     <div class="table-responsive">
       <?php
-      $connection = mysqli_connect("localhost","root","","carhub");
-      $query = "SELECT * FROM contact";
+      $query = "SELECT * FROM contact order by date desc";
       $query_run = mysqli_query($connection, $query);
   ?>
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -62,7 +60,7 @@ include('includes/navbar.php');
                                 <td><?php  echo $row['email']; ?></td>
                                 <td><?php  echo $row['phone']; ?></td>
                                 <td><?php  echo $row['message']; ?></td>
-                                <td><?php  echo $row['date']; ?></td>
+                                <td><?php echo date('M j, Y g:i A', strtotime($row["date"]));  ?></td>
                             </tr>
                         <?php
                             }

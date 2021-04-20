@@ -4,32 +4,30 @@ include('includes/header.php');
 include('includes/navbar.php');
 include('database/dbconfig.php');
 
+
+if(isset($_REQUEST['delete']))
+{
+  $book=$_POST["book_id"];
+  $user=$_POST["user_id"];
+  $sql="DELETE from books where book_id='$book' and owner_id='$user'";
+  $result=mysqli_query($link,$sql) or die(mysqli_error($link));
+  if($result)
+  {
+    $_SESSION['success']="Book is deleted!";
+  }
+}
+
 ?>
 
 
-<div class="modal fade" id="addadminprofile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">User Details</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
 
 
-    </div>
-  </div>
-</div>
-
-
-<div class="container-fluid">
+<div class="container-fluid" style="text-align:center">
 
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
   <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">User Details
-
+    <h6 class="m-0 font-weight-bold text-primary">Book Details
     </h6>
   </div>
 
@@ -49,45 +47,62 @@ include('database/dbconfig.php');
 
     <div class="table-responsive">
       <?php
-      $query = "SELECT * FROM user";
-      $query_run = mysqli_query($connection, $query);
+      $query = "SELECT * FROM books";
+      $query_run1 = mysqli_query($connection, $query);
   ?>
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr>
             <th> ID </th>
-            <th> Name </th>
-            <th> Email </th>
-            <th>Image</th>
-            <th>Phone</th>
+            <th> Book Name </th>
+            <th> Image </th>
+            <th>Author</th>
+            <th>Owner Id</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Details</th>
+            <th>Location</th>
             <th>Status</th>
             <th>Created Date</th>
             <th>Updated Date</th>
             <th>EDIT </th>
+            <th>DELETE </th>
           </tr>
         </thead>
         <tbody>
           <?php
 
-                        if(mysqli_num_rows($query_run) > 0)
+                        if(mysqli_num_rows($query_run1) > 0)
                         {
-                            while($row = mysqli_fetch_assoc($query_run))
+                            while($row = mysqli_fetch_assoc($query_run1))
                             {
                         ?>
                             <tr>
-                                <td><?php  echo $row['user_id']; ?></td>
+                                <td><?php  echo $row['book_id']; ?></td>
                                 <td><?php  echo $row['name']; ?></td>
-                                <td><?php  echo $row['email']; ?></td>
                                 <td><img src="../<?php echo $row['image']; ?>" height="50px" width="50px"/></td>
-                                <td><?php  echo $row['phone']; ?></td>
+                                <td><?php  echo $row['author']; ?></td>
+                                <td><?php  echo $row['owner_id']; ?></td>
+                                <td><?php  echo $row['price']; ?></td>
+                                <td><?php  echo $row['category']; ?></td>
+                                <td><?php  echo $row['present_condition']; ?></td>
+                                <td><?php  echo $row['location']; ?></td>
                                 <td><?php  echo $row['status']; ?></td>
                                 <td><?php echo date('M j, Y g:i A', strtotime($row["created_date"]));  ?></td>
                                 <td><?php echo date('M j, Y g:i A', strtotime($row["updated_date"]));  ?></td>
                                 <td>
-                                    <form action="user_edit.php" method="post">
-                                        <input type="hidden" name="edit_id_user" value="<?php echo $row['user_id']; ?>">
-                                        <button type="submit" name="edit_btn_user" class="btn btn-success"> EDIT</button>
+                                    <form action="book_edit.php" method="post">
+                                        <input type="hidden" name="edit_id_book" value="<?php echo $row['book_id']; ?>">
+                                        <button type="submit" name="edit_btn_book" class="btn btn-success"> EDIT</button>
+
                                     </form>
+                                  </td>
+                                  <td>
+                                    <form class="form-container" action="bookinfo.php" method="POST" enctype="multipart/form-data">
+                                      <input type="hidden" name="book_id" value="<?php echo $row["book_id"] ?>">
+                                      <input type="hidden" name="user_id" value="<?php echo $row["owner_id"] ?>">
+                       							 <button type="submit" id="submit" name="delete"  class="btn btn-danger btn-block submit2">DELETE</button>
+                                  </form>
                                 </td>
                             </tr>
                         <?php
