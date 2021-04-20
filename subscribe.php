@@ -37,7 +37,7 @@ $datetime = '';
            $target_dir="images/users/default-image.jpg";
          }
          else{
-           $userFileName='user_pic_'.$user_email;
+           $userFileName='user_pic_'.$user_phone.$user_name;
   	       $imageType=strtolower(pathinfo($_FILES['file_upload']['name'], PATHINFO_EXTENSION));
   	       $target_dir="images/users/".$userFileName.".".$imageType;
   	       $target_file=$target_dir;

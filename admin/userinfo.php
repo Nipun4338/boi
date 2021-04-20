@@ -3,7 +3,16 @@ include("security.php");
 include('includes/header.php');
 include('includes/navbar.php');
 include('database/dbconfig.php');
-
+if(isset($_REQUEST['delete']))
+{
+  $user=$_POST["user_id"];
+  $sql="DELETE from user where user_id='$user'";
+  $result=mysqli_query($link,$sql) or die(mysqli_error($link));
+  if($result)
+  {
+    $_SESSION['success']="Book is deleted!";
+  }
+}
 ?>
 
 
@@ -65,6 +74,7 @@ include('database/dbconfig.php');
             <th>Created Date</th>
             <th>Updated Date</th>
             <th>EDIT </th>
+            <th>DELETE </th>
           </tr>
         </thead>
         <tbody>
@@ -91,6 +101,12 @@ include('database/dbconfig.php');
                                         <button type="submit" name="edit_btn_user" class="btn btn-success"> EDIT</button>
                                     </form>
                                 </td>
+                                <td>
+                                  <form class="form-container" action="userinfo.php" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="user_id" value="<?php echo $row["user_id"] ?>">
+                                   <button type="submit" id="submit" name="delete"  class="btn btn-danger btn-block submit2">DELETE</button>
+                                </form>
+                              </td>
                             </tr>
                         <?php
                             }
