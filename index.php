@@ -2,6 +2,7 @@
 <?php session_start(); ?>
 <?php
 include('database/dbconfig.php');
+
 if(!empty($_GET["page"])){
 $page=$_GET["page"];
 }
