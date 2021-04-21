@@ -1,5 +1,6 @@
 <?php
 session_start();
+include('database/dbconfig.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,9 +15,9 @@ session_start();
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	  <link rel="stylesheet" href="A.assets,,_royalslider,,_royalslider.css+assets,,_royalslider,,_skins,,_default,,_rs-default.css+assets,,_royalslider,,_skins,,_minimal-white,,_rs-minimal-white.css+css,,_bootstrap.min.css+css,,_normalize.css+css,,_jquery-ui.css,Mcc.y-DhrddGnN.css.pagespeed.cf.Hfy0poW2iH.css"/>
-
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -27,6 +28,9 @@ session_start();
 
 
 	<style media="screen">
+
+.mySlides {display: none;}
+
   .header {
     position: fixed;
     top: 0;
@@ -56,7 +60,7 @@ session_start();
     width: 80%;
   }
 	.hello {
-	    height: 51vh;
+	    height: 70vh;
 	}
 
 	</style>
@@ -69,12 +73,9 @@ session_start();
 	 ?>
 	 <div class="hello">
 
-<div class="container-fluid">
+<div class="container-fluid" >
   <div class="row">
-    <div class="col-md-8">
-
-    </div>
-    <div class="col-md-4">
+		<div class="col-md-4">
       <section class="container">
       	<section class="row">
       		<section class="col-md-12">
@@ -111,6 +112,52 @@ session_start();
       </section>
     </div>
 
+    <div class="col-md-8">
+			<?php
+				$sql="select image from slider1";
+				$result=mysqli_query($link,$sql) or die(mysqli_error($link));
+				$data=array();
+				$noOfRows=mysqli_num_rows($result);
+				if($noOfRows){
+				  while($row=mysqli_fetch_assoc($result)){
+
+				      /*echo "<pre>";
+				      print_r($row);*/
+				      array_push($data,$row);
+				      //echo "</pre>";
+
+				  }
+				}
+				shuffle($data);
+			 ?>
+			 <div class="w3-content w3-section" style="">
+				 <?php
+				 			foreach ($data as $row) {
+				  ?>
+					<div class="w3-animate-opacity">
+					  <img class="mySlides"src="<?php echo $row["image"]; ?>" style="width:100%;max-height:800px">
+					</div>
+				<?php } ?>
+				</div>
+    </div>
+		<script>
+		var myIndex = 0;
+		carousel();
+
+		function carousel() {
+		  var i;
+		  var x = document.getElementsByClassName("mySlides");
+		  for (i = 0; i < x.length; i++) {
+		    x[i].style.display = "none";
+		  }
+		  myIndex++;
+		  if (myIndex > x.length) {myIndex = 1}
+		  x[myIndex-1].style.display = "block";
+		  setTimeout(carousel, 7000); // Change image every 2 seconds
+		}
+</script>
+
+
   </div>
 </div>
 </div>
@@ -119,7 +166,3 @@ session_start();
   <div class="progress-bar" id="myBar">
     </div>
 </div>
-
-<?php
-include('includes/footer.php');
- ?>

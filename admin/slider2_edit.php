@@ -2,6 +2,7 @@
 include("security.php");
 include('includes/header.php');
 include('includes/navbar.php');
+include('database/dbconfig.php');
 ?>
 
   <div class="container-fluid">
@@ -15,7 +16,6 @@ include('includes/navbar.php');
 
     <div class="card-body">
       <?php
-      $connection = mysqli_connect("localhost","root","","carhub");
       if(isset($_POST['edit_btn_slider2']))
       {
         $id=$_POST['edit_id_slider2'];

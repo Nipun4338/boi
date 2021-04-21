@@ -296,14 +296,14 @@ if(isset($_POST['registerbtnslider1']))
     $target_dir2="";
     if(!isset($_FILES['file_upload']) || $_FILES['file_upload']['error'] == UPLOAD_ERR_NO_FILE)
     {
-      $target_dir2="images/team/default-image.jpg";
+      $target_dir2="images/default-image.jpg";
     }
     else{
       $name=$_FILES['file_upload']['name'];
       $userFileName='slider_pic_'.$name;
        $imageType=strtolower(pathinfo($_FILES['file_upload']['name'], PATHINFO_EXTENSION));
-       $target_dir="../images/slides/".$userFileName;
-       $target_dir2="images/slides/".$userFileName;
+       $target_dir="../images/slider1/".$userFileName;
+       $target_dir2="images/slider1/".$userFileName;
        $target_file=$target_dir;
        $temp_file=$_FILES['file_upload']['tmp_name'];
        move_uploaded_file($temp_file, $target_file);
@@ -311,8 +311,8 @@ if(isset($_POST['registerbtnslider1']))
     date_default_timezone_set("Asia/Dhaka");
     $datetime = '';
     $datetime=date('Y-m-d H:i:s');
-    $query = "INSERT INTO slider1 (header,paragraph,image,status,created_date,updated_date)
-    VALUES ('$header','$paragraph','$target_dir2','$status','$datetime','$datetime')";
+    $query = "INSERT INTO slider1 (image,status,created_date,updated_date)
+    VALUES ('$target_dir2','$status','$datetime','$datetime')";
     $query_run = mysqli_query($connection, $query);
 
     if($query_run)
@@ -333,8 +333,6 @@ if(isset($_POST['registerbtnslider1']))
 
 if (isset($_POST["updatebtnslider1"])) {
   $id=$_POST['edit_id_slider1'];
-  $header=$_POST['edit_header'];
-  $paragraph=$_POST['edit_paragraph'];
   $status=$_POST['edit_status'];
   $image=$_POST['edit_image'];
   date_default_timezone_set("Asia/Dhaka");
@@ -349,13 +347,13 @@ if (isset($_POST["updatebtnslider1"])) {
     $name=$_FILES['file_upload']['name'];
     $userFileName='slider_pic_'.$name;
      $imageType=strtolower(pathinfo($_FILES['file_upload']['name'], PATHINFO_EXTENSION));
-     $target_dir="../images/slides/".$userFileName;
-     $target_dir2="images/slides/".$userFileName;
+     $target_dir="../images/slider1/".$userFileName;
+     $target_dir2="images/slider1/".$userFileName;
      $target_file=$target_dir;
      $temp_file=$_FILES['file_upload']['tmp_name'];
      move_uploaded_file($temp_file, $target_file);
   }
-  $query="update slider1 set header='$header',paragraph='$paragraph',image='$target_dir2',status='$status', updated_date='$datetime' where slider_id='$id'";
+  $query="update slider1 set image='$target_dir2',status='$status', updated_date='$datetime' where slider_id='$id'";
   $query_run=mysqli_query($connection, $query);
 
   if($query_run)
@@ -386,14 +384,14 @@ if(isset($_POST['registerbtnslider2']))
     $target_dir2="";
     if(!isset($_FILES['file_upload']) || $_FILES['file_upload']['error'] == UPLOAD_ERR_NO_FILE)
     {
-      $target_dir2="images/team/default-image.jpg";
+      $target_dir2="images/default-image.jpg";
     }
     else{
       $name=$_FILES['file_upload']['name'];
       $userFileName='slider_pic_'.$name;
        $imageType=strtolower(pathinfo($_FILES['file_upload']['name'], PATHINFO_EXTENSION));
-       $target_dir="../assets/".$userFileName;
-       $target_dir2="assets/".$userFileName;
+       $target_dir="../images/slider2/".$userFileName;
+       $target_dir2="images/slider2/".$userFileName;
        $target_file=$target_dir;
        $temp_file=$_FILES['file_upload']['tmp_name'];
        move_uploaded_file($temp_file, $target_file);
@@ -437,8 +435,8 @@ if (isset($_POST["updatebtnslider2"])) {
     $name=$_FILES['file_upload']['name'];
     $userFileName='slider_pic_'.$name;
      $imageType=strtolower(pathinfo($_FILES['file_upload']['name'], PATHINFO_EXTENSION));
-     $target_dir="../assets/".$userFileName;
-     $target_dir2="assets/".$userFileName;
+     $target_dir="../images/slider2/".$userFileName;
+     $target_dir2="images/slider2/".$userFileName;
      $target_file=$target_dir;
      $temp_file=$_FILES['file_upload']['tmp_name'];
      move_uploaded_file($temp_file, $target_file);

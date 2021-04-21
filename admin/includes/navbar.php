@@ -57,8 +57,8 @@
   <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
       <h6 class="collapse-header">Custom Slides:</h6>
-      <a class="collapse-item" href="slider1.php">Index Slides</a>
-      <a class="collapse-item" href="slider2.php">Homepage Slides</a>
+      <a class="collapse-item" href="slider1.php">Login Slides</a>
+      <a class="collapse-item" href="slider2.php">Signup Slides</a>
     </div>
   </div>
 </li>

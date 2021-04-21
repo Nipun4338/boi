@@ -2,7 +2,7 @@
 include("security.php");
 include('includes/header.php');
 include('includes/navbar.php');
-
+include('database/dbconfig.php');
 ?>
 
 
@@ -69,7 +69,6 @@ include('includes/navbar.php');
 
     <div class="table-responsive">
       <?php
-      $connection = mysqli_connect("localhost","root","","carhub");
       $query = "SELECT * FROM slider2";
       $query_run = mysqli_query($connection, $query);
   ?>
@@ -96,8 +95,8 @@ include('includes/navbar.php');
                                 <td><?php  echo $row['slider_id']; ?></td>
                                 <td><img src="../<?php echo $row['image']; ?>" height="50px" width="50px"/></td>
                                 <td><?php  echo $row['status']; ?></td>
-                                <td><?php  echo $row['created_date']; ?></td>
-                                <td><?php  echo $row['updated_time']; ?></td>
+                                <td><?php echo date('M j, Y g:i A', strtotime($row["created_date"]));  ?></td>
+                                <td><?php echo date('M j, Y g:i A', strtotime($row["updated_date"]));  ?></td>
                                 <td>
                                     <form action="slider2_edit.php" method="post">
                                         <input type="hidden" name="edit_id_slider2" value="<?php echo $row['slider_id']; ?>">

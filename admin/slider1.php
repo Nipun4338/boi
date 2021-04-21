@@ -2,7 +2,17 @@
 include("security.php");
 include('includes/header.php');
 include('includes/navbar.php');
-
+include('database/dbconfig.php');
+if(isset($_REQUEST['delete']))
+{
+  $id=$_POST["slider_id"];
+  $sql="DELETE from slider1 where slider_id='$id'";
+  $result2=mysqli_query($link,$sql) or die(mysqli_error($link));
+  if($result2)
+  {
+    $_SESSION['success']="Slider is deleted!";
+  }
+}
 ?>
 
 
@@ -18,15 +28,6 @@ include('includes/navbar.php');
       <form action="scripts.php" enctype="multipart/form-data" method="POST">
 
         <div class="modal-body">
-
-            <div class="form-group">
-                <label> Header </label>
-                <input type="text" name="header" class="form-control" required >
-            </div>
-            <div class="form-group">
-                <label>Paragraph</label>
-                <input type="text" name="paragraph" class="form-control" required>
-            </div>
 
             <div class="form-group mb-3">
               <label>Upload Slide Picture</label>
@@ -77,9 +78,8 @@ include('includes/navbar.php');
     }
      ?>
 
-    <div class="table-responsive">
+    <div class="table-responsive" style="text-align:center">
       <?php
-      $connection = mysqli_connect("localhost","root","","carhub");
       $query = "SELECT * FROM slider1";
       $query_run = mysqli_query($connection, $query);
   ?>
@@ -87,13 +87,12 @@ include('includes/navbar.php');
         <thead>
           <tr>
             <th> ID </th>
-            <th> Header </th>
-            <th> Paragraph </th>
             <th>Image</th>
             <th>Status</th>
             <th>Created Date</th>
             <th>Updated Date</th>
             <th>EDIT </th>
+            <th>DELETE </th>
           </tr>
         </thead>
         <tbody>
@@ -106,18 +105,22 @@ include('includes/navbar.php');
                         ?>
                             <tr>
                                 <td><?php  echo $row['slider_id']; ?></td>
-                                <td><?php  echo $row['header']; ?></td>
-                                <td><?php  echo $row['paragraph']; ?></td>
                                 <td><img src="../<?php echo $row['image']; ?>" height="50px" width="50px"/></td>
                                 <td><?php  echo $row['status']; ?></td>
-                                <td><?php  echo $row['created_date']; ?></td>
-                                <td><?php  echo $row['updated_date']; ?></td>
+                                <td><?php echo date('M j, Y g:i A', strtotime($row["created_date"]));  ?></td>
+                                <td><?php echo date('M j, Y g:i A', strtotime($row["updated_date"]));  ?></td>
                                 <td>
                                     <form action="slider1_edit.php" method="post">
                                         <input type="hidden" name="edit_id_slider1" value="<?php echo $row['slider_id']; ?>">
                                         <button type="submit" name="edit_btn_slider1" class="btn btn-success"> EDIT</button>
                                     </form>
                                 </td>
+                                <td>
+                                  <form class="form-container" action="slider1.php" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="slider_id" value="<?php echo $row["slider_id"] ?>">
+                                   <button type="submit" id="submit" name="delete"  class="btn btn-danger btn-block submit2">DELETE</button>
+                                </form>
+                              </td>
                             </tr>
                         <?php
                             }

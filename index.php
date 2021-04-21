@@ -426,6 +426,7 @@ if(isset($_REQUEST['advancesearch']))
          <div  class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 
              <div  id="cards_landscape_wrap-2">
+               <!-- counter for chart-->
 
                  <a href="book.php?book=<?php echo $row1['book_id']?>">
                      <div class="card-flyer">
@@ -437,10 +438,12 @@ if(isset($_REQUEST['advancesearch']))
                  <h6 style="font-weight: bold;"><?php echo $row1['name'];?></h6>
                  <p><?php echo $row1['author'];?></p>
                  <p style="font-weight: bold;">TK. <?php echo $row1['price'];?></p>
+                 <p><?php echo $row1['location'];?></p>
                 </div>
                 </div>
                 </div>
                 </a>
+
             </div>
           </div>
 
