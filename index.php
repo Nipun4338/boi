@@ -342,7 +342,7 @@ if(isset($_REQUEST['advancesearch']))
 
          <h1 style="text-align:center;">Search Filter</h1>
          <div style="border-right:2px solid #eee">
-           <form class="form-horizontal" action="index.php" method="POST">
+           <form class="form-horizontal" action="home" method="POST">
              <div class="form-group">
                <label class="col-lg-11 control-label">Book Name</label>
                <div class="col-lg-11">
@@ -377,7 +377,7 @@ if(isset($_REQUEST['advancesearch']))
                <?php
                if($page>=2)
                {
-                 ?><a href="index.php?page=<?php echo $page-1; ?>">&laquo;</a>
+                 ?><a href="home?page=<?php echo $page-1; ?>">&laquo;</a>
                  <?php
                }
                ?>
@@ -388,15 +388,15 @@ if(isset($_REQUEST['advancesearch']))
                if($b==$page)
                {
 
-                 ?><a  class="active" href="index.php?page=<?php echo $b; ?>" style="text-decoration: none"><?php echo $b," "; ?></a><?php
+                 ?><a  class="active" href="home?page=<?php echo $b; ?>" style="text-decoration: none"><?php echo $b," "; ?></a><?php
                }
                else if($page=="" && $c==0)
                {
-                 ?><a  class="active" href="index.php?page=<?php echo $b; ?>" style="text-decoration: none"><?php echo $b," "; ?></a><?php
+                 ?><a  class="active" href="home?page=<?php echo $b; ?>" style="text-decoration: none"><?php echo $b," "; ?></a><?php
                  $c=1;
                }
                else {
-                 ?><a href="index.php?page=<?php echo $b; ?>" style="text-decoration: none"><?php echo $b," "; ?></a><?php
+                 ?><a href="home?page=<?php echo $b; ?>" style="text-decoration: none"><?php echo $b," "; ?></a><?php
                }
              }
 
@@ -404,7 +404,7 @@ if(isset($_REQUEST['advancesearch']))
               <?php
               if($page<$a)
               {
-                ?><a href="index.php?page=<?php echo $page+1; ?>">&raquo;</a>
+                ?><a href="home?page=<?php echo $page+1; ?>">&raquo;</a>
                 <?php
               }
               ?>
@@ -428,7 +428,7 @@ if(isset($_REQUEST['advancesearch']))
              <div  id="cards_landscape_wrap-2">
                <!-- counter for chart-->
 
-                 <a href="book.php?book=<?php echo $row1['book_id']?>">
+                 <a href="book?book=<?php echo $row1['book_id']?>">
                      <div class="card-flyer">
                          <div class="text-box">
                              <div class="image-box">

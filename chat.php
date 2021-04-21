@@ -214,7 +214,7 @@ if (mysqli_num_rows($result) > 0) {
 echo "0 Results";
 } ?>
 
-<form class="form-container" action="chat.php" method="POST" enctype="multipart/form-data">
+<form class="form-container" action="chat" method="POST" enctype="multipart/form-data">
 <textarea class="form-control" rows="2" style="width:100%" name="commenton" placeholder="Enter text here..."></textarea>
 <input type="submit" name="submit" class="btn btn-primary" value="SEND"  style="float:right"/>
 </form>

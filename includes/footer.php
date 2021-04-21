@@ -20,9 +20,9 @@ function myFunction() {
 					 <div class="col-lg-4 col-md-4 col-sm-4" style="padding:25px">
 							 <h1 class="quick-links-title">QUICK LINKS</h1>
 							 <ul class="quick-links">
-									 <li><a href="index.php">Home</a></li>
-									 <li><a href="sell.php">Sell</a></li>
-									 <li><a href="contact.php">Contact Us</a></li>
+									 <li><a href="home">Home</a></li>
+									 <li><a href="sell">Sell</a></li>
+									 <li><a href="contact">Contact Us</a></li>
 							 </ul>
 					 </div>
 

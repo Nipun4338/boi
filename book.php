@@ -3,7 +3,7 @@
 session_start();
 ob_start();
 include('database/dbconfig.php');
-
+$book="";
 
 if(!empty($_GET["book"])){
 $book=$_GET["book"];
@@ -14,7 +14,7 @@ else {
 
 $sql="";
 
-$sql="SELECT * FROM books where book_id=$book";
+$sql="SELECT * FROM books where book_id='$book'";
 
 $result=mysqli_query($link,$sql) or die(mysqli_error($link));
 $data=array();
@@ -36,7 +36,7 @@ if($noOfRows){
 <!DOCTYPE html>
 <html>
 <head>
-		<title>Details | বই</title>
+		<title>Book Details | বই</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale = 1.0">
 		<script src = "https://code.jquery.com/jquery-2.1.3.min.js"></script>
@@ -378,8 +378,8 @@ function showSlides(n) {
         </div>
         <div class="col-md-5 col-lg-5 shadow-lg p-3 mb-5 bg-white rounded" style="margin: 15px; text-align: center;">
           <h6 style="font-weight: bold;padding: 10px 10px 0px 10px; font-size: 25px"><?php echo $row['name'];?></h6>
-          by <a href="filter.php?author=<?php echo $row['author'];?>" class="" ><?php echo $row['author'];?></a><br>
-          <a href="filter.php?category=<?php echo $row['category'];?>" class="badge badge-pill badge-secondary" ><?php echo $row['category'];?></a>
+          by <a href="filter?author=<?php echo $row['author'];?>" class="" ><?php echo $row['author'];?></a><br>
+          <a href="filter?category=<?php echo $row['category'];?>" class="badge badge-pill badge-secondary" ><?php echo $row['category'];?></a>
 
           <div class="row">
             <div class="col-sm-12 col-lg-12 col-md-12">
@@ -396,7 +396,7 @@ function showSlides(n) {
                 </li>
 
             </ul>
-            <form class="form-container" action="chat.php" method="POST" enctype="multipart/form-data">
+            <form class="form-container" action="chat" method="POST" enctype="multipart/form-data">
               <input type="hidden" name="user_id1" value="<?php echo $row["owner_id"] ?>">
               <?php $_SESSION["receive"]=$row["owner_id"];
                 $receiver_id1=$_SESSION["receive"];
@@ -410,9 +410,9 @@ function showSlides(n) {
                 	<?php $_SESSION["receive_name"]=$row1["name"];
                 }}
                   ?>
-            <button onclick="document.location='chat.php'" class="btn btn-danger">Message to Owner</button>
+            <button onclick="document.location='chat'" class="btn btn-danger">Message to Owner</button>
           </form>
-            <button style="margin:10px" onclick="document.location='wishlist.php?book=<?php echo $row['book_id'];?>'" class="btn btn-primary">Add to Wishlist</button>
+            <button style="margin:10px" onclick="document.location='wishlist?book=<?php echo $row['book_id'];?>'" class="btn btn-primary">Add to Wishlist</button>
 
 
             </div>

@@ -1,0 +1,17 @@
+RewriteEngine on
+
+RewriteRule ^home  index.php [NC,L]
+RewriteRule ^login  login.php [NC,L]
+RewriteRule ^profile  profile.php [NC,L]
+RewriteRule ^logout  logout.php [NC,L]
+RewriteRule ^sell  sell.php [NC,L]
+RewriteRule ^instructions  instructions.php [NC,L]
+RewriteRule ^contact  contact.php [NC,L]
+RewriteRule ^messages  messages.php [NC,L]
+RewriteRule ^wishlist  wishlist.php [NC,L]
+RewriteRule ^filter  filter.php [NC,L]
+RewriteRule ^chat  chat.php [NC,L]
+RewriteRule ^subscribe  subscribe.php [NC,L]
+RewriteRule ^book_edit  book_edit.php [NC,L]
+RewriteRule ^book  book.php [NC,L]
+RewriteRule ^verify  verify.php [NC,L]

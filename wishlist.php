@@ -24,7 +24,7 @@ if(isset($_SESSION["username"]) && isset($_GET["book"]))
 
 }
 else if(!isset($_SESSION["username"])) {
-header('location:login.php');
+header('location:login');
 }
 
 if(isset($_REQUEST['delete']))
@@ -144,7 +144,7 @@ if(isset($_REQUEST['delete']))
     			?>
    					<tr>
    						<td>
-                           <a href="book.php?book=<?php echo $row["book_id"] ?>">	<?php echo $row["name"] ?></a>
+                           <a href="book?book=<?php echo $row["book_id"] ?>">	<?php echo $row["name"] ?></a>
 
    						</td>
               <td>
@@ -160,7 +160,7 @@ if(isset($_REQUEST['delete']))
    						<?php echo date('M j, Y g:i A', strtotime($row["wishlist_date"]));  ?>
    						</td>
    						<td>
-                <form class="form-container" action="wishlist.php" method="POST" enctype="multipart/form-data">
+                <form class="form-container" action="wishlist" method="POST" enctype="multipart/form-data">
                   <input type="hidden" name="book_id" value="<?php echo $row["book_id"] ?>">
    							 <button type="submit" id="submit" name="delete"  class="btn btn-primary btn-block submit2">DELETE</button>
               </form>

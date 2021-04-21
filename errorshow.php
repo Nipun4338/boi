@@ -1,7 +1,5 @@
 <?php
-$error=$_SERVER["REDIRECT_STATUS"];
-if($error == 404)
-{
+
   $message='<div class="container-fluid">
 
           <!-- 404 Error Text -->
@@ -14,6 +12,6 @@ if($error == 404)
 
         </div>';
         echo $message;
-}
+
 
  ?>

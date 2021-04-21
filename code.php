@@ -32,21 +32,21 @@ if (isset($_POST["login"])) {
       {
         $_SESSION['username']=$email_login;
         $_SESSION['user_id']=$id;
-        header('Location: profile.php');
+        header('Location: profile');
       }
       else if($flag==2)
       {
         $_SESSION['status']="Confirm your Email!";
-        header('Location: login.php');
+        header('Location: login');
       }
       else {
         $_SESSION['status']="Email id / Password is invalid";
-        header('Location: login.php');
+        header('Location: login');
       }
     }
     else {
       $_SESSION['status']="Email id / Password is invalid";
-      header('Location: login.php');
+      header('Location: login');
     }
 
   }

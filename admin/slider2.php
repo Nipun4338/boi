@@ -3,6 +3,16 @@ include("security.php");
 include('includes/header.php');
 include('includes/navbar.php');
 include('database/dbconfig.php');
+if(isset($_REQUEST['delete']))
+{
+  $id=$_POST["slider_id"];
+  $sql="DELETE from slider2 where slider_id='$id'";
+  $result2=mysqli_query($link,$sql) or die(mysqli_error($link));
+  if($result2)
+  {
+    $_SESSION['success']="Slider is deleted!";
+  }
+}
 ?>
 
 
@@ -81,6 +91,7 @@ include('database/dbconfig.php');
             <th>Created Date</th>
             <th>Updated Date</th>
             <th>EDIT </th>
+            <th>DELETE </th>
           </tr>
         </thead>
         <tbody>
@@ -103,6 +114,12 @@ include('database/dbconfig.php');
                                         <button type="submit" name="edit_btn_slider2" class="btn btn-success"> EDIT</button>
                                     </form>
                                 </td>
+                                <td>
+                                  <form class="form-container" action="slider2.php" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="slider_id" value="<?php echo $row["slider_id"] ?>">
+                                   <button type="submit" id="submit" name="delete"  class="btn btn-danger btn-block submit2">DELETE</button>
+                                </form>
+                              </td>
                             </tr>
                         <?php
                             }

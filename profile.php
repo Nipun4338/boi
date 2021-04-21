@@ -170,14 +170,14 @@ if($noOfRows){
                               {
                           ?>
                               <tr>
-                                  <td><a href="book.php?book=<?php echo $row["book_id"] ?>">	<?php echo $row["name"] ?></a></td>
+                                  <td><a href="book?book=<?php echo $row["book_id"] ?>">	<?php echo $row["name"] ?></a></td>
                                   <td><?php  echo $row['author']; ?></td>
                                   <td><?php  echo $row['price']; ?></td>
                                   <td><?php  echo $row['present_condition']; ?></td>
                                   <td><?php  echo $row['location']; ?></td>
                                   <td><?php echo date('M j, Y g:i A', strtotime($row["created_date"]));  ?></td>
                                   <td>
-                                      <form action="book_edit.php" method="post">
+                                      <form action="book_edit" method="post">
                                           <input type="hidden" name="edit_id_book" value="<?php echo $row['book_id']; ?>">
                                           <button type="submit" name="edit_btn_book" class="btn btn-success"> EDIT</button>
                                       </form>

@@ -173,7 +173,7 @@ if (mysqli_num_rows($result) > 0) {
      while($row1 = mysqli_fetch_assoc($result1)) {
 
 ?>
-<form class="form-container" action="chat.php" method="POST" enctype="multipart/form-data">
+<form class="form-container" action="chat" method="POST" enctype="multipart/form-data">
 	<input type="hidden" name="user_id1" value="<?php echo $row1["user_id"] ?>">
 	<?php $_SESSION["receive"]=$row1["user_id"]; ?>
 	<input type="hidden" name="user_name" value="<?php echo $row1["name"] ?>">

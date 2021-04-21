@@ -128,7 +128,7 @@ if($noOfRows){
 <!DOCTYPE html>
 <html>
 <head>
-		<title>Details | বই</title>
+		<title>Filter | বই</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale = 1.0">
 		<script src = "https://code.jquery.com/jquery-2.1.3.min.js"></script>
@@ -329,22 +329,22 @@ a:active {
          <h5 class="" style="text-shadow: black 0.1em 0.1em 0.2em;padding: 5px;border-bottom:1px dotted #000">SORT</h5>
          <ul class="items">
            <li class="align-items-center">
-             <a href="filter.php?category=<?php echo $category; ?>&author=<?php echo $author; ?>&booksort=asc" >Book Name - Ascending</a>
+             <a href="filter?category=<?php echo $category; ?>&author=<?php echo $author; ?>&booksort=asc" >Book Name - Ascending</a>
            </li>
            <li class="align-items-center">
-             <a href="filter.php?category=<?php echo $category; ?>&author=<?php echo $author; ?>&booksort=desc" >Book Name - Descending</a>
+             <a href="filter?category=<?php echo $category; ?>&author=<?php echo $author; ?>&booksort=desc" >Book Name - Descending</a>
            </li>
            <li class="align-items-center">
-             <a href="filter.php?category=<?php echo $category; ?>&author=<?php echo $author; ?>&authorsort=asc" >Author Name - Ascending</a>
+             <a href="filter?category=<?php echo $category; ?>&author=<?php echo $author; ?>&authorsort=asc" >Author Name - Ascending</a>
            </li>
            <li class="align-items-center">
-             <a href="filter.php?category=<?php echo $category; ?>&author=<?php echo $author; ?>&authorsort=desc" >Author Name - Descending</a>
+             <a href="filter?category=<?php echo $category; ?>&author=<?php echo $author; ?>&authorsort=desc" >Author Name - Descending</a>
            </li>
            <li class="align-items-center">
-             <a href="filter.php?category=<?php echo $category; ?>&author=<?php echo $author; ?>&pricesort=asc" >Price - Low to High</a>
+             <a href="filter?category=<?php echo $category; ?>&author=<?php echo $author; ?>&pricesort=asc" >Price - Low to High</a>
            </li>
            <li class="align-items-center">
-             <a href="filter.php?category=<?php echo $category; ?>&author=<?php echo $author; ?>&pricesort=desc" >Price - High to Low</a>
+             <a href="filter?category=<?php echo $category; ?>&author=<?php echo $author; ?>&pricesort=desc" >Price - High to Low</a>
            </li>
          </ul>
        </div>
@@ -364,7 +364,7 @@ a:active {
        <div  id="cards_landscape_wrap-2" >
          <!-- counter for chart-->
 
-           <a href="book.php?book=<?php echo $row1['book_id']?>">
+           <a href="book?book=<?php echo $row1['book_id']?>">
                <div class="card-flyer">
                    <div class="text-box">
                        <div class="image-box">

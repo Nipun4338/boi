@@ -72,13 +72,13 @@ include('database/dbconfig.php');
       {
           echo "done";
           $_SESSION['success'] =  "Book is Added Successfully";
-          header('Location: profile.php');
+          header('Location: profile');
       }
       else
       {
           echo "not done";
           $_SESSION['status'] =  "Book is Not Added";
-          header('Location: profile.php');
+          header('Location: profile');
       }
 
   }
@@ -97,11 +97,11 @@ if (isset($_POST["updatebtnbook"])) {
   if($query_run)
   {
     $_SESSION['success']="Book is updated!";
-    header('Location: profile.php');
+    header('Location: profile');
   }
   else {
     $_SESSION['success']="Book is not updated!";
-    header('Location: profile.php');
+    header('Location: profile');
   }
 
 
@@ -131,11 +131,11 @@ if (isset($_POST["delete_btn"])) {
   if($query_run)
   {
     $_SESSION['success']="Book is deleted!";
-    header('Location: profile.php');
+    header('Location: profile');
   }
   else {
     $_SESSION['success']="Book is not updated!";
-    header('Location: profile.php');
+    header('Location: profile');
   }
 
 

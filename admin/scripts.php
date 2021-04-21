@@ -399,7 +399,7 @@ if(isset($_POST['registerbtnslider2']))
     date_default_timezone_set("Asia/Dhaka");
     $datetime = '';
     $datetime=date('Y-m-d H:i:s');
-    $query = "INSERT INTO slider2 (image,status,created_date,updated_time)
+    $query = "INSERT INTO slider2 (image,status,created_date,updated_date)
     VALUES ('$target_dir2','$status','$datetime','$datetime')";
     $query_run = mysqli_query($connection, $query);
 
@@ -441,7 +441,7 @@ if (isset($_POST["updatebtnslider2"])) {
      $temp_file=$_FILES['file_upload']['tmp_name'];
      move_uploaded_file($temp_file, $target_file);
   }
-  $query="update slider2 set image='$target_dir2',status='$status', updated_time='$datetime' where slider_id='$id'";
+  $query="update slider2 set image='$target_dir2',status='$status', updated_date='$datetime' where slider_id='$id'";
   $query_run=mysqli_query($connection, $query);
 
   if($query_run)

@@ -1,12 +1,11 @@
 <?php
-include("security.php");
+session_start();
 include('database/dbconfig.php');
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Book Edit | বই</title>
+	<title>Instructions | বই</title>
 	<meta charset="UTF-8">
 
 	<meta name="viewport" content="width=device-width, initial-scale = 1.0">
@@ -22,12 +21,16 @@ include('database/dbconfig.php');
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" href="style.css">
   <link rel="icon" href="Iconsmind-Outline-Books-2.ico">
 
-  <style media="screen">
 
+	<style media="screen">
+
+.mySlides {display: none;}
 
   .header {
     position: fixed;
@@ -57,68 +60,24 @@ include('database/dbconfig.php');
     margin: 50px auto 0 auto;
     width: 80%;
   }
+	.hello {
+	    height: 70vh;
+      font-family: 'Roboto', sans-serif;
+	}
 
-  </style>
-
-
+	</style>
 
 </head>
+
 <body>
-  <?php
+	<?php
 	include('includes/nav.php');
 	 ?>
+	 <div class="hello">
+     <h4 style="text-align:center;font-weight:bold">How To Upload Your Book Details</h4>
 
-   <div class="container-fluid" >
-
-   <!-- DataTales Example -->
-   <div class="card shadow mb-4">
-     <div class="card-header py-3">
-       <h4 style="text-align:center" class="m-0 font-weight-bold text-primary">EDIT Book Details
-       </h4>
-     </div>
-
-     <div class="card-body">
-       <?php
-       if(isset($_POST['edit_btn_book']))
-       {
-         $id=$_POST['edit_id_book'];
-         $query = "SELECT * FROM books WHERE book_id='$id' ";
-         $query_run = mysqli_query($connection, $query);
-         foreach ($query_run as $row) {
-           ?>
-             <form action="script.php" method="POST" enctype="multipart/form-data">
-               <input type="hidden" name="edit_id_book" value="<?php echo $id?>">
-               <div class="form-group">
-                   <label> Book Name :</label>
-                   <label> <?php  echo $row['name']; ?> </label>
-               </div>
-               <div class="form-group">
-                   <label> Author :</label>
-                   <label> <?php  echo $row['author']; ?> </label>
-               </div>
-               <div class="form-group">
-                   <label> Price </label>
-                   <input type="number" name="edit_price" value="<?php  echo $row['price']; ?>" class="form-control" required >
-               </div>
-               <div class="form-group">
-                   <label>Details</label>
-                   <input type="text" name="edit_details" value="<?php  echo $row['present_condition']; ?>" class="form-control" required>
-               </div>
-
-               <a href="profile" class="btn btn-danger"> CANCEL </a>
-               <button type="submit" name="updatebtnbook" class="btn btn-primary">UPDATE</button>
-             </form>
-             <?php
-             }
-           }
-         ?>
-     </div>
-   </div>
-
-   </div>
-
+</div>
 </body>
-
 <div class="progress-container fixed-bottom">
   <div class="progress-bar" id="myBar">
     </div>

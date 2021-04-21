@@ -60,7 +60,7 @@ $datetime = '';
           ------------------------
 
           Please click this link to activate your account:
-          http://localhost/boi/verify.php?email='.$user_email.'&hash='.$hash1.'
+          http://localhost/boi/verify?email='.$user_email.'&hash='.$hash1.'
 
           '; // Our message above including the link
 
@@ -88,7 +88,7 @@ $datetime = '';
         	curl_close($ch);
 
 				echo ("Successfully Registered! Please Confirm your email!");
-        header('Location: login.php');
+        header('Location: login');
 
 			 }
     }
@@ -159,8 +159,26 @@ $datetime = '';
 	 ?>
    <div class="container-fluid">
      <div class="row">
-       <div class="col-md-8">
+       <div class="col-md-8" style="text-align:center">
+         <?php $query = "SELECT * FROM slider2";
+         $query_run = mysqli_query($connection, $query);
+         $data=array();
+         $noOfRows=mysqli_num_rows($query_run);
+         if($noOfRows){
+           while($row=mysqli_fetch_assoc($query_run)){
 
+               /*echo "<pre>";
+               print_r($row);*/
+               array_push($data,$row);
+               //echo "</pre>";
+
+           }
+         }
+         shuffle($data);
+         foreach ($data as $row) {
+          ?>
+          <img class="img-fluid" alt="Responsive image" style="margin-bottom:10px; " src="<?php echo $row["image"]; ?>" >
+        <?php } ?>
        </div>
        <div class="col-md-4">
   <section class="container-fluid">
@@ -212,7 +230,7 @@ $datetime = '';
     			  </div>
 
     			  <button type="submit" id="submit" name="submit" value="Submit" class="btn btn-primary btn-block submit2">Submit</button>
-						<a href="login.php" style="float: right">Not New?</a>
+						<a href="login" style="float: right">Not New?</a>
 
     			</form>
     					</section>

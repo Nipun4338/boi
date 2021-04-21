@@ -2,7 +2,6 @@
 include('database/dbconfig.php');
 if (isset($_POST["submit"])) {
 
-  $connection = mysqli_connect($host,$user,$password,$db);
   if (!isset($_SESSION["username"]))
   {
     $name=$_POST['name'];
@@ -17,11 +16,11 @@ if (isset($_POST["submit"])) {
     if($query_run)
     {
       $_SESSION['success']="Message Sent";
-      header('Location: contactus.php');
+      header('Location: contact');
     }
     else {
       $_SESSION['success']="Sent Failed";
-      header('Location: contactus.php');
+      header('Location: contact');
     }
   }
   else {
@@ -55,11 +54,11 @@ if (isset($_POST["submit"])) {
     if($query_run)
     {
       $_SESSION['success']="Message Sent";
-      header('Location: contact.php');
+      header('Location: contact');
     }
     else {
       $_SESSION['success']="Sent Failed";
-      header('Location: contact.php');
+      header('Location: contact');
     }
   }
 
@@ -154,7 +153,7 @@ if (isset($_POST["submit"])) {
            unset($_SESSION['status']);
          }
           ?>
-         <form action="contact.php" method="POST" enctype="multipart/form-data">
+         <form action="contact" method="POST" enctype="multipart/form-data">
            <?php if (!isset($_SESSION["username"])) {
 
            $message= '<div class="form-group mb-3" >
