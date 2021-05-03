@@ -1,13 +1,13 @@
 <?php
 
 $server_name = "us-cdbr-east-03.cleardb.com";
-$db_username = "ba1268b5ca99c6";
-$db_password = "557bfa4e";
-$db_name = "heroku_923aa6dacc1b73c";
+$db_username = "b7c37092a91da5";
+$db_password = "1ec492d3";
+$db_name = "heroku_6f64f08356c88c1";
 $host="us-cdbr-east-03.cleardb.com";
-$user="ba1268b5ca99c6";
-$password="557bfa4e";
-$db="heroku_923aa6dacc1b73c";
+$user="b7c37092a91da5";
+$password="1ec492d3";
+$db="heroku_6f64f08356c88c1";
 
 $connection = mysqli_connect($server_name,$db_username,$db_password,$db_name);
 $link=mysqli_connect($server_name,$db_username,$db_password,$db_name);
