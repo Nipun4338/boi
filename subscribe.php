@@ -1,6 +1,12 @@
 <?php session_start(); ?>
 <?php
 include('database/dbconfig.php');
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require 'vendor/autoload.php';
+$success_message='';
 date_default_timezone_set("Asia/Dhaka");
 $datetime = '';
     if(isset($_REQUEST['submit']))
@@ -49,46 +55,36 @@ $datetime = '';
 				 $sqlInsert='insert into user(name,email,phone,address,password,image,status,created_date,updated_date,hash)
 				 values("'.$user_name.'","'.$user_email.'","'.$user_phone.'","'.$user_address.'","'.$user_password.'","'.$target_dir.'",2,"'.$datetime.'","'.$datetime.'","'.$hash1.'")';
 				 $resultInsert=mysqli_query($link, $sqlInsert);
+         $mail=new PHPMailer(true);
+         $mail->isSMTP();
+         $mail->Host='smtp.gmail.com';
+         $mail->SMTPAuth=true;
+         $mail->Username='boi.yourbook@gmail.com';
+         $mail->Password='boi@boi.';
+         $mail->SMTPSecure=PHPMailer::ENCRYPTION_STARTTLS;
+         $mail->Port=587;
+         $mail->setFrom('boi.yourbook@gmail.com', 'Boi');
+         $mail->addAddress('nipun4338@gmail.com');
+         $mail->isHTML(true);
+         $mail->Subject="Registration Verification of Boi";
+         $mail->Body= '
 
-          $mailContent= '
+          <p>Thanks for signing up!</p>
+          <p>Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.</p>
 
-          Thanks for signing up!
-          Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
 
-          ------------------------
-          Name: '.$user_name.'
-          ------------------------
+          <p>------------------------</p>
+          <p>Name: '.$user_name.'</p>
+          <p>------------------------</p>
 
-          Please click this link to activate your account:
-          http://localhost/boi/verify?email='.$user_email.'&hash='.$hash1.'
+          <p>Please click this link to activate your account:</p>
+          <p><a href="http://boi-yourbook.herokuapp.com/verify?email='.$user_email.'&hash='.$hash1.'">Click to Verify</a></p>
 
           '; // Our message above including the link
 
+          $mail->send();
 
-          // Authorisation details.
-        	$username = "boi.yourbook@gmail.com";
-        	$hash = "f32876c0f3261cfee4230f1abc976d519900c329fcc1c1b90338bc4ba0a716b1";
-
-        	// Config variables. Consult http://api.txtlocal.com/docs for more info.
-        	$test = "0";
-
-        	// Data for text message. This is the text message data.
-        	$sender = "Boi"; // This is who the message appears to be from.
-        	$numbers = $user_phone; // A single number or a comma-seperated list of numbers
-        	$message = $mailContent;
-        	// 612 chars or less
-        	// A single number or a comma-seperated list of numbers
-        	$message = urlencode($message);
-        	$data = "username=".$username."&hash=".$hash."&message=".$message."&sender=".$sender."&numbers=".$numbers."&test=".$test;
-        	$ch = curl_init('http://api.txtlocal.com/send/?');
-        	curl_setopt($ch, CURLOPT_POST, true);
-        	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        	$result1 = curl_exec($ch); // This is the result from the API
-        	curl_close($ch);
-
-				echo ("Successfully Registered! Please Confirm your email!");
-        header('Location: login');
+				$success_message = 'Verification Email sent to ' . $user_email . ', so before login first verify your email!';
 
 			 }
     }
@@ -184,6 +180,14 @@ $datetime = '';
   <section class="container-fluid">
     	<section class="row justify-content-right">
     		<section class="col-md-12">
+          <?php if($success_message != '')
+                {
+                    echo '
+                    <div class="alert alert-success">
+                    '.$success_message.'
+                    </div>
+                    ';
+                }?>
     			<form class="form-container" action="" method="POST" enctype="multipart/form-data">
             <div class="form-group mb-3">
               <h2 style="text-align:center"><b>Sign Up</b></h2>

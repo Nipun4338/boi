@@ -1,4 +1,5 @@
-<?php session_start(); ?>
+<?php session_start();
+$error = ''; ?>
 
 <!DOCTYPE html>
 <html>
@@ -57,7 +58,7 @@
 
 
 </head>
-<body>
+<body style="background:#fff">
   <?php
 	include('includes/nav.php');
 	 ?>
@@ -67,7 +68,7 @@
 	 include('database/dbconfig.php');
    date_default_timezone_set("Asia/Dhaka");
    $datetime = '';
-       if(($_GET['email']) && !empty($_GET['email']) && isset($_GET['hash']) && !empty($_GET['hash']))
+       if(isset($_GET['email']) && !empty($_GET['email']) && isset($_GET['hash']) && !empty($_GET['hash']))
         {
           $email = $_GET['email']; // Set email variable
           $hash = $_GET['hash']; // Set hash variable
@@ -79,20 +80,27 @@
             // We have a match, activate the account
            $sql="UPDATE user SET status='1' WHERE email='".$email."' AND hash='".$hash."' AND status='2'";
            $result=mysqli_query($link,$sql);
-           echo '<div class="statusmsg">Your account has been activated, you can now login!</div>';
+           $error = 'Your Email has successfully verified, now you can login.';
    			 }
           else{
            // No match -> invalid url or account has already been activated.
 
-           echo '<p style="text-align:center;font-weight:bold">The url is either invalid or you already have activated your account.</p>';
+           $error = 'Something went wrong, try again....';
 
        }
        }
        else{
        // Invalid approach
-       echo '<div class="statusmsg" style="color:#fff">Invalid approach, please use the link that has been send to your email.</div>';
+       $error = 'Something went wrong, try again....';
    }
     ?>
+		<div class="row justify-content-md-center">
+            <div class="col col-md-4 mt-5">
+            	<div class="alert alert-danger">
+            		<h2><?php echo $error; ?></h2>
+            	</div>
+            </div>
+        </div>
 
 </body>
 
