@@ -419,6 +419,7 @@ function showSlides(n) {
           </div>
 
         </div>
+
         <script type="text/javascript">
         const change = src => {
             document.getElementById('main').src = src;
@@ -427,8 +428,74 @@ function showSlides(n) {
       <?php } ?>
 
       </div>
-
     </div>
+    <div class="shadow-lg" style="background:#fff; border:1px solid blue">
+      <h1 style="margin:10px">Comments</h1>
+      <div class="">
+        <form class="" method="POST" id="comment_form" style="margin:10px">
+          <div class="form-group">
+            <textarea type="text" class="form-control" placeholder="Enter Comment" rows="4" name="comment" id="comment"></textarea>
+          </div>
+          <div class="form-group" align="right">
+            <input type="hidden" name="comment_id" id="comment_id" value="0" />
+            <input type="hidden" name="book_id" id="book_id" value="<?php echo $book; ?>">
+            <input type="submit" name="submit" id="submit" class="btn btn-info" value="Submit">
+          </div>
+        </form>
+        <span id="comment_message"></span>
+         <br />
+         <div id="display_comment"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+$(document).ready(function(){
+
+ $('#comment_form').on('submit', function(event){
+  event.preventDefault();
+  var form_data = $(this).serialize();
+  $.ajax({
+   url:"add_comment.php",
+   method:"POST",
+   data:form_data,
+   dataType:"JSON",
+   success:function(data)
+   {
+    if(data.error != '')
+    {
+     $('#comment_form')[0].reset();
+     $('#comment_message').html(data.error);
+     $('#comment_id').val('0');
+     load_comment();
+    }
+   }
+  })
+ });
+
+ load_comment();
+
+ function load_comment()
+ {
+  $.ajax({
+   url:"fetch_comment.php",
+   method:"POST",
+   data:{ book_id : <?php echo $book; ?> },
+   dataType:'json',
+   success:function(data)
+   {
+    $('#display_comment').html(data);
+   }
+  })
+ }
+ $(document).on('click', '.reply', function(){
+  var comment_id = $(this).attr("id");
+  $('#comment_id').val(comment_id);
+  $('#comment').focus();
+ });
+});
+</script>
+
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
@@ -440,4 +507,4 @@ function showSlides(n) {
     </div>
     <?php
     include('includes/footer.php');
-     ?>
+    ?>

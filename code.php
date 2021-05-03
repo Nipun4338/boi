@@ -32,6 +32,11 @@ if (isset($_POST["login"])) {
       {
         $_SESSION['username']=$email_login;
         $_SESSION['user_id']=$id;
+        foreach ($data as $row) {
+          // code...
+          $name=$row["name"];
+          $_SESSION['user_name']=$name;
+        }
         header('Location: profile');
       }
       else if($flag==2)
