@@ -218,13 +218,13 @@ var form_data = $(this).serialize();
 	    {
 	     $('#message_form')[0].reset();
 	     load_message();
-			 //window.scrollTo(0, document.body.scrollHeight);
+			 window.scrollTo(0, document.body.scrollHeight);
 	    }
 		}
 	})
 });
 load_message();
-//setInterval(function() {load_message1();},1000);
+setInterval(function() {load_message1();},1000);
 
 function load_message()
 {
@@ -236,7 +236,7 @@ function load_message()
 	{
 
 	 $('#display_message').html(data);
-	 //window.scrollTo(0, document.body.scrollHeight);
+	 window.scrollTo(0, document.body.scrollHeight);
 	}
  })
 }

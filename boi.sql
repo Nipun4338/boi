@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2021 at 10:12 AM
+-- Generation Time: May 04, 2021 at 04:33 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.4.16
 
@@ -41,6 +41,9 @@ drop table wishlist;
 drop table zcomments_7;
 drop table zcomments_20;
 drop table zcomments_22;
+drop table zmessage_19;
+drop table zmessage_35;
+
 CREATE TABLE `adminpanel` (
   `admin_id` int(11) NOT NULL,
   `username` text NOT NULL,
@@ -152,24 +155,6 @@ CREATE TABLE `comments` (
   `status` int(11) DEFAULT NULL,
   `date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `comments`
---
-
-INSERT INTO `comments` (`comment_id`, `book_id`, `parent_comment_id`, `comment`, `sender_name`, `status`, `date`) VALUES
-(1, NULL, 21, '22', '23', NULL, NULL),
-(2, NULL, 12, '22', '32', NULL, NULL),
-(3, NULL, 30, '30', '30', NULL, NULL),
-(4, NULL, 30, '30', '30', NULL, NULL),
-(5, NULL, 30, '30', '30', NULL, NULL),
-(6, NULL, 30, '30', '30', NULL, NULL),
-(7, NULL, 30, '30', '30', NULL, NULL),
-(8, NULL, 30, '30', '30', NULL, NULL),
-(9, NULL, 30, '30', '30', NULL, NULL),
-(10, NULL, 30, '30', '30', NULL, NULL),
-(11, NULL, 30, '30', '30', NULL, NULL),
-(12, NULL, 30, '30', '30', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -376,14 +361,6 @@ CREATE TABLE `zcomments_7` (
   `date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `zcomments_7`
---
-
-INSERT INTO `zcomments_7` (`comment_id`, `parent_comment_id`, `comment`, `sender_name`, `status`, `date`) VALUES
-(1, 0, 'working', 'nipun4338@gmail.com', NULL, '2021-05-03 05:47:31'),
-(2, 0, 'yes', 'nipun4338@gmail.com', NULL, '2021-05-03 05:47:38');
-
 -- --------------------------------------------------------
 
 --
@@ -399,24 +376,6 @@ CREATE TABLE `zcomments_20` (
   `date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `zcomments_20`
---
-
-INSERT INTO `zcomments_20` (`comment_id`, `parent_comment_id`, `comment`, `sender_name`, `status`, `date`) VALUES
-(1, 0, 'ff', 'nipun4338@gmail.com', NULL, '2021-05-03 05:45:14'),
-(2, 1, 'ss', 'nipun4338@gmail.com', NULL, '2021-05-03 05:45:55'),
-(3, 0, 'cc', 'nipun4338@gmail.com', NULL, '2021-05-03 05:46:01'),
-(4, 2, 'kor', 'nipun4338@gmail.com', NULL, '2021-05-03 05:46:16'),
-(5, 1, 'nare', 'nipun4338@gmail.com', NULL, '2021-05-03 05:46:55'),
-(6, 3, 'ok', 'nipun4338@gmail.com', NULL, '2021-05-03 05:47:10'),
-(7, 0, 'hi', '', NULL, '2021-05-03 05:59:37'),
-(8, 0, 'ok', 'Nipun Paul', NULL, '2021-05-03 06:01:38'),
-(9, 0, 'Me 2', 'Test', NULL, '2021-05-03 06:01:59'),
-(10, 8, 'hi', 'Test', NULL, '2021-05-03 06:02:36'),
-(11, 0, 'vv', 'Test', NULL, '2021-05-03 06:06:01'),
-(12, 4, 'ok', 'Test', NULL, '2021-05-03 06:17:00');
-
 -- --------------------------------------------------------
 
 --
@@ -431,75 +390,6 @@ CREATE TABLE `zcomments_22` (
   `status` int(6) DEFAULT NULL,
   `date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `zcomments_22`
---
-
-INSERT INTO `zcomments_22` (`comment_id`, `parent_comment_id`, `comment`, `sender_name`, `status`, `date`) VALUES
-(1, 0, 'ki', 'Nipun Paul', NULL, '2021-05-04 05:42:54');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `zmessage_19`
---
-
-CREATE TABLE `zmessage_19` (
-  `message_id` int(6) UNSIGNED NOT NULL,
-  `sendto` int(6) NOT NULL,
-  `message` text DEFAULT NULL,
-  `type` text DEFAULT NULL,
-  `date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `zmessage_19`
---
-
-INSERT INTO `zmessage_19` (`message_id`, `sendto`, `message`, `type`, `date`) VALUES
-(1, 35, 'dd', 'send', '2021-05-04 05:44:37'),
-(2, 35, 'ff', 'send', '2021-05-04 05:48:04'),
-(3, 35, 'gg', 'send', '2021-05-04 05:53:16'),
-(4, 35, 'fff', 'receive', '2021-05-04 06:02:00'),
-(5, 35, 'ffffffffffffffffffffffffffffffffffffff', 'send', '2021-05-04 06:05:50'),
-(6, 35, 'ffffffffffffffff', 'send', '2021-05-04 06:05:54'),
-(7, 35, 'dd', 'receive', '2021-05-04 06:30:40'),
-(8, 35, 'cc', 'receive', '2021-05-04 06:31:05'),
-(9, 35, 'frbbubbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'receive', '2021-05-04 07:43:44'),
-(10, 35, 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', 'send', '2021-05-04 07:48:44'),
-(11, 35, 'বিল অ্যান্ড মেলিন্ডা গেটস ফাউন্ডেশন\r\n১৯৮৭ সালে মাইক্রোসফটে প্রোডাক্ট ম্যানেজার হিসেবে যোগ দিয়েছিলেন মেলিন্ডা। সে সময় থেকে দুজনের মধ্যে বন্ধুত্বের সম্পর্ক গড়ে ওঠে। একসময় তা প্রেম পর্যন্ত গড়ায়। ১৯৯৪ সালে বিয়ে করেন গেটস ও মেলিন্ডা। বিয়ের ছয় বছর পর তাঁরা যৌথভাবে গড়ে তোলেন দাতব্য প্রতিষ্ঠান ‘বিল অ্যান্ড মেলিন্ডা গেটস ফাউন্ডেশন’। বিশ্বের বিভিন্ন স্থানে নানামুখী কাজ করছে এই ফাউন্ডেশন। বিশ্বজুড়ে সংক্রামক রোগব্যাধির বিরুদ্ধে লড়াই ও শিশুদের টিকাদানে উৎসাহিত করতে শুরু থেকে এখন পর্যন্ত এ ফাউন্ডেশন প্রায় ৫৪ বিলিয়ন ডলার খরচ করেছে। ক্ষুধা-দারিদ্র্যমুক্ত, সচেতন, শিক্ষিত ও স্বাস্থ্যবান একটি বিশ্ব গড়ে তোলা এ সংস্থার প্রধান উদ্দেশ্য। বিল অ্যান্ড মেলিন্ডা গেটস ফাউন্ডেশন প্রতিবছর প্রায় পাঁচ বিলিয়ন ডলার ব্যয় করে স্বাস্থ্য খাতের উন্নয়নে। \r\n\r\n২০০৮ সালে পোলিও প্রতিরোধের জন্য বিশ্ব স্বাস্থ্য সংস্থাকে ৬৮ কোটি ২৩ লাখ ডলার অনুদান দেন বিল গেটস। এর আগে এত অনুদান পায়নি বিশ্ব স্বাস্থ্য সংস্থা। বর্তমানে মহামারি করোনাভাইরাস মোকাবিলায় বিশ্ব স্বাস্থ্য সংস্থাকে ১৫ কোটি ডলারের আর্থিক সহায়তার ঘোষণা দিয়েছে বিল অ্যান্ড মেলিন্ডা গেটস ফাউন্ডেশন। প্রয়োজনে তা ২৫ কোটি ডলারের উন্নীত করার আশ্বাস দিয়েছেন বিল গেটস।\r\n\r\nএই ফাউন্ডেশনের অন্যতম দাতা আরেক ধনকুবের ওয়ারেন বাফেট। গত বছর তাঁর প্রতিষ্ঠান বার্কশায়ার হ্যাথওয়ের ২০০ কোটি ডলারের স্টক অনুদান দিয়েছেন তিনি। ১৯৯৪ থেকে ২০১৮ সাল পর্যন্ত এই ফাউন্ডেশনে ৩ হাজার ৬০০ কোটি ডলার দিয়েছেন গেটস ও মেলিন্ডা দম্পতি। ২০১৯ সালের শেষ পর্যন্ত আর্থিক প্রতিবেদন অনুযায়ী এই ফাউন্ডেশনের আকার ৪ হাজার ৩৩০ কোটি ডলার। এই আকার ৫ হাজার কোটি ডলারে নিয়ে যাওয়ার লক্ষ্য বিল গেটস ও মেলিন্ডা গেটসের। \r\n\r\nসূত্র: ভক্স ডট কম, রয়টার্স', 'receive', '2021-05-04 07:49:40');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `zmessage_35`
---
-
-CREATE TABLE `zmessage_35` (
-  `message_id` int(6) UNSIGNED NOT NULL,
-  `sendto` int(6) NOT NULL,
-  `message` text DEFAULT NULL,
-  `type` text DEFAULT NULL,
-  `date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `zmessage_35`
---
-
-INSERT INTO `zmessage_35` (`message_id`, `sendto`, `message`, `type`, `date`) VALUES
-(1, 19, 'dd', 'receive', '2021-05-04 05:44:37'),
-(2, 19, 'ff', 'receive', '2021-05-04 05:48:04'),
-(3, 19, 'gg', 'receive', '2021-05-04 05:53:16'),
-(4, 19, 'fff', 'send', '2021-05-04 06:02:00'),
-(5, 19, 'ffffffffffffffffffffffffffffffffffffff', 'receive', '2021-05-04 06:05:50'),
-(6, 19, 'ffffffffffffffff', 'receive', '2021-05-04 06:05:54'),
-(7, 19, 'dd', 'send', '2021-05-04 06:30:40'),
-(8, 19, 'cc', 'send', '2021-05-04 06:31:05'),
-(9, 19, 'frbbubbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'send', '2021-05-04 07:43:44'),
-(10, 19, 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', 'receive', '2021-05-04 07:48:44'),
-(11, 19, 'বিল অ্যান্ড মেলিন্ডা গেটস ফাউন্ডেশন\r\n১৯৮৭ সালে মাইক্রোসফটে প্রোডাক্ট ম্যানেজার হিসেবে যোগ দিয়েছিলেন মেলিন্ডা। সে সময় থেকে দুজনের মধ্যে বন্ধুত্বের সম্পর্ক গড়ে ওঠে। একসময় তা প্রেম পর্যন্ত গড়ায়। ১৯৯৪ সালে বিয়ে করেন গেটস ও মেলিন্ডা। বিয়ের ছয় বছর পর তাঁরা যৌথভাবে গড়ে তোলেন দাতব্য প্রতিষ্ঠান ‘বিল অ্যান্ড মেলিন্ডা গেটস ফাউন্ডেশন’। বিশ্বের বিভিন্ন স্থানে নানামুখী কাজ করছে এই ফাউন্ডেশন। বিশ্বজুড়ে সংক্রামক রোগব্যাধির বিরুদ্ধে লড়াই ও শিশুদের টিকাদানে উৎসাহিত করতে শুরু থেকে এখন পর্যন্ত এ ফাউন্ডেশন প্রায় ৫৪ বিলিয়ন ডলার খরচ করেছে। ক্ষুধা-দারিদ্র্যমুক্ত, সচেতন, শিক্ষিত ও স্বাস্থ্যবান একটি বিশ্ব গড়ে তোলা এ সংস্থার প্রধান উদ্দেশ্য। বিল অ্যান্ড মেলিন্ডা গেটস ফাউন্ডেশন প্রতিবছর প্রায় পাঁচ বিলিয়ন ডলার ব্যয় করে স্বাস্থ্য খাতের উন্নয়নে। \r\n\r\n২০০৮ সালে পোলিও প্রতিরোধের জন্য বিশ্ব স্বাস্থ্য সংস্থাকে ৬৮ কোটি ২৩ লাখ ডলার অনুদান দেন বিল গেটস। এর আগে এত অনুদান পায়নি বিশ্ব স্বাস্থ্য সংস্থা। বর্তমানে মহামারি করোনাভাইরাস মোকাবিলায় বিশ্ব স্বাস্থ্য সংস্থাকে ১৫ কোটি ডলারের আর্থিক সহায়তার ঘোষণা দিয়েছে বিল অ্যান্ড মেলিন্ডা গেটস ফাউন্ডেশন। প্রয়োজনে তা ২৫ কোটি ডলারের উন্নীত করার আশ্বাস দিয়েছেন বিল গেটস।\r\n\r\nএই ফাউন্ডেশনের অন্যতম দাতা আরেক ধনকুবের ওয়ারেন বাফেট। গত বছর তাঁর প্রতিষ্ঠান বার্কশায়ার হ্যাথওয়ের ২০০ কোটি ডলারের স্টক অনুদান দিয়েছেন তিনি। ১৯৯৪ থেকে ২০১৮ সাল পর্যন্ত এই ফাউন্ডেশনে ৩ হাজার ৬০০ কোটি ডলার দিয়েছেন গেটস ও মেলিন্ডা দম্পতি। ২০১৯ সালের শেষ পর্যন্ত আর্থিক প্রতিবেদন অনুযায়ী এই ফাউন্ডেশনের আকার ৪ হাজার ৩৩০ কোটি ডলার। এই আকার ৫ হাজার কোটি ডলারে নিয়ে যাওয়ার লক্ষ্য বিল গেটস ও মেলিন্ডা গেটসের। \r\n\r\nসূত্র: ভক্স ডট কম, রয়টার্স', 'send', '2021-05-04 07:49:40');
 
 --
 -- Indexes for dumped tables
@@ -596,18 +486,6 @@ ALTER TABLE `zcomments_22`
   ADD PRIMARY KEY (`comment_id`);
 
 --
--- Indexes for table `zmessage_19`
---
-ALTER TABLE `zmessage_19`
-  ADD PRIMARY KEY (`message_id`);
-
---
--- Indexes for table `zmessage_35`
---
-ALTER TABLE `zmessage_35`
-  ADD PRIMARY KEY (`message_id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -639,7 +517,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `contact`
@@ -687,31 +565,19 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `zcomments_7`
 --
 ALTER TABLE `zcomments_7`
-  MODIFY `comment_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `comment_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `zcomments_20`
 --
 ALTER TABLE `zcomments_20`
-  MODIFY `comment_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `comment_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `zcomments_22`
 --
 ALTER TABLE `zcomments_22`
-  MODIFY `comment_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `zmessage_19`
---
-ALTER TABLE `zmessage_19`
-  MODIFY `message_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT for table `zmessage_35`
---
-ALTER TABLE `zmessage_35`
-  MODIFY `message_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `comment_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
