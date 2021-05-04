@@ -1,6 +1,10 @@
 <?php
 include("security.php");
 include('database/dbconfig.php');
+
+//fetch_comment.php
+$user = $_SESSION['user_id'];
+$receiver=$_SESSION["receive"];
 $query = "
 INSERT INTO comments
 (comment)
@@ -8,9 +12,6 @@ VALUES ('do')
 ";
 $statement = $connection->prepare($query);
 $statement->execute();
-//fetch_comment.php
-$user = $_SESSION['user_id'];
-$receiver=$_SESSION["receive"];
 $m="zmessage_";
 $m.=$user;
 $m1="zmessage_";
