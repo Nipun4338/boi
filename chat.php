@@ -234,26 +234,12 @@ function load_message()
 	dataType:'json',
 	success:function(data)
 	{
-		document.write(5+6);
 	 $('#display_message').html(data);
 	 window.scrollTo(0, document.body.scrollHeight);
 	}
  })
 }
 
-function load_message1()
-{
- $.ajax({
-	url:"fetch_message.php",
-	method:"POST",
-	data:{ running : "yes" },
-	dataType:'json',
-	success:function(data)
-	{
-	 $('#display_message').html(data);
-	}
- })
-}
 
 });
 </script>
