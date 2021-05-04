@@ -230,8 +230,7 @@ function load_message()
 {
  $.ajax({
 	url:"fetch_message.php",
-	method:"POST",
-	data:{ running : "yes" },
+	method:"GET",
 	dataType:'json',
 	success:function(data)
 	{
