@@ -41,8 +41,8 @@ else {
    }
  }
 
-
-echo json_encode('applea');
+$output="apple";
+echo json_encode($output);
 
 
 ?>
