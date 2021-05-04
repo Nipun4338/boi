@@ -4,6 +4,16 @@ include("security.php");
 <?php
 include('database/dbconfig.php');
 $email=$_SESSION['username'];
+$message="zmessage_";
+$message.=$_SESSION['user_id'];
+$sql="CREATE TABLE if not exists $message (
+message_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+sendto INT(6) NOT NULL,
+message TEXT NULL,
+type TEXT NULL,
+date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL
+)";
+$resultt=mysqli_query($link,$sql) or die(mysqli_error($link));
 
 $sql="SELECT * FROM user where email='$email'";
 $result=mysqli_query($link,$sql);

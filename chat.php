@@ -110,6 +110,21 @@ include('database/dbconfig.php');
   border-radius: 5px;
   padding: 10px;
   margin: 10px 0;
+	float:  left;
+  clear: both;
+	max-width: 70%;
+	overflow-wrap: anywhere;
+}
+.container2 {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+	float:  right;
+  clear: both;
+	max-width: 70%;
+	overflow-wrap: anywhere;
 }
 
 .darker {
@@ -118,6 +133,12 @@ include('database/dbconfig.php');
 }
 
 .container1::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.container2::after {
   content: "";
   clear: both;
   display: table;
@@ -147,83 +168,99 @@ include('database/dbconfig.php');
   color: #999;
 }
 .hello {
-    margin: 0px 0 200px 0;
+    margin: 0px 0 20px 0;
 }
+
+.sidenav {
+  width: 130px;
+  position: fixed;
+  z-index: 1;
+  overflow-x: hidden;
+	border-left: 6px solid green;
+  padding: 8px 0;
+}
+
 
     </style>
 </head>
 
-<body style="background:#fff">
+<body style="background: whitesmoke;">
+
   <?php
   include('includes/nav.php');
    ?>
-<div class="hello">
-<script type="text/javascript">
-function scrollToBottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-    history.scrollRestoration = "manual";
-    window.onload = scrollToBottom;
-</script>
-<div class="header1" style="text-align:center;">
-<h1>Chat</h1>
+	 <article>
+	 <div class="hello">
+ 	<div class="container-fluid">
+     <div class="row">
+     <div class="col-3" style="border-right: 3px solid #cecece">
+       <div class="sidebar-item">
+         <div class="sidenav">
+					 <h3><?php echo $_SESSION["receive_name"]; ?></h3>
+ 				</div>
+ 			</div>
+ 		</div>
+ 		<div class="col-9">
+			<div class="content-section">
+<div id="display_comment"></div>
 </div>
-<?php
-$user = $_SESSION['user_id'];
-$receiver=$_SESSION["receive"];
-unset($row1);
-unset($row);
-if(isset($_POST['commenton']))
-{
-  date_default_timezone_set("Asia/Dhaka");
-  $datetime = '';
-  $datetime=date('Y-m-d H:i:s');
-  $message1=htmlspecialchars($_POST["commenton"]);
-  $sql2="insert into messages(message,sender_id,receiver_id,datesent)
-  values('$message1','$user','$receiver','$datetime')";
-  $result2=mysqli_query($link,$sql2) or die(mysqli_error($link));
-
-}
-$sql = "SELECT * from messages where receiver_id='$receiver' and sender_id='$user'";
-$result = mysqli_query($link, $sql);
-$sql1="SELECT * from messages where receiver_id='$user' and sender_id='$receiver'";
-$result1 = mysqli_query($link, $sql1);
-if (mysqli_num_rows($result) > 0) {
- // output data of each row
- while($row = mysqli_fetch_assoc($result)) {
-
-   $receiver_id=$row["receiver_id"];
-   if (mysqli_num_rows($result1) > 0) {
-     while($row1 = mysqli_fetch_assoc($result1)) {
-
-
-?>
-
-<div  class="container1">
-  <h6 style="font-weight:bold"><?php echo $_SESSION["receive_name"] ?></h6>
-<p><?php echo $row["message"] ?></p>
-<span class="time-right"><?php echo $row["datesent"] ?></span>
+<form class="form-container" id="message_form" method="POST">
+<div class="form-group">
+<textarea class="form-control" rows="2" style="width:100%" name="commenton" id="commenton" placeholder="Enter text here..."></textarea>
 </div>
-<div  class="container1 darker" >
-<p style="text-align:right"><?php echo $row1["message"] ?></p>
-<span class="time-left"><?php echo $row1["datesent"] ?></span>
+<div class="form-group">
+<input type="submit" name="submit" id="submit" class="btn btn-primary" value="SEND"  style="float:right">
 </div>
-<?php
-}} }
-}else {
-echo "0 Results";
-} ?>
-
-<form class="form-container" action="chat" method="POST" enctype="multipart/form-data">
-<textarea class="form-control" rows="2" style="width:100%" name="commenton" placeholder="Enter text here..."></textarea>
-<input type="submit" name="submit" class="btn btn-primary" value="SEND"  style="float:right"/>
 </form>
+
+<script>
+$(document).ready(function(){
+
+$('#message_form').on('submit', function(event){
+event.preventDefault();
+var form_data = $(this).serialize();
+	$.ajax({
+		url:"add_message.php",
+		method:"POST",
+		data:form_data,
+		dataType:"json",
+		success:function(data)
+		{
+			if(data.error != '')
+	    {
+	     $('#message_form')[0].reset();
+	     load_message();
+	    }
+		}
+		//$('#message_form')[0].reset();
+	})
+});
+load_message();
+
+function load_message()
+{
+ $.ajax({
+	url:"fetch_message.php",
+	method:"POST",
+	data:{ user_id : <?php echo $_SESSION["user_id"]; ?> },
+	dataType:'json',
+	success:function(data)
+	{
+	 $('#display_comment').html(data);
+	  window.scrollTo(0, document.body.scrollHeight);
+
+	}
+ })
+}
+
+});
+</script>
 <script type="text/javascript">
 $(document).ready(function() {
   $('input[type="submit"]').attr('disabled', true);
 
   $('textarea').on('keyup',function() {
-      var textarea_value = $("#texta").val();
+      var textarea_value = $("#commenton").val();
 
       if(textarea_value != '') {
           $('input[type="submit"]').attr('disabled', false);
@@ -234,16 +271,26 @@ $(document).ready(function() {
 });
 </script>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 </div>
+</div>
+</div>
+</div>
+</article>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
    </body>
 
 <div class="progress-container fixed-bottom">
  <div class="progress-bar" id="myBar">
    </div>
 </div>
-<?php
-include('includes/footer.php');
-?>
+<script>
+// When the user scrolls the page, execute myFunction
+window.onscroll = function() {myFunction()};
+
+function myFunction() {
+  var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  var scrolled = (winScroll / height) * 100;
+  document.getElementById("myBar").style.width = scrolled + "%";
+}
+</script>

@@ -153,20 +153,17 @@ include('database/dbconfig.php');
 </div>
 <?php
 $user = $_SESSION['user_id'];
+$m="zmessage_";
+$m.=$_SESSION['user_id'];
 
-$sql = "SELECT distinct concat(receiver_id,sender_id) as final from messages where (sender_id='$user' and receiver_id!='$user')  or (sender_id!='$user' and receiver_id='$user') order by datesent desc";
+$sql = "SELECT distinct sendto from $m order by date desc";
 $result = mysqli_query($link, $sql);
 
 if (mysqli_num_rows($result) > 0) {
  // output data of each row
  while($row = mysqli_fetch_assoc($result)) {
 
-	 if($row["final"]!=$_SESSION["user_id"])
-	 {
-		 $receiver_id=$row["final"];
-	 }
-
-
+	 $receiver_id=$row["sendto"];
    $sql1 = "SELECT name,user_id from user where user_id='$receiver_id'";
    $result1 = mysqli_query($link, $sql1);
    if (mysqli_num_rows($result1) > 0) {
@@ -185,6 +182,7 @@ if (mysqli_num_rows($result) > 0) {
 }else {
 echo "0 Results";
 } ?>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 </div>

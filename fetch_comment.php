@@ -28,7 +28,7 @@ $output = '';
 foreach($data as $row)
 {
  $output .= '
- <div class="card " style="margin: 10px">
+ <div class="card " style="margin: 10px;font-family:Helvetica">
   <div class="card-header">By <b>'.$row["sender_name"].'</b> on <i>'.date('M j, Y g:i A', strtotime($row["date"])).'</i></div>
   <div class="card-body">'.$row["comment"].'</div>
   <div class="card-footer text-muted" align="right"><button type="button" class="btn btn-primary reply btn-sm" id="'.$row["comment_id"].'">Reply</button></div>
@@ -74,7 +74,7 @@ function get_reply_comment($connection, $parent_id = 0, $marginleft = 0)
   foreach($data1 as $row)
   {
    $output .= '
-   <div class="card" style="margin-left:'.$marginleft.'px;margin-top: 10px;margin-bottom: 10px">
+   <div class="card" style="margin-left:'.$marginleft.'px;margin-top: 10px;margin-bottom: 10px;font-family:Helvetica">
     <div class="card-header">By <b>'.$row["sender_name"].'</b> on <i>'.date('M j, Y g:i A', strtotime($row["date"])).'</i></div>
     <div class="card-body">'.$row["comment"].'</div>
     <div class="card-footer text-muted" align="right"><button type="button" class="btn btn-primary reply btn-sm" id="'.$row["comment_id"].'">Reply</button></div>

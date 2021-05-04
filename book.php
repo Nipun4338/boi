@@ -410,7 +410,7 @@ function showSlides(n) {
                 	<?php $_SESSION["receive_name"]=$row1["name"];
                 }}
                   ?>
-            <button onclick="document.location='chat'" class="btn btn-danger">Message to Owner</button>
+            <button type="submit" onclick="document.location='chat'" class="btn btn-danger">Message to Owner</button>
           </form>
             <button style="margin:10px" onclick="document.location='wishlist?book=<?php echo $row['book_id'];?>'" class="btn btn-primary">Add to Wishlist</button>
 
@@ -434,7 +434,7 @@ function showSlides(n) {
       <div class="">
         <form class="" method="POST" id="comment_form" style="margin:10px">
           <div class="form-group">
-            <textarea type="text" class="form-control" placeholder="Enter Comment" rows="4" name="comment" id="comment"></textarea>
+            <textarea type="text" class="form-control" placeholder="Enter Comment..." rows="4" name="comment" id="comment"></textarea>
           </div>
           <div class="form-group" align="right">
             <input type="hidden" name="comment_id" id="comment_id" value="0" />
