@@ -190,8 +190,7 @@ include('database/dbconfig.php');
  		</div>
  		<div class="col-9">
 			<div class="content-section">
-				<br />
-<div id="display_comment"></div>
+<div id="display_message"></div>
 </div>
 <form class="form-container" id="message_form" method="POST">
 <div class="form-group">
@@ -249,7 +248,7 @@ function load_message1()
 	dataType:'json',
 	success:function(data)
 	{
-	 $('#display_comment').html(data);
+	 $('#display_message').html(data);
 	}
  })
 }

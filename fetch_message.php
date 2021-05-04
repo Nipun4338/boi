@@ -41,7 +41,7 @@ else {
    }
  }
 
-$output='<p style="font-size:rfs-fluid-value(1.125rem);font-family:Helvetica">Mew</p>'
+
 echo json_encode($output);
 
 
