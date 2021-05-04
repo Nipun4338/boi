@@ -40,7 +40,7 @@ drop table user;
 drop table wishlist;
 drop table zcomments_7;
 drop table zcomments_20;
-
+drop table zcomments_22;
 CREATE TABLE `adminpanel` (
   `admin_id` int(11) NOT NULL,
   `username` text NOT NULL,

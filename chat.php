@@ -110,21 +110,6 @@ include('database/dbconfig.php');
   border-radius: 5px;
   padding: 10px;
   margin: 10px 0;
-	float:  left;
-  clear: both;
-	max-width: 70%;
-	overflow-wrap: anywhere;
-}
-.container2 {
-  border: 2px solid #dedede;
-  background-color: #f1f1f1;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 10px 0;
-	float:  right;
-  clear: both;
-	max-width: 70%;
-	overflow-wrap: anywhere;
 }
 
 .darker {
@@ -133,12 +118,6 @@ include('database/dbconfig.php');
 }
 
 .container1::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.container2::after {
   content: "";
   clear: both;
   display: table;
@@ -196,71 +175,80 @@ include('database/dbconfig.php');
      <div class="col-3" style="border-right: 3px solid #cecece">
        <div class="sidebar-item">
          <div class="sidenav">
-					 <h3><?php echo $_SESSION["receive_name"]; ?></h3>
+					 <h1><?php echo $_SESSION["receive_name"]; ?></h1>
  				</div>
  			</div>
  		</div>
  		<div class="col-9">
 			<div class="content-section">
-<div id="display_comment"></div>
-</div>
-<form class="form-container" id="message_form" method="POST">
-<div class="form-group">
-<textarea class="form-control" rows="2" style="width:100%" name="commenton" id="commenton" placeholder="Enter text here..."></textarea>
-</div>
-<div class="form-group">
-<input type="submit" name="submit" id="submit" class="btn btn-primary" value="SEND"  style="float:right">
-</div>
-</form>
-
-<script>
-$(document).ready(function(){
-
-$('#message_form').on('submit', function(event){
-event.preventDefault();
-var form_data = $(this).serialize();
-	$.ajax({
-		url:"add_message.php",
-		method:"POST",
-		data:form_data,
-		dataType:"json",
-		success:function(data)
-		{
-			if(data.error != '')
-	    {
-	     $('#message_form')[0].reset();
-	     load_message();
-	    }
-		}
-		//$('#message_form')[0].reset();
-	})
-});
-load_message();
-
-function load_message()
+<script type="text/javascript">
+function scrollToBottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+    history.scrollRestoration = "manual";
+    window.onload = scrollToBottom;
+</script>
+<?php
+$user = $_SESSION['user_id'];
+$receiver=$_SESSION["receive"];
+unset($row1);
+unset($row);
+$m='';
+$m1='';
+$m="zmessage_";
+$m.=$user;
+$m1="zmessage_";
+$m1.=$receiver;
+if(isset($_POST['commenton']))
 {
- $.ajax({
-	url:"fetch_message.php",
-	method:"POST",
-	data:{ user_id : <?php echo $_SESSION["user_id"]; ?> },
-	dataType:'json',
-	success:function(data)
-	{
-	 $('#display_comment').html(data);
-	  window.scrollTo(0, document.body.scrollHeight);
+  date_default_timezone_set("Asia/Dhaka");
+  $datetime = '';
+  $datetime=date('Y-m-d H:i:s');
+  $message1=htmlspecialchars($_POST["commenton"]);
+  $sql2="insert into $m(message,sendto,type,date)
+  values('$message1','$receiver','send','$datetime')";
+  $result2=mysqli_query($link,$sql2) or die(mysqli_error($link));
+	$sql2="insert into $m1(message,sendto,type,date)
+  values('$message1','$user','receive','$datetime')";
+  $result2=mysqli_query($link,$sql2) or die(mysqli_error($link));
 
-	}
- })
 }
 
-});
-</script>
+$sql = "SELECT * from $m where sendto='$receiver'";
+$result = mysqli_query($link, $sql);
+
+if (mysqli_num_rows($result) > 0) {
+ // output data of each row
+ while($row = mysqli_fetch_assoc($result)) {
+   if (strpos($row["type"],"receive")!== false) {
+?>
+
+<div  class="container1" style="background:#fff;margin-right:25%">
+  <h6 style="font-weight:bold;color:#a08"><?php echo $_SESSION["receive_name"] ?></h6>
+<p style="font-size:20px;font-family:Helvetica"><?php echo $row["message"] ?></p>
+<span class="time-right"><?php echo date('M j, Y g:i A', strtotime($row["date"])); ?></span>
+</div>
+<?php }else{ ?>
+<div  class="container1" style="background:#fff;margin-left:25%" >
+<p style="text-align:right;font-size:20px;font-family:Helvetica"><?php echo $row["message"] ?></p>
+<span class="time-right"><?php echo date('M j, Y g:i A', strtotime($row["date"])); ?></span>
+</div>
+<?php
+}} }
+else {
+echo "0 Results";
+} ?>
+
+<form class="form-container" action="chat" method="POST" enctype="multipart/form-data">
+<textarea class="form-control" rows="2" style="width:100%" name="commenton" placeholder="Enter text here..."></textarea>
+<input type="submit" name="submit" class="btn btn-primary" value="SEND"  style="float:right"/>
+</form>
 <script type="text/javascript">
 $(document).ready(function() {
   $('input[type="submit"]').attr('disabled', true);
 
   $('textarea').on('keyup',function() {
-      var textarea_value = $("#commenton").val();
+      var textarea_value = $("#texta").val();
 
       if(textarea_value != '') {
           $('input[type="submit"]').attr('disabled', false);
@@ -270,11 +258,59 @@ $(document).ready(function() {
   });
 });
 </script>
+<script>
+$(document).ready(function(){
+
+$('#comment_form').on('submit', function(event){
+event.preventDefault();
+var form_data = $(this).serialize();
+	$.ajax({
+		url:"add_comment.php",
+		method:"POST",
+		data:form_data,
+		dataType:"JSON",
+		success:function(data)
+		{
+			if(data.error != '')
+			{
+			 $('#comment_form')[0].reset();
+			 $('#comment_message').html(data.error);
+			 $('#comment_id').val('0');
+			 load_comment();
+			}
+		}
+	})
+});
+
+load_comment();
+
+function load_comment()
+{
+	$.ajax({
+		url:"fetch_comment.php",
+		method:"POST",
+		data:{ book_id : <?php echo $book; ?> },
+		dataType:'json',
+		success:function(data)
+	{
+		$('#display_comment').html(data);
+	}
+	})
+}
+$(document).on('click', '.reply', function(){
+	var comment_id = $(this).attr("id");
+	$('#comment_id').val(comment_id);
+	$('#comment').focus();
+	});
+});
+</script>
 
 </div>
 </div>
 </div>
 </div>
+</div>
+
 </article>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
    </body>
