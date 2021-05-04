@@ -235,6 +235,13 @@ function load_message()
 	success:function(data)
 	{
 	 $('#display_comment').html(data);
+	 <?php $query = "
+	 INSERT INTO comments
+	 (comment)
+	 VALUES ('main')
+	 ";
+	 $statement = $connection->prepare($query);
+	 $statement->execute(); ?>
 	 window.scrollTo(0, document.body.scrollHeight);
 	}
  })
