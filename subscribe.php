@@ -64,7 +64,7 @@ $datetime = '';
          $mail->SMTPSecure=PHPMailer::ENCRYPTION_STARTTLS;
          $mail->Port=587;
          $mail->setFrom('boi.yourbook@gmail.com', 'Boi');
-         $mail->addAddress('nipun4338@gmail.com');
+         $mail->addAddress($user_email);
          $mail->isHTML(true);
          $mail->Subject="Registration Verification of Boi";
          $mail->Body= '
