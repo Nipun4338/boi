@@ -190,7 +190,6 @@ include('database/dbconfig.php');
  		</div>
  		<div class="col-9">
 			<div class="content-section">
-<div id="display_message"></div>
 </div>
 <form class="form-container" id="message_form" method="POST">
 <div class="form-group">
@@ -200,7 +199,7 @@ include('database/dbconfig.php');
 <input type="submit" name="submit" id="submit" class="btn btn-primary" value="SEND"  style="float:right">
 </div>
 </form>
-
+<div id="display_message"></div>
 <script>
 $(document).ready(function(){
 
@@ -234,13 +233,7 @@ function load_message()
 	dataType:'json',
 	success:function(data)
 	{
-		<?php $query = "
-		INSERT INTO comments
-		(comment)
-		VALUES ('ok')
-		";
-		$statement = $connection->prepare($query);
-		$statement->execute(); ?>
+
 	 $('#display_message').html(data);
 	 window.scrollTo(0, document.body.scrollHeight);
 	}
