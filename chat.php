@@ -190,7 +190,8 @@ include('database/dbconfig.php');
  		</div>
  		<div class="col-9">
 			<div class="content-section">
-
+				<br />
+<div id="display_comment"></div>
 </div>
 <form class="form-container" id="message_form" method="POST">
 <div class="form-group">
@@ -200,7 +201,7 @@ include('database/dbconfig.php');
 <input type="submit" name="submit" id="submit" class="btn btn-primary" value="SEND"  style="float:right">
 </div>
 </form>
-<div id="display_comment"></div>
+
 <script>
 $(document).ready(function(){
 

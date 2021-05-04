@@ -31,7 +31,7 @@ else {
      <p style="font-size:rfs-fluid-value(1.125rem);font-family:Helvetica">'.html_entity_decode(nl2br($row["message"])).'</p>
      <span style="font-size:12px;font-family:Helvetica" class="time-right">'.date("M j, Y g:i A", strtotime($row["date"])).'</span>
      </div>';
-     
+
    }
    else {
      $output .='<div  class="container2" style="background:#fff;" >
@@ -41,7 +41,7 @@ else {
    }
  }
 
-
+$output='<p style="font-size:rfs-fluid-value(1.125rem);font-family:Helvetica">Mew</p>'
 echo json_encode($output);
 
 
