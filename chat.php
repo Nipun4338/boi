@@ -235,7 +235,8 @@ function load_message()
 	dataType:'json',
 	success:function(data)
 	{
-	 $('#display_message').html('<p style="font-size:rfs-fluid-value(1.125rem);font-family:Helvetica">Mew</p>');
+		document.write(5+6);
+	 $('#display_message').html(data);
 	 window.scrollTo(0, document.body.scrollHeight);
 	}
  })
