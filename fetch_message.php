@@ -31,30 +31,22 @@ else {
      <p style="font-size:rfs-fluid-value(1.125rem);font-family:Helvetica">'.html_entity_decode(nl2br($row["message"])).'</p>
      <span style="font-size:12px;font-family:Helvetica" class="time-right">'.date("M j, Y g:i A", strtotime($row["date"])).'</span>
      </div>';
-     $query = "
-     INSERT INTO comments
-     (comment)
-     VALUES ('rece')
-     ";
-     $statement = $connection->prepare($query);
-     $statement->execute();
    }
    else {
      $output .='<div  class="container2" style="background:#fff;" >
      <p style="font-size:rfs-fluid-value(1.125rem);font-family:Helvetica">'.html_entity_decode(nl2br($row["message"])).'</p>
      <span style="font-size:12px;font-family:Helvetica" class="time-right">'.date("M j, Y g:i A", strtotime($row["date"])).'</span>
      </div>';
-     $query = "
-     INSERT INTO comments
-     (comment)
-     VALUES ('send')
-     ";
-     $statement = $connection->prepare($query);
-     $statement->execute();
    }
  }
 
-
+ $query = "
+ INSERT INTO comments
+ (comment)
+ VALUES ('done')
+ ";
+ $statement = $connection->prepare($query);
+ $statement->execute();
 echo json_encode($output);
 
 
