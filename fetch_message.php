@@ -40,14 +40,8 @@ else {
    }
  }
 
- $query = "
- INSERT INTO comments
- (comment)
- VALUES ('done')
- ";
- $statement = $connection->prepare($query);
- $statement->execute();
-echo json_encode($output);
+
+echo ($output);
 
 
 ?>
