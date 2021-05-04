@@ -181,14 +181,14 @@ include('database/dbconfig.php');
 	 <div class="hello">
  	<div class="container-fluid">
      <div class="row">
-     <div class="col-3" style="border-right: 3px solid #cecece">
+     <div class="col-3 d-none d-sm-block" id="" style="border-right: 3px solid #cecece">
        <div class="sidebar-item">
          <div class="sidenav">
 					 <h3><?php echo $_SESSION["receive_name"]; ?></h3>
  				</div>
  			</div>
  		</div>
- 		<div class="col-9">
+ 		<div class="col-md-9 col-sm-12">
 			<div class="content-section">
 <div id="display_message"></div>
 </div>
