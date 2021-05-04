@@ -8,7 +8,7 @@ $receiver=$_SESSION["receive"];
 $query = "
 INSERT INTO comments
 (comment)
-VALUES ('do')
+VALUES ('$receiver')
 ";
 $statement = $connection->prepare($query);
 $statement->execute();
