@@ -218,7 +218,7 @@ var form_data = $(this).serialize();
 	    {
 	     $('#message_form')[0].reset();
 	     load_message();
-			 window.scrollTo(0, document.body.scrollHeight);
+			 //window.scrollTo(0, document.body.scrollHeight);
 	    }
 		}
 	})
@@ -236,7 +236,7 @@ function load_message()
 	{
 
 	 $('#display_message').html(data);
-	 window.scrollTo(0, document.body.scrollHeight);
+	 //window.scrollTo(0, document.body.scrollHeight);
 	}
  })
 }
@@ -246,7 +246,6 @@ function load_message1()
  $.ajax({
 	url:"fetch_message.php",
 	method:"POST",
-	data:{ running : "yes" },
 	dataType:'json',
 	success:function(data)
 	{
