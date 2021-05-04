@@ -234,7 +234,7 @@ function load_message()
 	dataType:'json',
 	success:function(data)
 	{
-	 $('#display_comment').html(data);
+	 $('#display_message').html(data);
 	 window.scrollTo(0, document.body.scrollHeight);
 	}
  })
