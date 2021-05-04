@@ -32,7 +32,11 @@ else {
      </div>';
 
    }
-
+   else {
+     $output .='<div  class="container2" style="background:#fff;" >
+     <span style="font-size:12px;font-family:Helvetica" class="time-right">'.date("M j, Y g:i A", strtotime($row["date"])).'</span>
+     </div>';
+   }
  }
 
 
