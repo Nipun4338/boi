@@ -231,10 +231,11 @@ function load_message()
  $.ajax({
 	url:"fetch_message.php",
 	method:"POST",
+	data:{ running : "yes" },
 	dataType:'json',
 	success:function(data)
 	{
-	 $('#display_message').html(data);
+	 $('#display_message').html('<p style="font-size:rfs-fluid-value(1.125rem);font-family:Helvetica">Mew</p>');
 	 window.scrollTo(0, document.body.scrollHeight);
 	}
  })
@@ -245,6 +246,7 @@ function load_message1()
  $.ajax({
 	url:"fetch_message.php",
 	method:"POST",
+	data:{ running : "yes" },
 	dataType:'json',
 	success:function(data)
 	{
