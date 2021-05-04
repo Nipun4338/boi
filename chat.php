@@ -190,7 +190,7 @@ include('database/dbconfig.php');
  		</div>
  		<div class="col-9">
 			<div class="content-section">
-<div id="display_comment"></div>
+
 </div>
 <form class="form-container" id="message_form" method="POST">
 <div class="form-group">
@@ -200,7 +200,7 @@ include('database/dbconfig.php');
 <input type="submit" name="submit" id="submit" class="btn btn-primary" value="SEND"  style="float:right">
 </div>
 </form>
-
+<div id="display_comment"></div>
 <script>
 $(document).ready(function(){
 
@@ -235,13 +235,6 @@ function load_message()
 	success:function(data)
 	{
 	 $('#display_comment').html(data);
-	 <?php $query = "
-	 INSERT INTO comments
-	 (comment)
-	 VALUES ('main')
-	 ";
-	 $statement = $connection->prepare($query);
-	 $statement->execute(); ?>
 	 window.scrollTo(0, document.body.scrollHeight);
 	}
  })
