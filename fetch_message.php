@@ -5,13 +5,7 @@ include('database/dbconfig.php');
 //fetch_comment.php
 $user = $_SESSION['user_id'];
 $receiver=$_SESSION["receive"];
-$query = "
-INSERT INTO comments
-(comment)
-VALUES ('$receiver')
-";
-$statement = $connection->prepare($query);
-$statement->execute();
+
 $m="zmessage_";
 $m.=$user;
 $m1="zmessage_";
@@ -29,6 +23,13 @@ if (mysqli_num_rows($result) > 0) {
 else {
   $output .='0 Results';
 }
+$query = "
+INSERT INTO comments
+(comment)
+VALUES ('$receiver')
+";
+$statement = $connection->prepare($query);
+$statement->execute();
  foreach($data as $row)
  {
    if (strpos($row["type"],"receive")!== false) {
