@@ -147,10 +147,15 @@ include('database/dbconfig.php');
   <?php
   include('includes/nav.php');
    ?>
+	 <div class="container">
+		 <div class="row">
+							<ol class="col-12 breadcrumb">
+									<li class="breadcrumb-item"><a href="home">Home</a></li>
+									<li class="breadcrumb-item active">Recent Contacts</li>
+							</ol>
+					</div>
+	 </div>
 <div class="hello">
-<div class="header1" style="text-align:center;">
-<h1>Recent Contacts</h1>
-</div>
 <?php
 $user = $_SESSION['user_id'];
 $m="zmessage_";
@@ -170,19 +175,27 @@ if (mysqli_num_rows($result) > 0) {
      while($row1 = mysqli_fetch_assoc($result1)) {
 
 ?>
-<form class="form-container" action="chat" method="POST" enctype="multipart/form-data">
-	<input type="hidden" name="user_id1" value="<?php echo $row1["user_id"] ?>">
-	<?php $_SESSION["receive"]=$row1["user_id"]; ?>
-	<input type="hidden" name="user_name" value="<?php echo $row1["name"] ?>">
-	<?php $_SESSION["receive_name"]=$row1["name"]; ?>
-<button type="submit" class="container1" style="text-align: center;cursor: pointer;width:100%"><h3><?php echo $row1["name"] ?></h3></button>
+<form class="form-container" action="chat" id="form" method="POST" enctype="multipart/form-data">
+	<input type="hidden" name="user_id" value="<?php echo $row1["user_id"] ?>">
+
+	<input type="hidden" name="name" value="<?php echo $row1["name"] ?>">
+
+<button type="submit" id="submit" name="submit" class="container1" style="text-align: center;cursor: pointer;width:100%"><h3><?php echo $row1["name"] ?></h3></button>
 </form>
 <?php
 }} }
 }else {
 echo "0 Results";
 } ?>
+<script type="text/javascript">
+$(document).ready(function(){
 
+$('#form').on('submit', function(event){
+event.preventDefault();
+var form_data = $(this).serialize();
+('#form')[0].reset();
+});
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 </div>
@@ -192,6 +205,14 @@ echo "0 Results";
  <div class="progress-bar" id="myBar">
    </div>
 </div>
-<?php
-include('includes/footer.php');
-?>
+<script>
+// When the user scrolls the page, execute myFunction
+window.onscroll = function() {myFunction()};
+
+function myFunction() {
+  var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  var scrolled = (winScroll / height) * 100;
+  document.getElementById("myBar").style.width = scrolled + "%";
+}
+</script>
