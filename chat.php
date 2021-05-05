@@ -172,7 +172,7 @@ if(isset($_POST["user_id"]) && isset($_POST["name"]))
   position: fixed;
   z-index: 1;
   overflow-x: hidden;
-	border-left: 6px solid green;
+
   padding: 8px 0;
 }
 
@@ -180,26 +180,100 @@ if(isset($_POST["user_id"]) && isset($_POST["name"]))
  height: calc(100% - var(--number));
     position: relative;
 }
+
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  font-size: 15px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 10px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+#main {
+  transition: margin-left .5s;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
+}
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: yellow;
+  padding: 50px;
+  font-size: 20px;
+}
     </style>
 </head>
 
-<body style="background: whitesmoke;">
+<body id="main" style="background: whitesmoke;">
 
   <?php
   include('includes/nav.php');
    ?>
+	 <div id="mySidebar" class="sidebar">
+ 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+ 	<a href="#">Books by <?php echo $_SESSION["receive_name"]; ?></a>
+ 	<a href="#">Clear Messages</a>
+ 	<a href="#">Repost User</a>
+ 	<a href="#">Contact</a>
+ 	</div>
 	 <article>
 	 <div class="hello">
  	<div class="container-fluid">
      <div class="row">
-     <div class="col-3 d-none d-sm-block" id="" style="border-right: 3px solid #cecece">
+
+     <div class="col-md-3" id="" style="border-right: 3px solid #cecece">
        <div class="sidebar-item">
          <div class="sidenav">
-					 <h3><?php echo $_SESSION["receive_name"]; ?></h3>
+					 <button id="openclose" class="openbtn sticky d-block fa fa-envelope-open" > <?php echo $_SESSION["receive_name"]; ?></button>
  				</div>
  			</div>
  		</div>
  		<div class="col-md-9 col-sm-12">
+
 			<div class="content-section">
 <div id="display_message"></div>
 </div>
@@ -212,7 +286,17 @@ if(isset($_POST["user_id"]) && isset($_POST["name"]))
 	</div>
 </form>
 
+<script>
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+}
 
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("main").style.marginLeft= "0";
+}
+</script>
 <script>
 $(document).ready(function(){
 
@@ -268,7 +352,22 @@ function load_message1()
  })
 }
 
+	$('#openclose').click(function() {
+		if($('#openclose').hasClass('fa-envelope-open'))
+		{
+			openNav();
+			$('#openclose').removeClass('fa-envelope-open');
+			$('#openclose').addClass('fa-envelope');
+		}
+		else if($('#openclose').hasClass('fa-envelope')){
+			closeNav();
+			$('#openclose').removeClass('fa-envelope');
+			$('#openclose').addClass('fa-envelope-open');
+		}
+	});
+
 });
+
 </script>
 <script type="text/javascript">
 var input = document.getElementById("commenton");
