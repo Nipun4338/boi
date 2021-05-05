@@ -16,14 +16,16 @@ if(isset($_POST["user_id"]) && isset($_POST["name"]))
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale = 1.0">
 		<script src = "https://code.jquery.com/jquery-2.1.3.min.js"></script>
-
+		<link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="message.css">
     <link rel="icon" href="Iconsmind-Outline-Books-2.ico">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
 <style type="text/css">
@@ -174,7 +176,10 @@ if(isset($_POST["user_id"]) && isset($_POST["name"]))
   padding: 8px 0;
 }
 
-
+.conversation{
+ height: calc(100% - var(--number));
+    position: relative;
+}
     </style>
 </head>
 
@@ -200,12 +205,23 @@ if(isset($_POST["user_id"]) && isset($_POST["name"]))
 </div>
 <form class="form-container" id="message_form" method="POST">
 <div class="form-group">
-<textarea class="form-control" rows="2" style="width:100%" name="commenton" id="commenton" placeholder="Enter text here..."></textarea>
+	<div class="container-fluid">
+
+	<div class="row" style="clear:both">
+		<div style="width:90%">
+			<textarea class="form-control conversation" onclick="focusMethod()" style="--number: 12px" rows="1"  name="commenton" id="commenton" placeholder="Enter text here..."></textarea>
+		</div>
+		<div style="width:10%">
+			<input type="submit" name="submit" id="submit" class="btn btn-primary btn-sm" value="send">
+		</div>
+	</div>
+	</div>
 </div>
-<div class="form-group">
-<input type="submit" name="submit" id="submit" class="btn btn-primary" value="SEND"  style="float:right">
-</div>
+
 </form>
+
+
+
 
 <script>
 $(document).ready(function(){
@@ -228,6 +244,7 @@ var form_data = $(this).serialize();
 	    }
 		}
 	})
+	$('input[type="submit"]').attr('disabled', true);
 });
 load_message();
 setInterval(function() {load_message1();},1000);
@@ -263,6 +280,19 @@ function load_message1()
 });
 </script>
 <script type="text/javascript">
+var input = document.getElementById("commenton");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("submit").click();
+  }
+});
+$('textarea').on({input: function(){
+    var totalHeight = $(this).prop('scrollHeight') - parseInt($(this).css('padding-top')) - parseInt($(this).css('padding-bottom'));
+    $(this).css({'height':totalHeight});
+    $('.conversation').get(0).style.setProperty("--number",totalHeight+'px')
+}
+});
 $(document).ready(function() {
   $('input[type="submit"]').attr('disabled', true);
 

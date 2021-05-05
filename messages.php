@@ -161,7 +161,7 @@ $user = $_SESSION['user_id'];
 $m="zmessage_";
 $m.=$_SESSION['user_id'];
 
-$sql = "SELECT distinct sendto from $m order by date desc";
+$sql = "SELECT sendto, max(date) FROM $m group by sendto order by max(date) desc";
 $result = mysqli_query($link, $sql);
 
 if (mysqli_num_rows($result) > 0) {
@@ -187,15 +187,6 @@ if (mysqli_num_rows($result) > 0) {
 }else {
 echo "0 Results";
 } ?>
-<script type="text/javascript">
-$(document).ready(function(){
-
-$('#form').on('submit', function(event){
-event.preventDefault();
-var form_data = $(this).serialize();
-('#form')[0].reset();
-});
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 </div>

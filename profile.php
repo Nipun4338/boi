@@ -9,7 +9,7 @@ $message.=$_SESSION['user_id'];
 $sql="CREATE TABLE if not exists $message (
 message_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 sendto INT(6) NOT NULL,
-message TEXT NULL,
+message TEXT NOT NULL,
 type TEXT NULL,
 date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL
 )";
