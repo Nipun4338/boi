@@ -256,7 +256,7 @@ div.sticky {
 	 <div id="mySidebar" class="sidebar">
  	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
  	<a href="#">Books by <?php echo $_SESSION["receive_name"]; ?></a>
- 	<a href="#">Clear Messages</a>
+ 	<a id="delete" href="#">Clear Messages</a>
  	<a href="#">Repost User</a>
  	<a href="#">Contact</a>
  	</div>
@@ -272,6 +272,36 @@ div.sticky {
  				</div>
  			</div>
  		</div>
+		<script type="text/javascript">
+		$("a").on("click", function (e) {
+
+	// Id of the element that was clicked
+	var elementId = $(this).attr("id");
+	if(elementId=="delete")
+	{
+		var r = confirm("Confirm delete?");
+		if (r == true) {
+			event.preventDefault();
+			$.ajax({
+				url:"delete_message.php",
+				method:"POST",
+				dataType:"json",
+				success:function(data)
+				{
+					if(data.error != '')
+			    {
+					 $('input[type="submit"]').attr('disabled', true);
+					 window.scrollTo(0, document.body.scrollHeight);
+			    }
+				}
+			})
+  } else {
+
+  }
+	}
+
+});
+		</script>
  		<div class="col-md-9 col-sm-12">
 
 			<div class="content-section">
