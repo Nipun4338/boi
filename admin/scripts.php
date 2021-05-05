@@ -4,6 +4,10 @@
         include("security.php");
     }
     include('database/dbconfig.php');
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
+    require 'vendor/autoload.php';
 ?>
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
@@ -454,6 +458,55 @@ if (isset($_POST["updatebtnslider2"])) {
     header('Location: slider2.php');
   }
 
+
+}
+
+if(isset($_POST['sendmail']))
+{
+    $subject=$_POST["subject"];
+    $body=$_POST["body"];
+    $mail=new PHPMailer(true);
+    $mail->isSMTP();
+    $mail->Host='smtp.gmail.com';
+    $mail->SMTPAuth=true;
+    $mail->Username='boi.yourbook@gmail.com';
+    $mail->Password='boi@boi.';
+    $mail->SMTPSecure=PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port=587;
+    $mail->setFrom('boi.yourbook@gmail.com', 'Boi');
+    $mail->isHTML(true);
+    $mail->Subject=$subject;
+    $mail->Body=$body;
+
+    $sql="select email from user";
+    $query_run1 = mysqli_query($connection, $sql);
+    if(mysqli_num_rows($query_run1) > 0)
+    {
+        while($row = mysqli_fetch_assoc($query_run1))
+        {
+          $mail->addBCC($row["email"]);
+          $mail->send();
+        }
+        date_default_timezone_set("Asia/Dhaka");
+        $datetime = '';
+        $datetime=date('Y-m-d H:i:s');
+        $query = "INSERT INTO mail (subject,body,date)
+        VALUES ('$subject','$body','$datetime')";
+        $query_run = mysqli_query($connection, $query);
+    }
+
+    if($query_run)
+    {
+        echo "done";
+        $_SESSION['success'] =  "Mail send Successfully";
+        header('Location: mail.php');
+    }
+    else
+    {
+        echo "not done";
+        $_SESSION['status'] =  "Mail was not send";
+        header('Location: mail.php');
+    }
 
 }
 

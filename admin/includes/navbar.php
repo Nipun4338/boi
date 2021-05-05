@@ -50,6 +50,11 @@
     <span>Contact Us</span></a>
 </li>
 <li class="nav-item">
+  <a class="nav-link" href="mail.php">
+    <i class="fas fa-fw fa-chart-area"></i>
+    <span>Send Mail</span></a>
+</li>
+<li class="nav-item">
   <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
     <i class="fas fa-fw fa-wrench"></i>
     <span>Slides</span>
