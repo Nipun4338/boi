@@ -3,6 +3,8 @@
 session_start();
 include('database/dbconfig.php');
 date_default_timezone_set("Asia/Dhaka");
+$datetime = '';
+$datetime=date('Y-m-d H:i:s');
 //add_comment.php
 $error = '';
 $comment_name = '';
@@ -38,8 +40,8 @@ if($error == '')
   $result=mysqli_query($link,$sql) or die(mysqli_error($link));
  $query = "
  INSERT INTO $book
- (parent_comment_id, comment, sender_name)
- VALUES ('$id', '$comment_content', '$comment_name')
+ (parent_comment_id, comment, sender_name,date)
+ VALUES ('$id', '$comment_content', '$comment_name', '$datetime')
  ";
  $statement = $connection->prepare($query);
  $statement->execute();

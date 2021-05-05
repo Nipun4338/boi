@@ -4,6 +4,8 @@ include("security.php");
 <?php
 include('database/dbconfig.php');
 date_default_timezone_set("Asia/Dhaka");
+$datetime = '';
+$datetime=date('Y-m-d H:i:s');
 $email=$_SESSION['username'];
 $message="zmessage_";
 $message.=$_SESSION['user_id'];
@@ -17,7 +19,7 @@ date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL
 $resultt=mysqli_query($link,$sql) or die(mysqli_error($link));
 
 $active="UPDATE user
-SET active_status = 'Online'
+SET active_status = 'Online', date='$datetime'
 WHERE user_id=".$_SESSION['user_id'];
 $statement = $connection->prepare($active);
 $statement->execute();
