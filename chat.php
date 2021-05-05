@@ -204,23 +204,13 @@ if(isset($_POST["user_id"]) && isset($_POST["name"]))
 <div id="display_message"></div>
 </div>
 <form class="form-container" id="message_form" method="POST">
-<div class="form-group">
-	<div class="container-fluid">
-
-	<div class="row" style="clear:both">
-		<div style="width:90%">
+		<div class="input-group">
 			<textarea class="form-control conversation" onclick="focusMethod()" style="--number: 12px" rows="1"  name="commenton" id="commenton" placeholder="Enter text here..."></textarea>
-		</div>
-		<div style="width:10%">
+		<div class="input-group-append">
 			<input type="submit" name="submit" id="submit" class="btn btn-primary btn-sm" value="send">
 		</div>
 	</div>
-	</div>
-</div>
-
 </form>
-
-
 
 
 <script>
@@ -239,12 +229,13 @@ var form_data = $(this).serialize();
 			if(data.error != '')
 	    {
 	     $('#message_form')[0].reset();
+			 $('input[type="submit"]').attr('disabled', true);
 	     load_message();
 			 window.scrollTo(0, document.body.scrollHeight);
 	    }
 		}
 	})
-	$('input[type="submit"]').attr('disabled', true);
+
 });
 load_message();
 setInterval(function() {load_message1();},1000);
@@ -299,7 +290,8 @@ $(document).ready(function() {
   $('textarea').on('keyup',function() {
       var textarea_value = $("#commenton").val();
 
-      if(textarea_value != '') {
+
+      if(textarea_value != '' && document.getElementById("commenton").value.trim().length>0) {
           $('input[type="submit"]').attr('disabled', false);
       } else {
           $('input[type="submit"]').attr('disabled', true);
