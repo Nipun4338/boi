@@ -2,7 +2,7 @@
 <?php
 session_start();
 include('database/dbconfig.php');
-
+date_default_timezone_set("Asia/Dhaka");
 //add_comment.php
 $error = '';
 $comment_name = '';

@@ -3,6 +3,7 @@ include("security.php");
 ?>
 <?php
 include('database/dbconfig.php');
+date_default_timezone_set("Asia/Dhaka");
 $email=$_SESSION['username'];
 $message="zmessage_";
 $message.=$_SESSION['user_id'];
