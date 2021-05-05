@@ -485,8 +485,8 @@ if(isset($_POST['sendmail']))
         while($row = mysqli_fetch_assoc($query_run1))
         {
           $mail->addBCC($row["email"]);
-          $mail->send();
         }
+        $mail->send();
         date_default_timezone_set("Asia/Dhaka");
         $datetime = '';
         $datetime=date('Y-m-d H:i:s');
