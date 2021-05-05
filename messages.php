@@ -139,7 +139,29 @@ include('database/dbconfig.php');
 .hello {
     margin: 0px 0 200px 0;
 }
+#red {
+      width: 10px;
+      height: 10px;
+      -webkit-border-radius: 25px;
+      -moz-border-radius: 25px;
+      border-radius: 25px;
+      background: red;
+    left:-5%;
+    position:relative; /*makes left effective*/
+    display:table-cell;
+    }
+#green {
+      width: 10px;
+      height: 10px;
+      -webkit-border-radius: 25px;
+      -moz-border-radius: 25px;
+      border-radius: 25px;
+      background: green;
+			left:-5%;
+	    position:relative; /*makes left effective*/
+	    display:table-cell;
 
+    }
     </style>
 </head>
 
@@ -156,7 +178,10 @@ include('database/dbconfig.php');
 					</div>
 	 </div>
 <div class="hello">
+
 <?php
+$note="<a style='font-weight:bold'>*Active status updates on login/logout events.</a>";
+echo $note;
 $user = $_SESSION['user_id'];
 $m="zmessage_";
 $m.=$_SESSION['user_id'];
@@ -169,18 +194,29 @@ if (mysqli_num_rows($result) > 0) {
  while($row = mysqli_fetch_assoc($result)) {
 
 	 $receiver_id=$row["sendto"];
-   $sql1 = "SELECT name,user_id from user where user_id='$receiver_id'";
+   $sql1 = "SELECT name,user_id,active_status, active_status_date from user where user_id='$receiver_id'";
    $result1 = mysqli_query($link, $sql1);
    if (mysqli_num_rows($result1) > 0) {
      while($row1 = mysqli_fetch_assoc($result1)) {
 
 ?>
-<form class="form-container" action="chat" id="form" method="POST" enctype="multipart/form-data">
+<form class="form-container" align="center" style="margin:10px" action="chat" id="form" method="POST" enctype="multipart/form-data">
 	<input type="hidden" name="user_id" value="<?php echo $row1["user_id"] ?>">
 
 	<input type="hidden" name="name" value="<?php echo $row1["name"] ?>">
-
-<button type="submit" id="submit" name="submit" class="container1" style="text-align: center;cursor: pointer;width:100%"><h3><?php echo $row1["name"] ?></h3></button>
+<div class="card border-success mb-3" style="max-width: 200rem;">
+	<button type="submit" id="submit" name="submit" class="card-header bg-transparent border-success" style="text-align: center;cursor: pointer;"><h3><?php echo $row1["name"] ?></h3></button>
+<div class="card-footer bg-transparent border-success">
+	<?php if($row1["active_status"]=="Online")
+	{
+		$ok='<span class="text-success" ><div style="font-weight:bold"><div id="green" style="display:inline-block;"></div>Online</div></br>';
+	}else {
+		$ok='<span class="text-danger" ><div style="font-weight:bold"><div id="red" style="display:inline-block;"></div>Offline</div></br>';
+	}
+	echo $ok; ?></span>
+	<span class="text-muted">Update: <?php echo date("M j, Y g:i A", strtotime($row1["active_status_date"])); ?></span>
+</div>
+</div>
 </form>
 <?php
 }} }

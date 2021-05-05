@@ -15,6 +15,12 @@ date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL
 )";
 $resultt=mysqli_query($link,$sql) or die(mysqli_error($link));
 
+$active="UPDATE user
+SET active_status = 'Online'
+WHERE user_id=".$_SESSION['user_id'];
+$statement = $connection->prepare($active);
+$statement->execute();
+
 $sql="SELECT * FROM user where email='$email'";
 $result=mysqli_query($link,$sql);
 $data=array();

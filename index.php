@@ -432,7 +432,7 @@ if(isset($_REQUEST['advancesearch']))
                      <div class="card-flyer">
                          <div class="text-box">
                              <div class="image-box">
-                 <img style="width: 100%;height: 15vw;object-fit: cover;"class="card-img card-img-bottom img-fluid" src="<?php echo $row1['image'];?>" alt="alt" >
+                 <img style="width: 100%;object-fit: cover;"class="card-img card-img-bottom img-fluid" src="<?php echo $row1['image'];?>" >
                  </div>
                  <div class="text-container">
                  <h6 style="font-weight: bold;"><?php echo $row1['name'];?></h6>

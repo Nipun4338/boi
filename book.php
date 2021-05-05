@@ -297,7 +297,7 @@ img.hover-shadow {
         <?php foreach ($data3 as $row3) {
           $i++;
         ?>
-        <div class="column">
+        <div class="column" >
           <img src="<?php echo $row3['image']; ?>" style="width:100%" onclick="openModal();currentSlide(<?php echo $i; ?>)" class="hover-shadow cursor">
         </div>
       <?php } ?>
