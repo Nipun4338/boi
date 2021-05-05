@@ -17,10 +17,8 @@ type TEXT NULL,
 date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL
 )";
 $resultt=mysqli_query($link,$sql) or die(mysqli_error($link));
-
-$active="UPDATE user
-SET active_status = 'Online', date='$datetime'
-WHERE user_id=".$_SESSION['user_id'];
+$user1=$_SESSION['user_id'];
+$active="UPDATE user SET active_status='Online', active_status_date='$datetime' WHERE user_id='$user1'";
 $statement = $connection->prepare($active);
 $statement->execute();
 
