@@ -26,21 +26,33 @@ else {
  foreach($data as $row)
  {
    if ($row["type"]=="receive") {
+     $sql1 = "Update $m1 set status='seen' where sendto='$user' and type='send'";
+     $result1 = mysqli_query($link, $sql1);
+
      $output .='<div  class="container1" style="background:#fff;">
        <h6 style="font-weight:bold;color:#a08">'.$_SESSION["receive_name"].'</h6>
      <p style="font-size:rfs-fluid-value(1.125rem);font-family:Helvetica">'.html_entity_decode(nl2br($row["message"])).'</p>
-     <i style="color:#34B7F1" class="fa fa-check time-right" ></i>
      <span style="font-size:12px;font-family:Helvetica" class="time-right">'.date("M j, Y g:i A", strtotime($row["date"])).'</span>
 
      </div>';
 
    }
    else if ($row["type"]=="send"){
-     $output .='<div  class="container2" style="background:#fff;" >
-     <p style="font-size:rfs-fluid-value(1.125rem);font-family:Helvetica">'.html_entity_decode(nl2br($row["message"])).'</p>
-     <i style="color:#34B7F1" class="fa fa-check time-right" ></i>
-     <span style="font-size:12px;font-family:Helvetica" class="time-right">'.date("M j, Y g:i A", strtotime($row["date"])).'</span>
-     </div>';
+     if($row["status"]=='seen')
+     {
+       $output .='<div  class="container2" style="background:#fff;" >
+       <p style="font-size:rfs-fluid-value(1.125rem);font-family:Helvetica">'.html_entity_decode(nl2br($row["message"])).'</p>
+       <i style="color:#34B7F1" class="fa fa-check time-right" ></i>
+       <span style="font-size:12px;font-family:Helvetica" class="time-right">'.date("M j, Y g:i A", strtotime($row["date"])).'</span>
+       </div>';
+     }
+     else {
+       $output .='<div  class="container2" style="background:#fff;" >
+       <p style="font-size:rfs-fluid-value(1.125rem);font-family:Helvetica">'.html_entity_decode(nl2br($row["message"])).'</p>
+       <i class="fa fa-check time-right" ></i>
+       <span style="font-size:12px;font-family:Helvetica" class="time-right">'.date("M j, Y g:i A", strtotime($row["date"])).'</span>
+       </div>';
+     }
    }
  }
 
