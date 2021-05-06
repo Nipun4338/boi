@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+session_destroy();
 session_start();
 include('database/dbconfig.php');
 include('includes/header.php');
