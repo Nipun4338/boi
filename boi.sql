@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2021 at 04:33 PM
+-- Generation Time: May 06, 2021 at 09:08 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.4.16
 
@@ -26,23 +26,6 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `adminpanel`
 --
-Drop table adminpanel;
-drop table author;
-drop table books;
-drop table category;
-drop table comments;
-drop table contact;
-drop table images;
-drop table messages;
-drop table slider1;
-drop table slider2;
-drop table user;
-drop table wishlist;
-drop table zcomments_7;
-drop table zcomments_20;
-drop table zcomments_22;
-drop table zmessage_19;
-drop table zmessage_35;
 
 CREATE TABLE `adminpanel` (
   `admin_id` int(11) NOT NULL,
@@ -171,22 +154,6 @@ CREATE TABLE `contact` (
   `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `contact`
---
-
-INSERT INTO `contact` (`id`, `name`, `email`, `phone`, `message`, `date`) VALUES
-(1, 'Nipun Paul', 'nipun4338@gmail.com', '+8801778546619', 'boi', '2021-04-18 21:34:07'),
-(2, 'Nipun Paul', 'nipun4338@gmail.com', '+8801778546619', 'ok', '2021-04-18 21:56:56'),
-(3, '', '', '', '', '2021-04-18 22:04:03'),
-(4, '', '', '', '', '2021-04-18 22:04:51'),
-(5, 'Nipun Paul', 'nipun4338@gmail.com', '+8801778546619', 'hi', '2021-04-18 22:08:09'),
-(6, 'Nipun Paul', 'nipun4338@gmail.com', '+8801778546619', 'ok', '2021-04-18 22:09:27'),
-(7, 'Nipun Paul', 'nipun4338@gmail.com', '+8801778546619', 'ok', '2021-04-18 22:13:52'),
-(8, 'Nipun Paul', 'nipun4338@gmail.com', '+8801778546619', 'ok', '2021-04-21 22:31:36'),
-(9, 'Nipun Paul', 'nipun4338@gmail.com', '+8801778546619', 'kire', '2021-04-21 22:31:48'),
-(10, 'Nipun Paul', 'nipun4338@gmail.com', '+8801778546619', 'vai', '2021-04-21 22:32:25');
-
 -- --------------------------------------------------------
 
 --
@@ -213,6 +180,26 @@ INSERT INTO `images` (`image_id`, `book_id`, `image`, `status`, `created_date`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `mail`
+--
+
+CREATE TABLE `mail` (
+  `mail_id` int(11) NOT NULL,
+  `subject` text NOT NULL,
+  `body` text NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `mail`
+--
+
+INSERT INTO `mail` (`mail_id`, `subject`, `body`, `date`) VALUES
+(1, 'Working?', 'yep', '2021-05-06 07:06:08');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `messages`
 --
 
@@ -224,21 +211,6 @@ CREATE TABLE `messages` (
   `message_type` text DEFAULT NULL,
   `datesent` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `messages`
---
-
-INSERT INTO `messages` (`message_id`, `message`, `sender_id`, `receiver_id`, `message_type`, `datesent`) VALUES
-(1, 'Ok', 16, 16, 'dfg', '2021-04-17 00:42:24'),
-(8, 'ki', 16, 16, NULL, '2021-04-17 12:54:13'),
-(9, 'ko', 16, 16, NULL, '2021-04-17 12:59:07'),
-(10, 'komu na', 16, 16, NULL, '2021-04-17 13:01:22'),
-(11, 'kire vai', 16, 17, NULL, '2021-04-17 14:36:09'),
-(12, 'kire vai', 16, 17, NULL, '2021-04-17 14:36:19'),
-(13, 'kire vai', 16, 17, NULL, '2021-04-17 14:37:33'),
-(14, 'hi', 16, 16, NULL, '2021-04-17 15:04:48'),
-(15, 'ok', 17, 16, NULL, '2021-04-17 15:06:32');
 
 -- --------------------------------------------------------
 
@@ -310,17 +282,19 @@ CREATE TABLE `user` (
   `image` text NOT NULL,
   `status` int(11) NOT NULL,
   `created_date` datetime NOT NULL,
-  `updated_date` datetime NOT NULL
+  `updated_date` datetime NOT NULL,
+  `active_status` varchar(255) DEFAULT NULL,
+  `active_status_date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `name`, `email`, `phone`, `address`, `password`, `hash`, `image`, `status`, `created_date`, `updated_date`) VALUES
-(19, 'Test', 'nipun4337@gmail.com', '01778546619', 'Chaity 3, Upazilla Quarter, Joynagar', 'b9e88579af34e13717f84345039b8b4d', '8757150decbd89b0f5442ca3db4d0e0e', 'images/users/user_pic_nipun4337@gmail.com.png', 1, '2021-04-20 14:06:19', '2021-04-20 14:06:19'),
-(21, 'Test 2', 'oprantor78@gmail.com', '01778546619', 'Chaity 3, Upazilla Quarter, Joynagar', 'b9e88579af34e13717f84345039b8b4d', 'f4f6dce2f3a0f9dada0c2b5b66452017', 'images/users/user_pic_01778546619956512780.png', 2, '2021-04-20 16:32:24', '2021-04-20 16:32:24'),
-(35, 'Nipun Paul', 'nipun4338@gmail.com', '01778546619', 'Chaity 3, Upazilla Quarter, Joynagar', 'b9e88579af34e13717f84345039b8b4d', '4ea06fbc83cdd0a06020c35d50e1e89a', 'images/users/default-image.jpg', 1, '2021-05-04 11:30:47', '2021-05-04 11:30:47');
+INSERT INTO `user` (`user_id`, `name`, `email`, `phone`, `address`, `password`, `hash`, `image`, `status`, `created_date`, `updated_date`, `active_status`, `active_status_date`) VALUES
+(19, 'Test', 'nipun4337@gmail.com', '01778546619', 'Chaity 3, Upazilla Quarter, Joynagar', 'b9e88579af34e13717f84345039b8b4d', '8757150decbd89b0f5442ca3db4d0e0e', 'images/users/user_pic_nipun4337@gmail.com.png', 1, '2021-04-20 14:06:19', '2021-04-20 14:06:19', 'Online', '2021-05-06 07:04:36'),
+(21, 'Test 2', 'oprantor78@gmail.com', '01778546619', 'Chaity 3, Upazilla Quarter, Joynagar', 'b9e88579af34e13717f84345039b8b4d', 'f4f6dce2f3a0f9dada0c2b5b66452017', 'images/users/user_pic_01778546619956512780.png', 2, '2021-04-20 16:32:24', '2021-04-20 16:32:24', NULL, '2021-05-06 07:03:18'),
+(35, 'Nipun Paul', 'nipun4338@gmail.com', '01778546619', 'Chaity 3, Upazilla Quarter, Joynagar', 'b9e88579af34e13717f84345039b8b4d', '4ea06fbc83cdd0a06020c35d50e1e89a', 'images/users/default-image.jpg', 1, '2021-05-04 11:30:47', '2021-05-04 11:30:47', 'Online', '2021-05-06 07:06:41');
 
 -- --------------------------------------------------------
 
@@ -337,45 +311,6 @@ CREATE TABLE `wishlist` (
   `updated_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `wishlist`
---
-
-INSERT INTO `wishlist` (`wishlist_id`, `book_id`, `user_id`, `status`, `created_date`, `updated_date`) VALUES
-(10, 0, 16, 1, '2021-04-16 23:05:48', '2021-04-16 23:05:48'),
-(20, 17, 16, 1, '2021-04-18 20:25:48', '2021-04-18 20:25:48'),
-(21, 16, 16, 1, '2021-04-18 20:26:01', '2021-04-18 20:26:01');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `zcomments_7`
---
-
-CREATE TABLE `zcomments_7` (
-  `comment_id` int(6) UNSIGNED NOT NULL,
-  `parent_comment_id` int(6) DEFAULT NULL,
-  `comment` text DEFAULT NULL,
-  `sender_name` text DEFAULT NULL,
-  `status` int(6) DEFAULT NULL,
-  `date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `zcomments_20`
---
-
-CREATE TABLE `zcomments_20` (
-  `comment_id` int(6) UNSIGNED NOT NULL,
-  `parent_comment_id` int(6) DEFAULT NULL,
-  `comment` text DEFAULT NULL,
-  `sender_name` text DEFAULT NULL,
-  `status` int(6) DEFAULT NULL,
-  `date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 -- --------------------------------------------------------
 
 --
@@ -390,6 +325,61 @@ CREATE TABLE `zcomments_22` (
   `status` int(6) DEFAULT NULL,
   `date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `zcomments_22`
+--
+
+INSERT INTO `zcomments_22` (`comment_id`, `parent_comment_id`, `comment`, `sender_name`, `status`, `date`) VALUES
+(1, 0, 'hm', 'Nipun Paul', NULL, '2021-05-06 07:06:56');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `zmessage_19`
+--
+
+CREATE TABLE `zmessage_19` (
+  `message_id` int(6) UNSIGNED NOT NULL,
+  `sendto` int(6) NOT NULL,
+  `message` text NOT NULL,
+  `status` text DEFAULT NULL,
+  `type` text DEFAULT NULL,
+  `date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `zmessage_19`
+--
+
+INSERT INTO `zmessage_19` (`message_id`, `sendto`, `message`, `status`, `type`, `date`) VALUES
+(1, 35, 'hm', 'seen', 'send', '2021-05-06 07:05:02'),
+(2, 35, 'vai', 'seen', 'send', '2021-05-06 07:05:10'),
+(3, 35, 'bolen', NULL, 'receive', '2021-05-06 07:05:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `zmessage_35`
+--
+
+CREATE TABLE `zmessage_35` (
+  `message_id` int(6) UNSIGNED NOT NULL,
+  `sendto` int(6) NOT NULL,
+  `message` text NOT NULL,
+  `status` text DEFAULT NULL,
+  `type` text DEFAULT NULL,
+  `date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `zmessage_35`
+--
+
+INSERT INTO `zmessage_35` (`message_id`, `sendto`, `message`, `status`, `type`, `date`) VALUES
+(1, 19, 'hm', NULL, 'receive', '2021-05-06 07:04:57'),
+(2, 19, 'vai', NULL, 'receive', '2021-05-06 07:05:09'),
+(3, 19, 'bolen', 'seen', 'send', '2021-05-06 07:05:34');
 
 --
 -- Indexes for dumped tables
@@ -438,6 +428,12 @@ ALTER TABLE `images`
   ADD PRIMARY KEY (`image_id`);
 
 --
+-- Indexes for table `mail`
+--
+ALTER TABLE `mail`
+  ADD PRIMARY KEY (`mail_id`);
+
+--
 -- Indexes for table `messages`
 --
 ALTER TABLE `messages`
@@ -468,22 +464,22 @@ ALTER TABLE `wishlist`
   ADD PRIMARY KEY (`wishlist_id`);
 
 --
--- Indexes for table `zcomments_7`
---
-ALTER TABLE `zcomments_7`
-  ADD PRIMARY KEY (`comment_id`);
-
---
--- Indexes for table `zcomments_20`
---
-ALTER TABLE `zcomments_20`
-  ADD PRIMARY KEY (`comment_id`);
-
---
 -- Indexes for table `zcomments_22`
 --
 ALTER TABLE `zcomments_22`
   ADD PRIMARY KEY (`comment_id`);
+
+--
+-- Indexes for table `zmessage_19`
+--
+ALTER TABLE `zmessage_19`
+  ADD PRIMARY KEY (`message_id`);
+
+--
+-- Indexes for table `zmessage_35`
+--
+ALTER TABLE `zmessage_35`
+  ADD PRIMARY KEY (`message_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -523,7 +519,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `contact`
 --
 ALTER TABLE `contact`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `images`
@@ -532,10 +528,16 @@ ALTER TABLE `images`
   MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
+-- AUTO_INCREMENT for table `mail`
+--
+ALTER TABLE `mail`
+  MODIFY `mail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `slider1`
@@ -559,25 +561,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `wishlist`
 --
 ALTER TABLE `wishlist`
-  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
-
---
--- AUTO_INCREMENT for table `zcomments_7`
---
-ALTER TABLE `zcomments_7`
-  MODIFY `comment_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `zcomments_20`
---
-ALTER TABLE `zcomments_20`
-  MODIFY `comment_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `zcomments_22`
 --
 ALTER TABLE `zcomments_22`
-  MODIFY `comment_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `comment_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `zmessage_19`
+--
+ALTER TABLE `zmessage_19`
+  MODIFY `message_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `zmessage_35`
+--
+ALTER TABLE `zmessage_35`
+  MODIFY `message_id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

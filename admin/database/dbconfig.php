@@ -1,9 +1,9 @@
 <?php
 
 $server_name = "us-cdbr-east-03.cleardb.com";
-$db_username = "b7c37092a91da5";
-$db_password = "1ec492d3";
-$db_name = "heroku_6f64f08356c88c1";
+$db_username = "b59c5d3fb540d0";
+$db_password = "cbc81910";
+$db_name = "heroku_636d30189854019";
 $host="us-cdbr-east-03.cleardb.com";
 $user="b7c37092a91da5";
 $password="1ec492d3";
