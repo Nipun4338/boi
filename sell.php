@@ -1,20 +1,7 @@
 <?php
 include("security.php");
 include('database/dbconfig.php');
-$sql="SELECT distinct author FROM author order by author";
-$result=mysqli_query($link,$sql) or die(mysqli_error($link));
-$data=array();
-$noOfRows=mysqli_num_rows($result);
-if($noOfRows){
-  while($row=mysqli_fetch_assoc($result)){
 
-      /*echo "<pre>";
-      print_r($row);*/
-      array_push($data,$row);
-      //echo "</pre>";
-
-  }
-}
 ?>
 
 <!DOCTYPE html>
@@ -122,13 +109,8 @@ if($noOfRows){
   <a href="instructions"><h4 style="color:#0275d8">**New Here? Take a quick look</h4></a>
   <form action="script.php" enctype="multipart/form-data" method="POST">
   <div class="form-group" style="margin:3% 10% 2% 10%">
-      <h4>Select Author</h4>
-      <select name="authorselect" class="form-select" aria-label="Default select example">
-        <?php foreach($data as $row){
-
-        ?>
-        <option value="<?php echo $row['author']; ?>"><?php echo $row['author'] ?></option>
-      <?php } ?>
+      <h4>Author Name</h4>
+      <input type="text" class="form-control" name="author" value="" placeholder="Enter Author Name" required>
       </select>
   </div>
   <div class="form-group" style="margin:3% 10% 2% 10%">

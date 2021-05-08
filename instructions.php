@@ -61,7 +61,7 @@ include('database/dbconfig.php');
     width: 80%;
   }
 	.hello {
-	    height: 70vh;
+			height: 70vh;
       font-family: 'Roboto', sans-serif;
 	}
 
@@ -78,15 +78,15 @@ include('database/dbconfig.php');
 		 <div class="container">
 		 	<h6 style="font-weight:bold">1. Open an account on <a href="subscribe"> Boi</a> .</h6>
 			<h6 style="font-weight:bold">2. Go to <a href="sell"> SELL</a> .</h6>
-			<h6 style="font-weight:bold">3. Select the author name and category from the boxes. If not available, you can make a request to this page to add your author and category.<br> Remember, to promote your book, you must fill-up these correctly.</h6>
-			<h6 style="font-weight:bold">4. Choose all other options correctly.</h6>
-			<h6 style="font-weight:bold">5. Choose image for your book. You can add multiple images, but your first image will be used as a cover image.</h6>
-			<h6 style="font-weight:bold">6. Submit!</h6><br>
+			<h6 style="font-weight:bold">3. Fillup all other options correctly.</h6>
+			<h6 style="font-weight:bold">4. Choose image for your book. You can add multiple images, but your first image will be used as a cover image.</h6>
+			<h6 style="font-weight:bold">5. Submit!</h6><br>
 			<h6 style="font-weight:bold">We will review your ad before make it publish. After published or any kind of change, you will get an email.</h6><br>
 			<h5 style="font-weight:bold;color:#df4759">**Incorrect or inappropriate ad will not be published and the user will be banned or get penalty.</h5>
-			<p></p>
-		 </div>
+			<p></p><br>
 
+
+</div>
 </div>
 </body>
 <div class="progress-container fixed-bottom">

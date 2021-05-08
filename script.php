@@ -12,7 +12,7 @@ include('database/dbconfig.php');
   {
       $user=$_SESSION['user_id'];
       $book = $_POST['book'];
-      $author = $_POST['authorselect'];
+      $author = $_POST['author'];
       $category=$_POST['category'];
       $price = $_POST['price'];
       $details = $_POST['details'];
