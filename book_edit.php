@@ -102,7 +102,7 @@ include('database/dbconfig.php');
                </div>
                <div class="form-group">
                    <label>Details</label>
-                   <input type="text" name="edit_details" value="<?php  echo $row['present_condition']; ?>" class="form-control" required>
+                   <textarea type="text" cols="100" name="edit_details"  class="form-control" required><?php  echo $row['present_condition']; ?></textarea>
                </div>
 
                <a href="profile" class="btn btn-danger"> CANCEL </a>

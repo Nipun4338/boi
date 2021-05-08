@@ -47,7 +47,7 @@ include('database/dbconfig.php');
               </div>
               <div class="form-group">
                   <label>Details</label>
-                  <input type="text" name="edit_details" value=<?php  echo $row['present_condition']; ?> class="form-control" required>
+                  <textarea type="text" name="edit_details" cols="100"  class="form-control" required><?php  echo $row['present_condition']; ?></textarea>
               </div>
               <div class="form-group">
                   <label>Status</label>
