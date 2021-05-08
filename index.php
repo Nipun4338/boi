@@ -80,7 +80,11 @@ if(isset($_REQUEST['advancesearch']))
     {
       $sql="SELECT * FROM books where status=1 AND price BETWEEN '$min' AND '$max' And name LIKE '$book%'";
     }
-    else {
+    else if($book!="" && $author!="")
+    {
+      $sql="SELECT * FROM books where status=1 AND price BETWEEN '$min' AND '$max' And name LIKE '$book%' And author LIKE '$author%'";
+    }
+    else{
       $sql="SELECT * FROM books where status=1 AND price BETWEEN '$min' AND '$max'";
     }
 
