@@ -98,7 +98,7 @@ if(isset($_REQUEST['delete']))
                                     </form>
                                   </td>
                                   <td>
-                                    <form class="form-container" action="bookinfo.php" method="POST" enctype="multipart/form-data">
+                                    <form class="form-container" action="bookinfopub.php" method="POST" enctype="multipart/form-data">
                                       <input type="hidden" name="book_id" value="<?php echo $row["book_id"] ?>">
                                       <input type="hidden" name="user_id" value="<?php echo $row["owner_id"] ?>">
                        							 <button type="submit" id="submit" name="delete"  class="btn btn-danger btn-block submit2">DELETE</button>
