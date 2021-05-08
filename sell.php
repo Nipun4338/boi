@@ -111,7 +111,6 @@ include('database/dbconfig.php');
   <div class="form-group" style="margin:3% 10% 2% 10%">
       <h4>Author Name</h4>
       <input type="text" class="form-control" name="author" value="" placeholder="Enter Author Name" required>
-      </select>
   </div>
   <div class="form-group" style="margin:3% 10% 2% 10%">
 
