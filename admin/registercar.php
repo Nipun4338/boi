@@ -49,7 +49,7 @@ if($noOfRows){
 
                 <select name="brandselect" class="form-select" aria-label="Default select example">
                   <?php foreach($data as $row){
-                    
+
                   ?>
                   <option value="<?php echo $row['brand_id']; ?>"><?php echo $row['brand_name'] ?></option>
                 <?php } ?>

@@ -22,7 +22,7 @@ include('database/dbconfig.php');
       $datetime = '';
       $datetime=date('Y-m-d H:i:s');
       $query = "INSERT INTO books (name,author,owner_id,category,price,present_condition,location,status,created_date,updated_date)
-      VALUES ('$book','$author','$user','$category','$price','$details','$location','1','$datetime','$datetime')";
+      VALUES ('$book','$author','$user','$category','$price','$details','$location','2','$datetime','$datetime')";
       $query_run = mysqli_query($connection, $query);
 
       $last_id = mysqli_insert_id($connection);

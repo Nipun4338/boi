@@ -22,9 +22,17 @@ include('database/dbconfig.php');
         $query = "SELECT * FROM books WHERE book_id='$id' ";
         $query_run = mysqli_query($connection, $query);
         foreach ($query_run as $row) {
+          $query1 = "SELECT * FROM user WHERE user_id=".$row['owner_id']." ";
+          $query_run1 = mysqli_query($connection, $query1);
+          foreach ($query_run1 as $row1) {
+            $mail=$row1["email"];
+            $mail_name=$row1["name"];
+          }
           ?>
             <form action="scripts.php" enctype="multipart/form-data" method="POST">
               <input type="hidden" name="edit_id_book" value="<?php echo $row['book_id']?>">
+              <input type="hidden" name="mail" value="<?php echo $row1["email"]?>">
+              <input type="hidden" name="mail_name" value="<?php echo $row1["name"]?>">
               <div class="form-group">
                   <label> Book name </label>
                   <input type="text" name="edit_car_name" value="<?php  echo $row['name']; ?>" class="form-control" required >

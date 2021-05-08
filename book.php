@@ -14,7 +14,7 @@ else {
 
 $sql="";
 
-$sql="SELECT * FROM books where book_id='$book'";
+$sql="SELECT * FROM books where book_id='$book' and status='1'";
 
 $result=mysqli_query($link,$sql) or die(mysqli_error($link));
 $data=array();

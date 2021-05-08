@@ -163,7 +163,7 @@ if($noOfRows){
 
       <div class="table-responsive">
         <?php
-        $query1 = "SELECT * FROM books where owner_id='$user'";
+        $query1 = "SELECT * FROM books where owner_id='$user' order by created_date desc";
         $query_run1 = mysqli_query($connection, $query1);
     ?>
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

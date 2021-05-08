@@ -47,7 +47,7 @@ if(isset($_REQUEST['delete']))
 
     <div class="table-responsive">
       <?php
-      $query = "SELECT * FROM books where status='2' order by created_date desc";
+      $query = "SELECT * FROM books where status='1' order by created_date desc";
       $query_run1 = mysqli_query($connection, $query);
   ?>
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

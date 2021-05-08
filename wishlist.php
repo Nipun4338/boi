@@ -9,7 +9,7 @@ if(isset($_SESSION["username"]) && isset($_GET["book"]))
   date_default_timezone_set("Asia/Dhaka");
   $datetime = '';
   $datetime=date('Y-m-d H:i:s');
-  $sql="SELECT * from wishlist where book_id='$book' and user_id='$user'";
+  $sql="SELECT * from wishlist where book_id='$book' and user_id='$user' order by created_date desc";
   $result=mysqli_query($link,$sql) or die(mysqli_error($link));
   $noOfRows=mysqli_num_rows($result);
   if($noOfRows>0)
@@ -135,7 +135,7 @@ if(isset($_REQUEST['delete']))
    				$c_id = $_SESSION['user_id'];
 
    				$sql = "SELECT wishlist.wishlist_id as wishlist_id, wishlist.book_id as book_id, books.name as name, books.author as author
-          , wishlist.created_date as wishlist_date, books.price as price FROM wishlist JOIN books on books.book_id=wishlist.book_id WHERE wishlist.user_id='$c_id'";
+          , wishlist.created_date as wishlist_date, books.price as price FROM wishlist JOIN books on books.book_id=wishlist.book_id WHERE wishlist.user_id='$c_id' order by wishlist.created_date desc";
    				$result2 = mysqli_query($link, $sql);
 
    				if (mysqli_num_rows($result2) > 0) {

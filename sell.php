@@ -117,8 +117,9 @@ if($noOfRows){
   include('includes/nav.php');
    ?>
 
-<h1 style="text-align:center;border: 2px solid #8989;margin:10px">Select Your Book</h1>
+<h1 style="text-align:center;border: 2px solid #8989;margin:10px">Entry Your Book</h1>
 <div class="darker" style="text-align:center;border: 2px solid #8989;margin:10px">
+  <a href="instructions"><h4 style="color:#0275d8">**New Here? Take a quick look</h4></a>
   <form action="script.php" enctype="multipart/form-data" method="POST">
   <div class="form-group" style="margin:3% 10% 2% 10%">
       <h4>Select Author</h4>

@@ -94,6 +94,25 @@ if (isset($_POST["updatebtn"])) {
     $id=$_POST['edit_id_book'];
     $details = $_POST['edit_details'];
     $status = $_POST['edit_status'];
+    $mailid=$_POST["mail"];
+    $mail_name=$_POST["mail_name"];
+    $mail=new PHPMailer(true);
+    $mail->isSMTP();
+    $mail->Host='smtp.gmail.com';
+    $mail->SMTPAuth=true;
+    $mail->Username='boi.yourbook@gmail.com';
+    $mail->Password='boi@boi.';
+    $mail->SMTPSecure=PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port=587;
+    $mail->setFrom('boi.yourbook@gmail.com', 'Boi');
+    $mail->isHTML(true);
+    $mail->Subject="Regarding Your Book";
+    $mail->Body="<h3>Greetings, ".$mail_name."!</h3><br/>
+    <p>Your book has been published/changed.</p>
+    <p><a href='http://boi-yourbook.herokuapp.com/book?book=".$id."'>Please check it out!</a></p><br/>
+    <p>Thank you for being with us!</p><p class='font-weight:bold'>It means a lot!</p><br>
+    <h1>Boi</h1>";
+    $mail->addBCC($mailid);
 
     date_default_timezone_set("Asia/Dhaka");
     $datetime = '';
@@ -104,6 +123,7 @@ if (isset($_POST["updatebtn"])) {
 
     if($query_run)
     {
+      $mail->send();
       $_SESSION['success']="Book data is updated";
       header('Location: bookinfo.php');
     }
@@ -279,15 +299,6 @@ if (isset($_POST["updatebtnbrand"])) {
 
 
 }
-
-
-
-
-
-
-
-
-
 
 
 
