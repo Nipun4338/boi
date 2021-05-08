@@ -121,14 +121,23 @@ if($noOfRows){
     <div class="col-lg-6 col-md-6 col-sm-6">
       <img style="float:left;border-radius: 50%;" src="<?php echo $row["image"] ?>" height="200px" width="200px">
     </div>
-		<div class="col-lg-6 col-md-6 col-sm-6" style="border:1px solid #ddd; color:#666">
-				<h4 style="border-bottom:1px solid #ddd;padding:10px">Personal Details</h4>
-				<h4>Name:  <?php echo $row['name']?></h4>
-				<h4>Email: <?php echo $row['email']?></h4>
-				<h4>Cell: <?php echo $row['phone']?></h4>
+    <div class="col-lg-6 col-md-6 col-sm-6" id="accordion">
+		<div class="card" >
+      <div class="card-header bg-warning text-white" style="cursor: pointer;" role="tab" id="name">
+        <h4 class="mb-0" data-toggle="collapse" data-target="#mainname">
+          <?php echo $row['name']?></h4>
+
+      </div>
+      <div class="collapse show" id="mainname" data-parent="#accordion">
+
+        <div class="card-body">
+          <h4>Email: <?php echo $row['email']?></h4>
+  				<h4>Cell: <?php echo $row['phone']?></h4>
+        </div>
+        </div>
 
 			</div>
-
+</div>
 			<?php
       $user=$_SESSION["user_id"];
 		}
