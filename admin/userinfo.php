@@ -89,7 +89,7 @@ if(isset($_REQUEST['delete']))
                                 <td><?php  echo $row['user_id']; ?></td>
                                 <td><?php  echo $row['name']; ?></td>
                                 <td><?php  echo $row['email']; ?></td>
-                                <td><img src="<?php echo $row['image']; ?>" height="50px" width="50px"/></td>
+                                <td><img src="../<?php echo $row['image']; ?>" height="50px" width="50px"/></td>
                                 <td><?php  echo $row['phone']; ?></td>
                                 <td><?php  echo $row['image']; ?></td>
                                 <td><?php  echo $row['status']; ?></td>

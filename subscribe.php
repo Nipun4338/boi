@@ -38,12 +38,18 @@ $datetime = '';
 			 }
 			 else {
          $target_dir="";
-         if(empty($_POST["file"]))
+         if(!isset($_FILES['file_upload']) || $_FILES['file_upload']['error'] == UPLOAD_ERR_NO_FILE)
          {
-           $target_dir="https://ucarecdn.com/4d13fbd1-4dbf-4fc3-8a56-3cbb8fba76e4/";
+           $target_dir="images/users/default-image.jpg";
          }
          else{
-  	       $target_dir=$_POST["file"];
+           $random=rand();
+           $userFileName='user_pic_'.$user_phone.$random;
+  	       $imageType=strtolower(pathinfo($_FILES['file_upload']['name'], PATHINFO_EXTENSION));
+  	       $target_dir="images/users/".$userFileName.".".$imageType;
+  	       $target_file=$target_dir;
+  	       $temp_file=$_FILES['file_upload']['tmp_name'];
+  	       move_uploaded_file($temp_file, $target_file);
          }
          $hash1 = md5( rand(0,1000) );
 				 $sqlInsert='insert into user(name,email,phone,address,password,image,status,created_date,updated_date,hash)
@@ -220,9 +226,7 @@ $datetime = '';
             </script>
             <div class="form-group mb-3">
               <label>Upload Profile Picture</label>
-              <input type="hidden" name="file" role="uploadcare-uploader"
-              data-clearable="true"
-              data-crop="free"/>
+              <input type="file" name="file_upload" class="form-control"/>
             </div>
     			  <div class="form-check">
     			    <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -240,12 +244,7 @@ $datetime = '';
     </div>
     </div>
 
-    <script>
-      UPLOADCARE_LOCALE="en";
-      UPLOADCARE_LIVE=false;
-      UPLOADCARE_PUBLIC_KEY='17b0d03f8e05e110e978';
-    </script>
-    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" charset="utf-8"></script>
+
 </body>
 
 <div class="progress-container fixed-bottom">
