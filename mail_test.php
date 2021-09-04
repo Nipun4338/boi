@@ -27,9 +27,9 @@ $mail=new PHPMailer(true);
           <p>------------------------</p>
 
           <p>Please click this link to activate your account:</p>
-          <p><a href="http://boi-yourbook.herokuapp.com/">Click to Verify</a></p>
+          
 
           '; // Our message above including the link
 
-          
+          $mail->send();
  ?>
