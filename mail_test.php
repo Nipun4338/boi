@@ -14,7 +14,7 @@ $mail=new PHPMailer(true);
          $mail->Port=587;
          $mail->setFrom('boi.yourbook@gmail.com', 'Boi');
          $mail->addAddress("nipun4337@gmail.com");
-         $mail->isHTML(true);
+         $mail->isHTML(false);
          $mail->Subject="Registration Verification of Boi";
          $mail->Body= '
 
@@ -27,7 +27,7 @@ $mail=new PHPMailer(true);
           <p>------------------------</p>
 
           <p>Please click this link to activate your account:</p>
-          
+          <p><a href="http://boi-yourbook.herokuapp.com/">Click to Verify</a></p>
 
           '; // Our message above including the link
 
