@@ -43,7 +43,7 @@ $datetime = '';
            $target_dir="https://ucarecdn.com/4d13fbd1-4dbf-4fc3-8a56-3cbb8fba76e4/";
          }
          else{
-  	       $target_dir=$_POST["file"]
+  	       $target_dir=$_POST["file"];
          }
          $hash1 = md5( rand(0,1000) );
 				 $sqlInsert='insert into user(name,email,phone,address,password,image,status,created_date,updated_date,hash)
