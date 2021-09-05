@@ -23,6 +23,7 @@ function myFunction() {
 									 <li><a href="home">Home</a></li>
 									 <li><a href="sell">Sell</a></li>
 									 <li><a href="contact">Contact Us</a></li>
+                   <li><a href="credit">Credit</a></li>
 							 </ul>
 					 </div>
 
