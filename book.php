@@ -376,7 +376,7 @@ function showSlides(n) {
 
 
         </div>
-        <div class="col-md-5 col-lg-5 shadow-lg p-3 mb-5 bg-white rounded" style="margin: 15px; text-align: center;">
+        <div class="col-md-5 col-lg-5 shadow-lg p-3 mb-5 bg-white rounded" style="text-align: center;">
           <h6 style="font-weight: bold;padding: 10px 10px 0px 10px; font-size: 25px"><?php echo $row['name'];?></h6>
           by <a href="filter?author=<?php echo $row['author'];?>" class="" ><?php echo $row['author'];?></a><br>
           <a href="filter?category=<?php echo $row['category'];?>" class="badge badge-pill badge-secondary" ><?php echo $row['category'];?></a>
