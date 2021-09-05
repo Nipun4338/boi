@@ -139,7 +139,11 @@ include('database/dbconfig.php');
   </div>
   <div class="form-group" style="margin:3% 10% 2% 10%">
     <h4>Upload Book Image/s</h4>
-    <input type="file" name="file_upload[]" class="form-control"required multiple/>
+		<input type="hidden" name="file" role="uploadcare-uploader"
+    data-clearable="true"
+    data-crop="free"
+    data-images-only="true"
+    data-multiple="true"/>
     *Your first choosen image will be the cover image in the advertise.
   </div>
 
@@ -148,6 +152,12 @@ include('database/dbconfig.php');
     <button type="submit" name="registerbtnbook" class="btn btn-primary">Save</button>
 </div>
 </form>
+<script>
+  UPLOADCARE_LOCALE="en";
+  UPLOADCARE_LIVE=false;
+  UPLOADCARE_PUBLIC_KEY='17b0d03f8e05e110e978';
+</script>
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" charset="utf-8"></script>
 </div>
 
 

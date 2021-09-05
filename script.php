@@ -27,47 +27,29 @@ include('database/dbconfig.php');
 
       $last_id = mysqli_insert_id($connection);
       $target_dir2="";
-      if(!isset($_FILES['file_upload']) || $_FILES['file_upload']['error'] == UPLOAD_ERR_NO_FILE)
+      if(empty($_POST["file"]))
       {
-        $target_dir2="images/default-image.jpg";
+        $target_dir2="https://ucarecdn.com/4d13fbd1-4dbf-4fc3-8a56-3cbb8fba76e4/";
       }
       else{
-        $error=array();
-        $extension=array("jpeg","jpg","png","gif");
-        $i=0;
-
-        foreach($_FILES["file_upload"]["tmp_name"] as $key=>$tmp_name) {
-          $i++;
-              $file_name=$_FILES["file_upload"]["name"][$key];
-              $t=rand();
-              $st=strval($t);
-              $userFileName='book_pic_'.$st.$file_name;
-              $file_tmp=$_FILES["file_upload"]["tmp_name"][$key];
-              $ext=pathinfo($file_name,PATHINFO_EXTENSION);
-              $target_dir2="images/books/".$userFileName;
-              if(in_array($ext,$extension)) {
-                  if(!file_exists("images/books/".$userFileName)) {
-                      move_uploaded_file($file_tmp=$_FILES["file_upload"]["tmp_name"][$key],"images/books/".$userFileName);
-                      date_default_timezone_set("Asia/Dhaka");
-                      $datetime = '';
-                      $datetime=date('Y-m-d H:i:s');
-                      if($i==1)
-                      {
-                        $query2 = "Update books set image='$target_dir2' where book_id='$last_id'";
-                        $query_run2 = mysqli_query($connection, $query2);
-                      }
-                      $query1 = "INSERT INTO images (book_id,image,status,created_date,updated_date)
-                      VALUES ('$last_id','$target_dir2','1','$datetime','$datetime')";
-                      $query_run1 = mysqli_query($connection, $query1);
-                  }
-                  else {
-                  }
-              }
-              else {
-                  array_push($error,"$file_name, ");
-              }
-      }
-
+        $target_dir2=$_POST["file"];
+        $length=strlen($_POST["file"]);
+        $count=(int)$_POST["file"][$length-2];
+        for($x=0; $x<$count; $x++)
+        {
+          $target_dir2=$_POST["file"]."nth/".$x."/";
+          date_default_timezone_set("Asia/Dhaka");
+          $datetime = '';
+          $datetime=date('Y-m-d H:i:s');
+          if($i==1)
+          {
+            $query2 = "Update books set image='$target_dir2' where book_id='$last_id'";
+            $query_run2 = mysqli_query($connection, $query2);
+          }
+          $query1 = "INSERT INTO images (book_id,image,status,created_date,updated_date)
+          VALUES ('$last_id','$target_dir2','1','$datetime','$datetime')";
+          $query_run1 = mysqli_query($connection, $query1);
+        }
       if($query_run)
       {
           echo "done";
