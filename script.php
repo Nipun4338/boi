@@ -41,8 +41,11 @@ include('database/dbconfig.php');
           date_default_timezone_set("Asia/Dhaka");
           $datetime = '';
           $datetime=date('Y-m-d H:i:s');
-          $query2 = "Update books set image='$target_dir2' where book_id='$last_id'";
-          $query_run2 = mysqli_query($connection, $query2);
+          if($x==0)
+          {
+            $query2 = "Update books set image='$target_dir2' where book_id='$last_id'";
+            $query_run2 = mysqli_query($connection, $query2);
+          }
           $query1 = "INSERT INTO images (book_id,image,status,created_date,updated_date)
           VALUES ('$last_id','$target_dir2','1','$datetime','$datetime')";
           $query_run1 = mysqli_query($connection, $query1);
