@@ -80,7 +80,7 @@ if(isset($_REQUEST['delete']))
                             <tr>
                                 <td><?php  echo $row['book_id']; ?></td>
                                 <td><?php  echo $row['name']; ?></td>
-                                <td><img src="../<?php echo $row['image']; ?>" height="50px" width="50px"/></td>
+                                <td><img src="<?php echo $row['image']; ?>" height="50px" width="50px"/></td>
                                 <td><?php  echo $row['author']; ?></td>
                                 <td><?php  echo $row['owner_id']; ?></td>
                                 <td><?php  echo $row['price']; ?></td>
