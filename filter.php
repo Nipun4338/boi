@@ -323,7 +323,7 @@ a:active {
    ?>
    <h6 style="text-align:center">Found <?php echo $noOfRows; ?> result/s.</h6>
 
-   <div class="container" style="padding:0 0 40px 0">
+   <div class="container" style="margin:0 0 40px 0">
      <div class="row">
        <div class="col-md-3 card-body shadow-lg p-3 mb-5 rounded" style="background:#eee;text-shadow: black 0.05em 0.05em 0.1em;">
          <h5 class="" style="text-shadow: black 0.1em 0.1em 0.2em;padding: 5px;border-bottom:1px dotted #000">SORT</h5>
