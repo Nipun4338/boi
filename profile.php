@@ -128,9 +128,9 @@ if($noOfRows){
           <?php echo $row['name']?></h4>
 
       </div>
-      <div class="collapse show" id="mainname" data-parent="#accordion">
+      <div class="collapse show text-white" id="mainname" data-parent="#accordion">
 
-        <div class="card-body" style="background-image: url('images/books/book_pic_239577762favicon.jpg');background-repeat: no-repeat;">
+        <div class="card-body" style="background: linear-gradient(to bottom, rgba(0,0,255,0), rgba(0,0,255,.2));">
           <h4><?php echo $row['email']?></h4>
   				<h4><?php echo $row['phone']?></h4>
           <h4><?php echo $row['address']?></h4>
