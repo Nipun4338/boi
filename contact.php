@@ -11,7 +11,8 @@ if (isset($_POST["submit"])) {
     date_default_timezone_set("Asia/Dhaka");
     $datetime = '';
     $datetime=date('Y-m-d H:i:s');
-    $query="insert into contact(name,email,phone,message,date) values ('$name','$email','$phone','$message','$datetime')";
+    $query=sprintf("insert into contact(name,email,phone,message,date) values ('$name','$email','$phone','%s','$datetime')",
+    mysqli_real_escape_string($connection, $message));
     $query_run=mysqli_query($connection, $query);
     if($query_run)
     {
@@ -49,7 +50,8 @@ if (isset($_POST["submit"])) {
     date_default_timezone_set("Asia/Dhaka");
     $datetime = '';
     $datetime=date('Y-m-d H:i:s');
-    $query="insert into contact(name,email,phone,message,date) values ('$name','$email','$phone','$message','$datetime')";
+    $query=sprintf("insert into contact(name,email,phone,message,date) values ('$name','$email','$phone','%s','$datetime')",
+    mysqli_real_escape_string($connection, $message));
     $query_run=mysqli_query($connection, $query);
     if($query_run)
     {
