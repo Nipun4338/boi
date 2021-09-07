@@ -57,10 +57,10 @@ if($noOfRows){
 if(isset($_REQUEST['advancesearch']))
 {
   unset($data);
-  $book=$_POST["book"];
-  $author=$_POST["author"];
-  $min=$_POST["min"];
-  $max=$_POST["max"];
+  $book=$_GET["book"];
+  $author=$_GET["author"];
+  $min=$_GET["min"];
+  $max=$_GET["max"];
   if($book!="" || $author!="" || $min!="" || $max!="")
   {
     $sql="";
@@ -346,7 +346,7 @@ if(isset($_REQUEST['advancesearch']))
 
          <h1 style="text-align:center;">Search Filter</h1>
          <div style="border-right:2px solid #eee">
-           <form class="form-horizontal" action="home" method="POST">
+           <form class="form-horizontal" action="home" method="GET">
              <div class="form-group">
                <label class="col-lg-11 control-label">Book Name</label>
                <div class="col-lg-11">
