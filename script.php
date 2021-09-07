@@ -74,7 +74,8 @@ if (isset($_POST["updatebtnbook"])) {
   date_default_timezone_set("Asia/Dhaka");
   $datetime = '';
   $datetime=date('Y-m-d H:i:s');
-  $query="update books set price='$price',present_condition='$details', updated_date='$datetime' where book_id='$id'";
+  $query=sprintf("update books set price='$price',present_condition='%s', updated_date='$datetime' where book_id='$id'",
+  mysqli_real_escape_string($connection, $details));
   $query_run=mysqli_query($connection, $query);
 
   if($query_run)

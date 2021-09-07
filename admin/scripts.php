@@ -118,7 +118,8 @@ if (isset($_POST["updatebtn"])) {
     $datetime = '';
     $datetime=date('Y-m-d H:i:s');
 
-    $query="update books set present_condition='$details', status='$status', updated_date='$datetime' where book_id='$id'";
+    $query=sprintf("update books set present_condition='%s', status='$status', updated_date='$datetime' where book_id='$id'",
+    mysqli_real_escape_string($connection, $details));
     $query_run=mysqli_query($connection, $query);
 
     if($query_run)
@@ -501,8 +502,8 @@ if(isset($_POST['sendmail']))
         date_default_timezone_set("Asia/Dhaka");
         $datetime = '';
         $datetime=date('Y-m-d H:i:s');
-        $query = "INSERT INTO mail (subject,body,date)
-        VALUES ('$subject','$body','$datetime')";
+        $query = sprintf("INSERT INTO mail (subject,body,date)
+        VALUES ('%s','$body','$datetime')", mysqli_real_escape_string($connection, $subject));
         $query_run = mysqli_query($connection, $query);
     }
 
