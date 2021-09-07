@@ -38,11 +38,11 @@ if($error == '')
   date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL
   )";
   $result=mysqli_query($link,$sql) or die(mysqli_error($link));
- $query = "
+ $query = sprintf("
  INSERT INTO $book
  (parent_comment_id, comment, sender_name,date)
- VALUES ('$id', '$comment_content', '$comment_name', '$datetime')
- ";
+ VALUES ('$id', '%s', '$comment_name', '$datetime')
+ ", mysqli_real_escape_string($link, $comment_content));
  $statement = $connection->prepare($query);
  $statement->execute();
  $error = '<p class="text-danger">Comment Added.</p>';
