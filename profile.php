@@ -122,17 +122,18 @@ if($noOfRows){
       <img style="float:left;border-radius: 50%;" src="<?php echo $row["image"] ?>" height="200px" width="200px">
     </div>
     <div class="col-lg-6 col-md-6 col-sm-6" id="accordion">
-		<div class="card" >
-      <div class="card-header bg-warning text-white" style="cursor: pointer;" role="tab" id="name">
+		<div class="card" style="text-align: center;">
+      <div class="card-header bg-info text-white" style="cursor: pointer;" role="tab" id="name">
         <h4 class="mb-0" data-toggle="collapse" data-target="#mainname">
           <?php echo $row['name']?></h4>
 
       </div>
       <div class="collapse show" id="mainname" data-parent="#accordion">
 
-        <div class="card-body">
-          <h4>Email: <?php echo $row['email']?></h4>
-  				<h4>Cell: <?php echo $row['phone']?></h4>
+        <div class="card-body" style="background-image: url('images/books/book_pic_239577762favicon.jpg');background-repeat: no-repeat;background-image: linear-gradient(to bottom, rgba(0,0,255,0), rgba(0,0,255,.2));">
+          <h4><?php echo $row['email']?></h4>
+  				<h4><?php echo $row['phone']?></h4>
+          <h4><?php echo $row['address']?></h4>
         </div>
         </div>
 
