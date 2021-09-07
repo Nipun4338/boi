@@ -15,11 +15,11 @@ $datetime = '';
 $datetime=date('Y-m-d H:i:s');
 $message1=htmlspecialchars($_POST["commenton"]);
 
-$sql2="insert into $m(message,sendto,type,date)
-values('$message1','$receiver','send','$datetime')";
+$sql2=sprintf("insert into $m(message,sendto,type,date)
+values('%s','$receiver','send','$datetime')" , mysqli_real_escape_string($link, $message1));
 $result2=mysqli_query($link,$sql2) or die(mysqli_error($link));
-$sql2="insert into $m1(message,sendto,type,date)
-values('$message1','$user','receive','$datetime')";
+$sql2=sprintf("insert into $m1(message,sendto,type,date)
+values('%s','$user','receive','$datetime')" , mysqli_real_escape_string($link, $message1));
 $result2=mysqli_query($link,$sql2) or die(mysqli_error($link));
 $error = '<p class="text-danger">Message Added.</p>';
 $data = array(
