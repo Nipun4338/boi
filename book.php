@@ -290,7 +290,7 @@ img.hover-shadow {
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-6 col-lg-6" style="margin: 15px">
+        <div class="col-md-6 col-lg-6" style="margin: 15px 0px 15px 15px">
         <div class="row">
         <?php foreach ($data as $row) {
         ?>
