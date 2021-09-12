@@ -132,7 +132,7 @@ if($noOfRows){
 }
 
 .row > .column {
-  padding: 0 0 0 8px;
+  padding: 0 8px;
 }
 
 .row:after {
@@ -290,7 +290,7 @@ img.hover-shadow {
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-6 col-lg-6" style="margin: 15px">
+        <div class="col-md-6 col-lg-6" style="">
         <div class="row">
         <?php foreach ($data as $row) {
         ?>
