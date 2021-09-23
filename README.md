@@ -7,8 +7,10 @@ It's a website for those who seek to sell their old books. I have tried to think
   ------------- | -------------
   Html  | PHP
   CSS/SCSS/LESS  | SQL
-  Javascript | Ajax
-  Bootstrap | JQuery
+  Javascript | 
+  Bootstrap | 
+  JQuery |
+  Ajax |
   
     Database: Cleardb Ignite free.
     Server: Github and Herokuapp.
