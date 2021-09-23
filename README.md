@@ -13,7 +13,7 @@ It's a website for those who seek to sell their old books. I have tried to think
     Database: Cleardb Ignite free.
     Server: Github and Herokuapp.
     
-### Key Features:
+## Key Features:
   1. Email authentication signup using smtp and phpmailer.
   2. Image upload and retrieve using uploadcare.
   3. Post advertise with image (single and multiple image viewer).
