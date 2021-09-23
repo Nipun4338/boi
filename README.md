@@ -25,3 +25,6 @@ It's a website for those who seek to sell their old books. I have tried to think
   9. Admin panel with full access to ban/allow user, view/update/delete/publish/unpublish products, sending mail to users and changing any static/background/slide image of the       website.
   10. Password storing using md5 and verification using hash.
   11. Random ordered products (changeable order).
+
+## Details
+[![For Details](https://img.youtube.com/vi/hw2w0dZb7EE/hqdefault.jpg)](https://youtu.be/hw2w0dZb7EE)
