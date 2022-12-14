@@ -29,4 +29,4 @@ It's a website for those who seek to sell their old books. I have tried to think
   11. Random ordered products (changeable order).
 
 ## Details
-[![For Details](https://img.youtube.com/vi/xdckaCdu0eY/hqdefault.jpg)](https://youtu.be/xdckaCdu0eY)
+[![For Details](https://img.youtube.com/vi/hw2w0dZb7EE/hqdefault.jpg)](https://youtu.be/hw2w0dZb7EE)
