@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
     background-color: #000;
     color: #fff;
     width: 100%;
@@ -7,8 +8,9 @@ body, html {
     padding: 0;
     overflow: hidden;
 }
+
 canvas {
-    position:absolute;
-    top:0;
-    left:0
+    position: absolute;
+    top: 0;
+    left: 0
 }

@@ -1,17 +1,13 @@
 <?php
 session_start();
-include('database/dbconfig.php');
-if($connection)
-{
+include "database/dbconfig.php";
+if ($connection) {
     // echo "Database Connected";
-}
-else
-{
+} else {
     header("Location: database/dbconfig.php");
 }
 
-if(!$_SESSION['username'])
-{
-    header('Location: login');
+if (!$_SESSION["username"]) {
+    header("Location: login");
 }
 ?>

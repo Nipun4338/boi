@@ -1,6 +1,6 @@
 <?php
 
-  $message='<div class="container-fluid">
+$message = '<div class="container-fluid">
 
           <!-- 404 Error Text -->
           <div class="text-center">
@@ -11,7 +11,6 @@
           </div>
 
         </div>';
-        echo $message;
+echo $message;
 
-
- ?>
+?>
