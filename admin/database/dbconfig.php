@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set("Asia/Dhaka");
 $server_name = "us-cdbr-east-03.cleardb.com";
 $db_username = "b59c5d3fb540d0";
 $db_password = "cbc81910";
