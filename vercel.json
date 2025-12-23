@@ -1,18 +1,13 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "(assets|admin/vendor|vendor|includes|js|css|img|scss|icons|font-awesome-4.7.0)/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/index.php",
-      "use": "vercel-php@0.6.0"
+  "functions": {
+    "api/index.php": {
+      "runtime": "vercel-php@0.6.0"
     }
-  ],
+  },
   "routes": [
     {
-      "src": "/(assets|admin/vendor|vendor|includes|js|css|img|scss|icons|font-awesome-4.7.0)/(.*)",
+      "src": "/(assets|admin/vendor|vendor|includes|js|css|img|scss|icons|font-awesome-4.7.0|images)/(.*)",
       "dest": "/$1/$2"
     },
     {

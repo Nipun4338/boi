@@ -1,0 +1,8 @@
+# Exclude heavy folders from the PHP builder scan to prevent "Exited with 4"
+admin/vendor/
+vendor/
+images/
+sql/
+.git/
+node_modules/
+.phpintel/
