@@ -1,3 +1,4 @@
+<?php
 include "includes/auth/security.php";
 include "includes/config/dbconfig.php";
 ?>

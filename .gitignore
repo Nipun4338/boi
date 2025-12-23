@@ -1,6 +1,5 @@
 # PHP
 vendor/
-admin/vendor/
 composer.lock
 .phpintel/
 *.log

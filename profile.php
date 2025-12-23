@@ -121,7 +121,7 @@ $query_run1 = mysqli_stmt_get_result($stmt_books);
                                 <div class="col-auto">
                                     <div class="bg-light p-2 px-3 rounded-pill">
                                         <small class="text-muted d-block">Address</small>
-                                        <span class="fw-bold"><?php echo htmlspecialchars($user_data["address"] ?: 'Not Set'); ?></span>
+                                        <span class="fw-bold"><?php echo htmlspecialchars(($user_data["address"] ?? $user_data["address?"]) ?: 'Not Set'); ?></span>
                                     </div>
                                 </div>
                             </div>

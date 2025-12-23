@@ -25,4 +25,3 @@ $link = $connection; // Standardizing on one connection variable
 if (!$connection) {
     die("Database Connection failed: " . mysqli_connect_error());
 }
-?>
