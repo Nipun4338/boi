@@ -1,0 +1,14 @@
+# PHP
+vendor/
+composer.lock
+.phpintel/
+*.log
+
+# XAMPP/OS
+.DS_Store
+Thumbs.db
+error_log
+php_errors.log
+
+# Vercel
+.vercel
