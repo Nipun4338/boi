@@ -28,6 +28,7 @@ if (is_dir($base_path . $path)) {
 }
 
 // 2. Handle specific PHP files or extension-less URLs
+$clean_path = rtrim($path, '/');
 $php_file = $base_path . $clean_path . '.php';
 $direct_file = $base_path . $path;
 
