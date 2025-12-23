@@ -1,3 +1,7 @@
+<?php 
+session_start();
+include "includes/config/dbconfig.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -83,8 +87,6 @@
 
 <body>
     <?php 
-    session_start();
-    include "includes/config/dbconfig.php";
     include "includes/components/nav.php"; 
     ?>
 
