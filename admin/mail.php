@@ -2,128 +2,104 @@
 include "security.php";
 include "includes/header.php";
 include "includes/navbar.php";
-include "database/dbconfig.php";
+include "../includes/config/dbconfig.php";
 ?>
 
 <div class="modal fade" id="mailadd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Mail Details Add</h5>
+                <h5 class="modal-title font-weight-bold text-primary" id="exampleModalLabel">Compose Broadcast Email</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form action="scripts.php" method="POST">
-
                 <div class="modal-body">
-
-                    <div class="form-group">
-                        <label> Subject </label>
-                        <input type="text" name="subject" class="form-control" placeholder="Enter Subject">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> This email will be sent to all active registered users.
                     </div>
                     <div class="form-group">
-                        <label>Body</label>
-                        <textarea type="text" name="body" class="form-control"
-                            placeholder="Enter Email Body"></textarea>
+                        <label class="font-weight-bold">Email Subject</label>
+                        <input type="text" name="subject" class="form-control" placeholder="Enter Subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Message Body (HTML enabled)</label>
+                        <textarea name="body" class="form-control" rows="8" placeholder="Enter Email Body Content" required></textarea>
+                        <small class="text-muted">You can use basic HTML tags for styling.</small>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="sendmail" class="btn btn-primary">Send</button>
+                <div class="modal-footer border-top-0">
+                    <button type="button" class="btn btn-secondary shadow-sm" data-dismiss="modal">Cancel</button>
+                    <button type="submit" name="sendmail" class="btn btn-primary shadow-sm px-4">
+                        <i class="fas fa-paper-plane mr-2"></i> Send to All Users
+                    </button>
                 </div>
             </form>
-
         </div>
     </div>
 </div>
 
 <div class="container-fluid">
-
-    <!-- DataTales Example -->
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Mail Details
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mailadd">
-                    Send New Mail
-                </button>
-            </h6>
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Email Broadcast History</h6>
+            <button type="button" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#mailadd">
+                <i class="fas fa-plus fa-sm text-white-50"></i> New Broadcast
+            </button>
         </div>
 
         <div class="card-body">
             <?php
             if (isset($_SESSION["success"]) && $_SESSION["success"] != "") {
-                echo "<h2>" . $_SESSION["success"] . "</h2>";
+                echo '<div class="alert alert-success">' . htmlspecialchars($_SESSION["success"]) . "</div>";
                 unset($_SESSION["success"]);
             }
             if (isset($_SESSION["status"]) && $_SESSION["status"] != "") {
-                echo '<h2 class="bg-info">' . $_SESSION["status"] . "</h2>";
+                echo '<div class="alert alert-danger">' . htmlspecialchars($_SESSION["status"]) . "</div>";
                 unset($_SESSION["status"]);
             }
             ?>
 
-            <div class="table-responsive" style="text-align:center">
-                <?php
-                $query = "SELECT * FROM mail order by date desc";
-                $query_run = mysqli_query($connection, $query);
-                ?>
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="thead-light">
                         <tr>
-                            <th> ID </th>
+                            <th>Mail ID</th>
                             <th>Subject</th>
-                            <th>Body</th>
-                            <th>Date</th>
+                            <th>Message Preview</th>
+                            <th>Sent On</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (mysqli_num_rows($query_run) > 0) {
+                        <?php
+                        $query = "SELECT * FROM mail ORDER BY date DESC";
+                        $query_run = mysqli_query($connection, $query);
+
+                        if (mysqli_num_rows($query_run) > 0) {
                             while ($row = mysqli_fetch_assoc($query_run)) { ?>
-                        <tr>
-                            <td><?php echo $row["mail_id"]; ?></td>
-                            <td><?php echo $row["subject"]; ?></td>
-                            <td><?php echo $row["body"]; ?></td>
-                            <td><?php echo date(
-                                "M j, Y g:i A",
-                                strtotime($row["date"]),
-                            ); ?></td>
-                        </tr>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row["mail_id"]); ?></td>
+                                    <td><strong class="text-dark"><?php echo htmlspecialchars($row["subject"]); ?></strong></td>
+                                    <td>
+                                        <div class="text-truncate" style="max-width: 500px;" title="<?php echo htmlspecialchars(strip_tags($row["body"])); ?>">
+                                            <?php echo htmlspecialchars(substr(strip_tags($row["body"]), 0, 100)) . '...'; ?>
+                                        </div>
+                                    </td>
+                                    <td><small class="text-muted"><?php echo date("M j, Y g:i A", strtotime($row["date"])); ?></small></td>
+                                </tr>
                         <?php }
                         } else {
-                            echo "No Record Found";
+                            echo "<tr><td colspan='4' class='text-center py-4'>No email history found.</td></tr>";
                         } ?>
-                        <!--<tr>
-            <td> 1 </td>
-            <td> Funda of WEb IT</td>
-            <td> funda@example.com</td>
-            <td> *** </td>
-            <td>
-                <form action="" method="post">
-                    <input type="hidden" name="edit_id" value="">
-                    <button  type="submit" name="edit_btn" class="btn btn-success"> EDIT</button>
-                </form>
-            </td>
-            <td>
-                <form action="" method="post">
-                  <input type="hidden" name="delete_id" value="">
-                  <button type="submit" name="delete_btn" class="btn btn-danger"> DELETE</button>
-                </form>
-            </td>
-          </tr>-->
-
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
-
 </div>
-<!-- /.container-fluid -->
-
 
 <?php
 include "scripts.php";
 include "includes/footer.php";
-
 ?>

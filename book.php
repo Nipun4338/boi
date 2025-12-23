@@ -1,63 +1,55 @@
 <?php
 session_start();
 ob_start();
-include "database/dbconfig.php";
-$book = "";
+include "includes/config/dbconfig.php";
 
-if (!empty($_GET["book"])) {
-    $book = $_GET["book"];
-} else {
-    $car = 1;
+$book_id = isset($_GET["book"]) ? $_GET["book"] : "";
+
+if ($book_id == "") {
+    header("Location: home");
+    exit();
 }
 
-$sql = "";
+// Fetch book details
+$stmt = mysqli_prepare($link, "SELECT * FROM books WHERE book_id = ? AND status = 1");
+mysqli_stmt_bind_param($stmt, "s", $book_id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$book_data = mysqli_fetch_assoc($result);
 
-$sql = "SELECT * FROM books where book_id='$book' and status='1'";
+if (!$book_data) {
+    header("Location: 404.php");
+    exit();
+}
 
-($result = mysqli_query($link, $sql)) or die(mysqli_error($link));
-$data = [];
-$noOfRows = mysqli_num_rows($result);
-if ($noOfRows) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        /*echo "<pre>";
-         print_r($row);*/
-        array_push($data, $row);
-        //echo "</pre>";
-    }
+// Fetch book images
+$stmt_img = mysqli_prepare($link, "SELECT * FROM images WHERE book_id = ?");
+mysqli_stmt_bind_param($stmt_img, "s", $book_id);
+mysqli_stmt_execute($stmt_img);
+$result_img = mysqli_stmt_get_result($stmt_img);
+$images = [];
+while ($row_img = mysqli_fetch_assoc($result_img)) {
+    $images[] = $row_img;
 }
 ?>
 
-
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Book Details | বই</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale = 1.0">
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo htmlspecialchars($book_data['name']); ?> | বই</title>
+    
+    <!-- CSS Bundles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="assets/icons/favicon.ico">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <link rel="stylesheet"
-        href="A.assets,,_royalslider,,_royalslider.css+assets,,_royalslider,,_skins,,_default,,_rs-default.css+assets,,_royalslider,,_skins,,_minimal-white,,_rs-minimal-white.css+css,,_bootstrap.min.css+css,,_normalize.css+css,,_jquery-ui.css,Mcc.y-DhrddGnN.css.pagespeed.cf.Hfy0poW2iH.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="Iconsmind-Outline-Books-2.ico">
-
-
-
-    <!-- Bootstrap Stylesheet -->
-    <link rel="stylesheet" href="/path/to/bootstrap.min.css" />
-    <!-- Bootstrap JS -->
-    <script src="/path/to/jquery.min.js"></script>
-    <script src="/path/to/bootstrap.min.js"></script>
-    <!-- <a href="https://www.jqueryscript.net/tags.php?/Carousel/">Carousel</a> Extension -->
-    <script src="carousel.js"></script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/carousel.js"></script>
 
 
 
@@ -271,224 +263,141 @@ if ($noOfRows) {
 
 
 <body style="background:#EEEEEE">
-    <?php include "includes/nav.php"; ?>
+    <?php include "includes/components/nav.php"; ?>
     <?php
-    $sql3 = "SELECT * FROM images where book_id=$book";
-
-    ($result3 = mysqli_query($link, $sql3)) or die(mysqli_error($link));
-    $data3 = [];
-    $noOfRows3 = mysqli_num_rows($result3);
-    if ($noOfRows3) {
-        while ($row3 = mysqli_fetch_assoc($result3)) {
-            /*echo "<pre>";
-             print_r($row);*/
-            array_push($data3, $row3);
-            //echo "</pre>";
-        }
-    }
     $i = 0;
     ?>
 
-    <div class="container-fluid">
+    <div class="container-fluid py-5">
         <div class="row">
-            <div class="col-md-6 col-lg-6" style="">
-                <div class="row">
-                    <?php foreach ($data as $row) { ?>
-                    <?php foreach ($data3 as $row3) {
-                        $i++; ?>
-                    <div class="column">
-                        <img src="<?php echo $row3[
-                            "image"
-                        ]; ?>" style="width:100%" onclick="openModal();currentSlide(<?php echo $i; ?>)" class="hover-shadow cursor">
-                    </div>
-                    <?php
-                    } ?>
-                </div>
-                <div id="myModal" class="modal">
-                    <div class="modal-content">
-                        <?php
-                        $j = 0;
-                        foreach ($data3 as $row3) {
-                            $j++; ?>
-                        <div class="mySlides">
-                            <img src="<?php echo $row3[
-                                "image"
-                            ]; ?>" style="width:100%">
-                            <div class="numbertext" style="font-weight:bold;font-size:20px"><?php echo $j; ?> /
-                                <?php echo $i; ?></div>
+            <div class="col-md-6">
+                <!-- Image Gallery -->
+                <div class="row g-2 mb-4">
+                    <?php 
+                    $i = 0;
+                    foreach ($images as $img): $i++; ?>
+                        <div class="col-3">
+                            <img src="<?php echo htmlspecialchars($img["image"]); ?>" 
+                                 class="img-fluid rounded shadow-sm hover-shadow cursor" 
+                                 onclick="openModal();currentSlide(<?php echo $i; ?>)"
+                                 alt="Book Image">
                         </div>
-                        <?php
-                        }
-                        ?>
+                    <?php endforeach; ?>
+                </div>
+
+                <!-- Modal Lightbox -->
+                <div id="myModal" class="modal">
+                    <span class="close cursor" onclick="closeModal()">&times;</span>
+                    <div class="modal-content border-0 bg-transparent">
+                        <?php 
+                        $j = 0;
+                        foreach ($images as $img): $j++; ?>
+                            <div class="mySlides text-center">
+                                <img src="<?php echo htmlspecialchars($img["image"]); ?>" class="img-fluid rounded mx-auto d-block" style="max-height: 80vh">
+                                <div class="text-white mt-3 fw-bold"><?php echo $j; ?> / <?php echo count($images); ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                        
                         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
                         <a class="next" onclick="plusSlides(1)">&#10095;</a>
-
-                        <div class="caption-container">
-                            <p id="caption"></p>
-                        </div>
-                        <div class="row">
-
-
-                            <?php
-                            $k = 0;
-                            foreach ($data3 as $row3) {
-                                $k++; ?>
-                            <div class="column">
-                                <img class="demo cursor" src="<?php echo $row3[
-                                    "image"
-                                ]; ?>" style="width:100%" onclick="currentSlide(<?php echo $k; ?>)" alt="">
-                            </div>
-                            <?php
-                            }
-                            ?>
-                        </div>
-                        <span class="close cursor" onclick="closeModal()">&times;</span>
                     </div>
                 </div>
+
                 <script>
-                function openModal() {
-                    document.getElementById("myModal").style.display = "block";
-                }
-
-                function closeModal() {
-                    document.getElementById("myModal").style.display = "none";
-                }
-
+                function openModal() { document.getElementById("myModal").style.display = "block"; }
+                function closeModal() { document.getElementById("myModal").style.display = "none"; }
                 var slideIndex = 1;
                 showSlides(slideIndex);
-
-                function plusSlides(n) {
-                    showSlides(slideIndex += n);
-                }
-
-                function currentSlide(n) {
-                    showSlides(slideIndex = n);
-                }
-
+                function plusSlides(n) { showSlides(slideIndex += n); }
+                function currentSlide(n) { showSlides(slideIndex = n); }
                 function showSlides(n) {
                     var i;
                     var slides = document.getElementsByClassName("mySlides");
-                    var dots = document.getElementsByClassName("demo");
-                    var captionText = document.getElementById("caption");
-                    if (n > slides.length) {
-                        slideIndex = 1
-                    }
-                    if (n < 1) {
-                        slideIndex = slides.length
-                    }
-                    for (i = 0; i < slides.length; i++) {
-                        slides[i].style.display = "none";
-                    }
-                    for (i = 0; i < dots.length; i++) {
-                        dots[i].className = dots[i].className.replace(" active", "");
-                    }
-                    slides[slideIndex - 1].style.display = "block";
-                    dots[slideIndex - 1].className += " active";
-                    captionText.innerHTML = dots[slideIndex - 1].alt;
+                    if (n > slides.length) { slideIndex = 1 }
+                    if (n < 1) { slideIndex = slides.length }
+                    for (i = 0; i < slides.length; i++) { slides[i].style.display = "none"; }
+                    if (slides.length > 0) slides[slideIndex - 1].style.display = "block";
                 }
                 </script>
-
-
             </div>
-            <div class="col-md-5 col-lg-5 shadow-lg p-3 mb-5 bg-white rounded" style="text-align: center;">
-                <h6 style="font-weight: bold;padding: 10px 10px 0px 10px; font-size: 25px"><?php echo $row[
-                    "name"
-                ]; ?></h6>
-                by <a href="filter?author=<?php echo $row[
-                    "author"
-                ]; ?>" class=""><?php echo $row["author"]; ?></a><br>
-                <a href="filter?category=<?php echo $row[
-                    "category"
-                ]; ?>" class="badge badge-pill badge-secondary"><?php echo $row[
-    "category"
-]; ?></a>
 
-                <div class="row">
-                    <div class="col-sm-12 col-lg-12 col-md-12">
-                        <ul class="info" style="text-align: left">
-                            <li>
-                                <span style="font-weight: bold">Location: </span>
-                                <?php echo $row["location"]; ?>
+            <div class="col-md-6">
+                <div class="bg-white p-5 rounded shadow-sm">
+                    <h2 class="fw-bold mb-2"><?php echo htmlspecialchars($book_data["name"]); ?></h2>
+                    <p class="text-muted h5 mb-4">by 
+                        <a href="filter?author=<?php echo urlencode($book_data["author"]); ?>" class="text-primary text-decoration-none">
+                            <?php echo htmlspecialchars($book_data["author"]); ?>
+                        </a>
+                    </p>
+                    <span class="badge bg-secondary mb-4 p-2 px-3"><?php echo htmlspecialchars($book_data["category"]); ?></span>
 
+                    <div class="border-top pt-4">
+                        <ul class="list-unstyled">
+                            <li class="mb-3 h5">
+                                <strong class="text-dark">Location:</strong> 
+                                <span class="text-secondary"><?php echo htmlspecialchars($book_data["location"]); ?></span>
                             </li>
-                            <li>
-                                <span style="font-weight: bold">Details: </span>
-                                <?php echo $row["present_condition"]; ?>
-
+                            <li class="mb-3 h5">
+                                <strong class="text-dark">Condition:</strong> 
+                                <span class="text-secondary"><?php echo htmlspecialchars($book_data["present_condition"]); ?></span>
                             </li>
-
+                            <li class="mb-3 h5 text-success">
+                                <strong class="text-dark">Price:</strong> 
+                                <span>TK. <?php echo htmlspecialchars($book_data["price"]); ?></span>
+                            </li>
                         </ul>
-                        <form class="form-container" action="chat" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="user_id1" value="<?php echo $row[
-                                "owner_id"
-                            ]; ?>">
+                    </div>
+
+                    <div class="d-grid gap-2 mt-5">
+                        <form action="chat" method="POST">
+                            <input type="hidden" name="user_id1" value="<?php echo htmlspecialchars($book_data["owner_id"]); ?>">
                             <?php
-                            $_SESSION["receive"] = $row["owner_id"];
-                            $receiver_id1 = $_SESSION["receive"];
-                            ?>
-                            <?php
-                            $sql1 = "SELECT name,user_id from user where user_id='$receiver_id1'";
-                            $result1 = mysqli_query($link, $sql1);
-                            if (mysqli_num_rows($result1) > 0) {
-                                while (
-                                    $row1 = mysqli_fetch_assoc($result1)
-                                ) { ?>
-                            <input type="hidden" name="user_name" value="<?php echo $row1[
-                                "name"
-                            ]; ?>">
-                            <?php $_SESSION["receive_name"] = $row1["name"];}
+                            $_SESSION["receive"] = $book_data["owner_id"];
+                            $stmt_owner = mysqli_prepare($link, "SELECT name FROM user WHERE user_id = ?");
+                            mysqli_stmt_bind_param($stmt_owner, "s", $book_data["owner_id"]);
+                            mysqli_stmt_execute($stmt_owner);
+                            $res_owner = mysqli_stmt_get_result($stmt_owner);
+                            if ($owner = mysqli_fetch_assoc($res_owner)) {
+                                $_SESSION["receive_name"] = $owner["name"];
+                                echo '<input type="hidden" name="user_name" value="' . htmlspecialchars($owner["name"]) . '">';
                             }
                             ?>
-                            <button type="submit" onclick="document.location='chat'" class="btn btn-danger">Message to
-                                Owner</button>
+                            <button type="submit" class="btn btn-danger btn-lg w-100 mb-2">Message to Owner</button>
                         </form>
-                        <button style="margin:10px" onclick="document.location='wishlist?book=<?php echo $row[
-                            "book_id"
-                        ]; ?>'" class="btn btn-primary">Add to Wishlist</button>
-
-
+                        <a href="wishlist?book=<?php echo urlencode($book_id); ?>" class="btn btn-outline-primary btn-lg">Add to Wishlist</a>
                     </div>
                 </div>
-
             </div>
+        </div>
 
-            <script type="text/javascript">
-            const change = src => {
-                document.getElementById('main').src = src;
-            }
-            </script>
-            <?php } ?>
-
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="bg-white p-4 rounded shadow-sm">
+                    <h3 class="border-bottom pb-3 mb-4">Comments</h3>
+                    <form id="comment_form" class="mb-4">
+                        <div class="mb-3">
+                            <textarea class="form-control" name="comment" id="comment" placeholder="Leave a comment..." rows="3" required></textarea>
+                        </div>
+                        <div class="text-end">
+                            <input type="hidden" name="comment_id" id="comment_id" value="0" />
+                            <input type="hidden" name="book_id" id="book_id" value="<?php echo htmlspecialchars($book_id); ?>">
+                            <button type="submit" name="submit" id="submit" class="btn btn-info px-4">Post Comment</button>
+                        </div>
+                    </form>
+                    <div id="comment_message"></div>
+                    <div id="display_comment" class="mt-4"></div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="shadow-lg" style="background:#fff; border:1px solid blue">
-        <h1 style="margin:10px">Comments</h1>
-        <div class="">
-            <form class="" method="POST" id="comment_form" style="margin:10px">
-                <div class="form-group">
-                    <textarea type="text" class="form-control" placeholder="Enter Comment..." rows="4" name="comment"
-                        id="comment"></textarea>
-                </div>
-                <div class="form-group" align="right">
-                    <input type="hidden" name="comment_id" id="comment_id" value="0" />
-                    <input type="hidden" name="book_id" id="book_id" value="<?php echo $book; ?>">
-                    <input type="submit" name="submit" id="submit" class="btn btn-info" value="Submit">
-                </div>
-            </form>
-            <span id="comment_message"></span>
-            <br />
-            <div id="display_comment"></div>
-        </div>
-    </div>
-    </div>
+
     <script>
     $(document).ready(function() {
-
         $('#comment_form').on('submit', function(event) {
             event.preventDefault();
             var form_data = $(this).serialize();
             $.ajax({
-                url: "add_comment.php",
+                url: "actions/comments/add_comment.php",
                 method: "POST",
                 data: form_data,
                 dataType: "JSON",
@@ -507,17 +416,16 @@ if ($noOfRows) {
 
         function load_comment() {
             $.ajax({
-                url: "fetch_comment.php",
+                url: "actions/comments/fetch_comment.php",
                 method: "POST",
-                data: {
-                    book_id: <?php echo $book; ?>
-                },
+                data: { book_id: "<?php echo $book_id; ?>" },
                 dataType: 'json',
                 success: function(data) {
                     $('#display_comment').html(data);
                 }
             })
         }
+
         $(document).on('click', '.reply', function() {
             var comment_id = $(this).attr("id");
             $('#comment_id').val(comment_id);
@@ -525,18 +433,9 @@ if ($noOfRows) {
         });
     });
     </script>
-
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
-    </script>
 </body>
 
 <div class="progress-container fixed-bottom">
-    <div class="progress-bar" id="myBar">
-    </div>
+    <div class="progress-bar" id="myBar"></div>
 </div>
-<?php include "includes/footer.php";
-?>
+<?php include "includes/components/footer.php"; ?>

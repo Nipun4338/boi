@@ -1,201 +1,166 @@
 <?php
-include "security.php";
-include "database/dbconfig.php";
-if (isset($_SESSION["username"]) && isset($_GET["book"])) {
-    $user = $_SESSION["user_id"];
-    $book = $_GET["book"];
+include "includes/auth/security.php";
+include "includes/config/dbconfig.php";
+
+$user_id = $_SESSION["user_id"];
+
+// Add to wishlist logic
+if (isset($_GET["book"])) {
+    $book_id = $_GET["book"];
     date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
     $datetime = date("Y-m-d H:i:s");
-    $sql = "SELECT * from wishlist where book_id='$book' and user_id='$user' order by created_date desc";
-    ($result = mysqli_query($link, $sql)) or die(mysqli_error($link));
-    $noOfRows = mysqli_num_rows($result);
-    if ($noOfRows > 0) {
-        echo "Book already inserted!";
+
+    $stmt_check = mysqli_prepare($connection, "SELECT wishlist_id FROM wishlist WHERE book_id = ? AND user_id = ?");
+    mysqli_stmt_bind_param($stmt_check, "ii", $book_id, $user_id);
+    mysqli_stmt_execute($stmt_check);
+    $res_check = mysqli_stmt_get_result($stmt_check);
+
+    if (mysqli_num_rows($res_check) == 0) {
+        $stmt_ins = mysqli_prepare($connection, "INSERT INTO wishlist (book_id, user_id, status, created_date, updated_date) VALUES (?, ?, '1', ?, ?)");
+        mysqli_stmt_bind_param($stmt_ins, "iiss", $book_id, $user_id, $datetime, $datetime);
+        mysqli_stmt_execute($stmt_ins);
+        $_SESSION['wishlist_msg'] = "Book added to wishlist.";
     } else {
-        $sql1 = "insert into wishlist(book_id,user_id,status,created_date,updated_date)
-    values('$book','$user','1','$datetime','$datetime')";
-        ($result1 = mysqli_query($link, $sql1)) or die(mysqli_error($link));
+        $_SESSION['wishlist_msg'] = "Book is already in your wishlist.";
     }
-} elseif (!isset($_SESSION["username"])) {
-    header("location:login");
 }
 
-if (isset($_REQUEST["delete"])) {
-    $book = $_POST["book_id"];
-    $user = $_SESSION["user_id"];
-    $sql = "DELETE from wishlist where book_id='$book' and user_id='$user'";
-    ($result = mysqli_query($link, $sql)) or die(mysqli_error($link));
+// Delete from wishlist logic
+if (isset($_POST["delete"]) && isset($_POST["book_id"])) {
+    $book_id = $_POST["book_id"];
+    $stmt_del = mysqli_prepare($connection, "DELETE FROM wishlist WHERE book_id = ? AND user_id = ?");
+    mysqli_stmt_bind_param($stmt_del, "ii", $book_id, $user_id);
+    mysqli_stmt_execute($stmt_del);
+    $_SESSION['wishlist_msg'] = "Book removed from wishlist.";
 }
 ?>
-
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Wishlist | বই</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale = 1.0">
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist | বই</title>
+    
+    <!-- CSS Bundles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="assets/icons/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-
-    <link rel="stylesheet"
-        href="A.assets,,_royalslider,,_royalslider.css+assets,,_royalslider,,_skins,,_default,,_rs-default.css+assets,,_royalslider,,_skins,,_minimal-white,,_rs-minimal-white.css+css,,_bootstrap.min.css+css,,_normalize.css+css,,_jquery-ui.css,Mcc.y-DhrddGnN.css.pagespeed.cf.Hfy0poW2iH.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="Iconsmind-Outline-Books-2.ico">
-
-
-
-    <!-- <a href="https://www.jqueryscript.net/tags.php?/Carousel/">Carousel</a> Extension -->
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
-    .header {
-        position: fixed;
-        top: 0;
-        z-index: 1;
-        width: 100%;
-        background-color: #f1f1f1;
-    }
-
-    .header h2 {
-        text-align: center;
-    }
-
-    .progress-container {
-        width: 100%;
-        height: 4px;
-        background: #ccc;
-    }
-
-    .progress-bar {
-        height: 4px;
-        background: #4caf50;
-        width: 0%;
-    }
-
-    .content {
-        padding: 100px 0;
-        margin: 50px auto 0 auto;
-        width: 80%;
-    }
-
-    .hello {
-        margin: 120px 0 120px 0;
-    }
+        body { background-color: #f8f9fa; }
+        .wishlist-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .table img {
+            width: 50px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
     </style>
-    <script src="carousel.js"></script>
 </head>
 
-
 <body>
-    <?php include "includes/nav.php"; ?>
-    <div class="hello">
+    <?php include "includes/components/nav.php"; ?>
 
-        <div class="container-fluid" style="text-align:center">
+    <div class="container py-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="home" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item active">Wishlist</li>
+            </ol>
+        </nav>
 
-            <!-- DataTales Example -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h1 class="m-0 font-weight-bold text-primary">My Wishlist
-                    </h1>
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="fw-bold m-0"><i class="fas fa-heart text-danger me-2"></i>My Wishlist</h2>
                 </div>
 
-                <div class="card-body">
+                <?php if (isset($_SESSION['wishlist_msg'])): ?>
+                    <div class="alert alert-info alert-dismissible fade show rounded-3 mb-4" role="alert">
+                        <?php echo htmlspecialchars($_SESSION['wishlist_msg']); unset($_SESSION['wishlist_msg']); ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
 
+                <div class="card wishlist-card">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-4">Book Details</th>
+                                        <th>Price</th>
+                                        <th>Added On</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $stmt_list = mysqli_prepare($connection, "SELECT w.book_id, b.name, b.author, b.price, w.created_date FROM wishlist w JOIN books b ON b.book_id = w.book_id WHERE w.user_id = ? ORDER BY w.created_date DESC");
+                                    mysqli_stmt_bind_param($stmt_list, "i", $user_id);
+                                    mysqli_stmt_execute($stmt_list);
+                                    $res_list = mysqli_stmt_get_result($stmt_list);
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Book Name</th>
-                                    <th>Author</th>
-                                    <th>Price</th>
-
-                                    <th>Date and Time</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $c_id = $_SESSION["user_id"];
-
-                                $sql = "SELECT wishlist.wishlist_id as wishlist_id, wishlist.book_id as book_id, books.name as name, books.author as author
-          , wishlist.created_date as wishlist_date, books.price as price FROM wishlist JOIN books on books.book_id=wishlist.book_id WHERE wishlist.user_id='$c_id' order by wishlist.created_date desc";
-                                $result2 = mysqli_query($link, $sql);
-
-                                if (mysqli_num_rows($result2) > 0) {
-                                    // output data of each row
-                                    while (
-                                        $row = mysqli_fetch_assoc($result2)
-                                    ) { ?>
-                                <tr>
-                                    <td>
-                                        <a href="book?book=<?php echo $row[
-                                            "book_id"
-                                        ]; ?>"> <?php echo $row["name"]; ?></a>
-
-                                    </td>
-                                    <td>
-                                        <?php echo $row["author"]; ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $row["price"]; ?>
-                                    </td>
-
-                                    <td>
-
-
-                                        <?php echo date(
-                                            "M j, Y g:i A",
-                                            strtotime($row["wishlist_date"]),
-                                        ); ?>
-                                    </td>
-                                    <td>
-                                        <form class="form-container" action="wishlist" method="POST"
-                                            enctype="multipart/form-data">
-                                            <input type="hidden" name="book_id" value="<?php echo $row[
-                                                "book_id"
-                                            ]; ?>">
-                                            <button type="submit" id="submit" name="delete"
-                                                class="btn btn-primary btn-block submit2">DELETE</button>
-                                        </form>
-
-                                    </td>
-                                </tr>
-
-
-                                <?php }
-                                } else {
-                                    echo "0 results";
-                                }
-                                ?>
-                            </tbody>
-                        </table>
+                                    if (mysqli_num_rows($res_list) > 0) {
+                                        while ($row = mysqli_fetch_assoc($res_list)) {
+                                            ?>
+                                            <tr>
+                                                <td class="ps-4">
+                                                    <div class="d-flex align-items-center">
+                                                        <div>
+                                                            <a href="book?book=<?php echo $row['book_id']; ?>" class="h6 fw-bold text-dark text-decoration-none d-block mb-1">
+                                                                <?php echo htmlspecialchars($row['name']); ?>
+                                                            </a>
+                                                            <small class="text-muted">by <?php echo htmlspecialchars($row['author']); ?></small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><span class="fw-bold text-primary">৳<?php echo htmlspecialchars($row['price']); ?></span></td>
+                                                <td><small class="text-muted"><?php echo date("M j, Y", strtotime($row['created_date'])); ?></small></td>
+                                                <td class="text-center pe-4">
+                                                    <form action="wishlist" method="POST" onsubmit="return confirm('Remove this book from wishlist?');">
+                                                        <input type="hidden" name="book_id" value="<?php echo $row['book_id']; ?>">
+                                                        <button type="submit" name="delete" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                                                            <i class="fas fa-trash-alt me-1"></i> Remove
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    } else {
+                                        echo '<tr><td colspan="4" class="text-center py-5"><p class="text-muted mb-0">Your wishlist is empty.</p></td></tr>';
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
+    <div class="progress-bar fixed-bottom" id="myBar" style="height:4px; background: #0d6efd; width: 0%;"></div>
+    <?php include "includes/components/footer.php"; ?>
+
+    <script>
+        window.onscroll = function() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+        };
     </script>
-    </div>
 </body>
-
-
-<div class="progress-container fixed-bottom">
-    <div class="progress-bar" id="myBar">
-    </div>
-</div>
-<?php include "includes/footer.php";
-?>
+</html>

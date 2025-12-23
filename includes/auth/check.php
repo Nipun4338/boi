@@ -1,6 +1,6 @@
 <?php
 include "security.php";
-include "database/dbconfig.php";
+include "../config/dbconfig.php";
 $sql = "SELECT * from comments";
 $result = mysqli_query($link, $sql);
 $data = [];

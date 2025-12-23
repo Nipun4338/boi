@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "database/dbconfig.php";
+include "../../includes/config/dbconfig.php";
 //fetch_comment.php
 $book = "zcomments_";
 $book .= strval($_POST["book_id"]);

@@ -1,179 +1,96 @@
-<?php
-include "security.php";
-include "database/dbconfig.php";
+include "includes/auth/security.php";
+include "includes/config/dbconfig.php";
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Sell | বই</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale = 1.0">
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell | বই</title>
+    
+    <!-- CSS Bundles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="assets/icons/favicon.ico">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <link rel="stylesheet"
-        href="A.assets,,_royalslider,,_royalslider.css+assets,,_royalslider,,_skins,,_default,,_rs-default.css+assets,,_royalslider,,_skins,,_minimal-white,,_rs-minimal-white.css+css,,_bootstrap.min.css+css,,_normalize.css+css,,_jquery-ui.css,Mcc.y-DhrddGnN.css.pagespeed.cf.Hfy0poW2iH.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="Iconsmind-Outline-Books-2.ico">
-
-
-    <style type="text/css">
-    /*Setting Basic Dimensions to give
-        gallary view */
-
-    .container {
-        margin: 0 auto;
-        width: 90%;
-    }
-
-    .main_view {
-        width: 80%;
-        height: 25rem;
-    }
-
-    .main_view img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .side_view {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .side_view img {
-        width: 9rem;
-        height: 7rem;
-        object-fit: cover;
-        cursor: pointer;
-        margin: 0.5rem;
-    }
-
-    ul.info {
-        list-style: none;
-        border-top: 1px dotted #AAA;
-        margin: 60px 0 20px;
-        font-size: 20px;
-    }
-
-    .header {
-        position: fixed;
-        top: 0;
-        z-index: 1;
-        width: 100%;
-        background-color: #f1f1f1;
-    }
-
-    .header h2 {
-        text-align: center;
-    }
-
-    .progress-container {
-        width: 100%;
-        height: 4px;
-        background: #ccc;
-    }
-
-    .progress-bar {
-        height: 4px;
-        background: #4caf50;
-        width: 0%;
-    }
-
-    .content {
-        padding: 100px 0;
-        margin: 50px auto 0 auto;
-        width: 80%;
-    }
-
-    .header1 {
-        background-color: #666;
-        padding: 30px;
-        text-align: center;
-        font-size: 35px;
-        color: white;
-    }
-    </style>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" charset="utf-8"></script>
 </head>
 
-<body style="background:#fff">
-    <?php include "includes/nav.php"; ?>
+<body class="bg-light">
+    <?php include "includes/components/nav.php"; ?>
 
-    <h1 style="text-align:center;border: 2px solid #8989;margin:10px">Entry Your Book</h1>
-    <div class="darker" style="text-align:center;border: 2px solid #8989;margin:10px">
-        <a href="instructions">
-            <h4 style="color:#0275d8">**New Here? Take a quick look</h4>
-        </a>
-        <form action="script.php" enctype="multipart/form-data" method="POST">
-            <div class="form-group" style="margin:3% 10% 2% 10%">
-                <h4>Author Name</h4>
-                <input type="text" class="form-control" name="author" value="" placeholder="Enter Author Name" required>
-            </div>
-            <div class="form-group" style="margin:3% 10% 2% 10%">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-5">
+                        <h1 class="text-center mb-4">Post Your Book</h1>
+                        <div class="text-center mb-5">
+                            <a href="instructions" class="text-decoration-none">
+                                <h5 class="text-primary fw-bold">**New Here? Take a quick look</h5>
+                            </a>
+                        </div>
 
-                <h4>Book Name</h4>
-                <input type="text" class="form-control" name="book" value="" placeholder="Enter Book Name" required>
-            </div>
-            <div class="form-group" style="margin:3% 10% 2% 10%">
+                        <form action="actions/books/process_book.php" enctype="multipart/form-data" method="POST">
+                            <div class="row g-3">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Book Name</label>
+                                    <input type="text" class="form-control" name="book" placeholder="Enter Book Name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Author Name</label>
+                                    <input type="text" class="form-control" name="author" placeholder="Enter Author Name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Category</label>
+                                    <input type="text" class="form-control" name="category" placeholder="Enter Category (e.g. Science, Fiction)" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Price (TK)</label>
+                                    <input type="number" class="form-control" name="price" placeholder="Enter Price" required>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label fw-bold">Location</label>
+                                    <input type="text" class="form-control" name="location" placeholder="e.g. Dhaka, Chittagong" required>
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <label class="form-label fw-bold">Details / Condition</label>
+                                    <textarea class="form-control" name="details" rows="4" placeholder="Describe the book condition..." required></textarea>
+                                </div>
+                                <div class="col-12 mb-4 p-3 bg-light border rounded">
+                                    <label class="form-label fw-bold d-block mb-3">Upload Book Images</label>
+                                    <input type="hidden" name="file" role="uploadcare-uploader" 
+                                           data-clearable="true" data-crop="free" 
+                                           data-images-only="true" data-multiple="true" />
+                                    <p class="small text-muted mt-2 mb-0">*Your first chosen image will be the cover image.</p>
+                                </div>
+                            </div>
 
-                <h4>Category</h4>
-                <input type="text" class="form-control" name="category" value="" placeholder="Enter Category" required>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                <a href="home" class="btn btn-secondary btn-lg px-4 me-md-2">Cancel</a>
+                                <button type="submit" name="registerbtnbook" class="btn btn-primary btn-lg px-5">Post Advertisement</button>
+                            </div>
+                        </form>
+                        
+                        <script>
+                            UPLOADCARE_LOCALE = "en";
+                            UPLOADCARE_LIVE = false;
+                            UPLOADCARE_PUBLIC_KEY = '17b0d03f8e05e110e978';
+                        </script>
+                    </div>
+                </div>
             </div>
-            <div class="form-group" style="margin:3% 10% 2% 10%">
-
-                <h4>Price</h4>
-                <input type="text" class="form-control" name="price" value="" placeholder="Enter Price" required>
-            </div>
-            <div class="form-group" style="margin:3% 10% 2% 10%">
-
-                <h4>Details</h4>
-                <input type="text" class="form-control" name="details" value="" placeholder="Details" required>
-            </div>
-            <div class="form-group" style="margin:3% 10% 2% 10%">
-
-                <h4>Location</h4>
-                <input type="text" class="form-control" name="location" value="" placeholder="Enter Location" required>
-            </div>
-            <div class="form-group" style="margin:3% 10% 2% 10%">
-                <h4>Upload Book Image/s</h4>
-                <input type="hidden" name="file" role="uploadcare-uploader" data-clearable="true" data-crop="free"
-                    data-images-only="true" data-multiple="true" />
-                *Your first choosen image will be the cover image in the advertise.
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" name="registerbtnbook" class="btn btn-primary">Save</button>
-            </div>
-        </form>
-        <script>
-        UPLOADCARE_LOCALE = "en";
-        UPLOADCARE_LIVE = false;
-        UPLOADCARE_PUBLIC_KEY = '17b0d03f8e05e110e978';
-        </script>
-        <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" charset="utf-8"></script>
+        </div>
     </div>
 
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
-    </script>
-
+    <div class="progress-container fixed-bottom">
+        <div class="progress-bar" id="myBar"></div>
+    </div>
+    <?php include "includes/components/footer.php"; ?>
 </body>
-
-<div class="progress-container fixed-bottom">
-    <div class="progress-bar" id="myBar">
-    </div>
-</div>
-<?php include "includes/footer.php";
-?>
+</html>

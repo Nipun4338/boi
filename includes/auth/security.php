@@ -3,11 +3,9 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-include "../includes/config/dbconfig.php";
-
-// Check if admin is logged in
+// User security check
 if (!isset($_SESSION["username"]) || empty($_SESSION["username"])) {
-    header("Location: login.php");
+    header("Location: login");
     exit();
 }
 ?>

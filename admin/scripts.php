@@ -1,459 +1,200 @@
 <?php
 if (!isset($_SESSION)) {
-    include "security.php";
+    session_start();
 }
-include "database/dbconfig.php";
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-require "vendor/autoload.php";
-?>
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+include "../includes/config/dbconfig.php";
+include "../includes/config/mail_config.php";
 
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
-
-<!-- Page level plugins -->
-<script src="vendor/chart.js/Chart.min.js"></script>
-
-<!-- Page level custom scripts -->
-<script src="js/demo/chart-area-demo.js"></script>
-<script src="js/demo/chart-pie-demo.js"></script>
-
-
-<?php
-if (isset($_POST["registerbtn"])) {
-    $username = $_POST["username"];
-    $email = $_POST["email"];
-    $password = md5($_POST["password"]);
-    $confirm_password = $_POST["confirmpassword"];
+// Function to update datetime
+function getCurrentDateTime() {
     date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
-    $datetime = date("Y-m-d H:i:s");
-    if ($password == $confirm_password) {
-        $password = md5($password);
-        $query = "INSERT INTO adminpanel (username,email,password,status,created_date,updated_date) VALUES ('$username','$email','$password',1,'$datetime','$datetime')";
-        $query_run = mysqli_query($connection, $query);
+    return date("Y-m-d H:i:s");
+}
 
-        if ($query_run) {
-            echo "done";
-            $_SESSION["success"] = "Admin is Added Successfully";
+/* -------------------------------------------------------------------------- */
+/*                          1. Admin Registration                            */
+/* -------------------------------------------------------------------------- */
+if (isset($_POST["registerbtn"])) {
+    $username = trim($_POST["username"]);
+    $email = trim($_POST["email"]);
+    $password = $_POST["password"];
+    $confirm_password = $_POST["confirmpassword"];
+    $datetime = getCurrentDateTime();
+
+    if ($password === $confirm_password) {
+        $hashed_password = md5($password);
+        
+        $stmt = mysqli_prepare($connection, "INSERT INTO adminpanel (username, email, password, status, created_date, updated_date) VALUES (?, ?, ?, 1, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "sssss", $username, $email, $hashed_password, $datetime, $datetime);
+        
+        if (mysqli_stmt_execute($stmt)) {
+            $_SESSION["success"] = "Admin account created successfully.";
             header("Location: register.php");
         } else {
-            echo "not done";
-            $_SESSION["status"] = "Admin is Not Added";
+            $_SESSION["status"] = "Error creating admin account: " . mysqli_error($connection);
             header("Location: register.php");
         }
     } else {
-        echo "pass no match";
-        $_SESSION["status"] = "Password and Confirm Password Does not Match";
+        $_SESSION["status"] = "Passwords do not match.";
         header("Location: register.php");
     }
+    exit();
 }
 
+/* -------------------------------------------------------------------------- */
+/*                          2. Admin Profile Update                           */
+/* -------------------------------------------------------------------------- */
 if (isset($_POST["updatebtn"])) {
     $id = $_POST["edit_id"];
-    $username = $_POST["edit_username"];
-    $email = $_POST["edit_email"];
-    $password = md5($_POST["edit_password"]);
+    $username = trim($_POST["edit_username"]);
+    $email = trim($_POST["edit_email"]);
+    $password = !empty($_POST["edit_password"]) ? md5($_POST["edit_password"]) : null;
     $status = $_POST["edit_status"];
-    date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
-    $datetime = date("Y-m-d H:i:s");
-    $query = "update adminpanel set username='$username',email='$email',password='$password',status='$status', updated_date='$datetime' where admin_id='$id'";
-    $query_run = mysqli_query($connection, $query);
+    $datetime = getCurrentDateTime();
 
-    if ($query_run) {
-        $_SESSION["success"] = "Your data is updated";
+    if ($password) {
+        $stmt = mysqli_prepare($connection, "UPDATE adminpanel SET username = ?, email = ?, password = ?, status = ?, updated_date = ? WHERE admin_id = ?");
+        mysqli_stmt_bind_param($stmt, "sssssi", $username, $email, $password, $status, $datetime, $id);
+    } else {
+        $stmt = mysqli_prepare($connection, "UPDATE adminpanel SET username = ?, email = ?, status = ?, updated_date = ? WHERE admin_id = ?");
+        mysqli_stmt_bind_param($stmt, "sssii", $username, $email, $status, $datetime, $id);
+    }
+
+    if (mysqli_stmt_execute($stmt)) {
+        $_SESSION["success"] = "Admin profile updated successfully.";
         header("Location: register.php");
     } else {
-        $_SESSION["success"] = "Your data is not updated";
+        $_SESSION["status"] = "Failed to update admin profile.";
         header("Location: register.php");
     }
+    exit();
 }
 
+/* -------------------------------------------------------------------------- */
+/*                   3. Book Data Update (Review/Approval)                   */
+/* -------------------------------------------------------------------------- */
 if (isset($_POST["updatebtnbook"])) {
     $id = $_POST["edit_id_book"];
     $details = $_POST["edit_details"];
     $status = $_POST["edit_status"];
+    $price = $_POST["edit_price"] ?? 0;
     $mailid = $_POST["mail"];
     $mail_name = $_POST["mail_name"];
-    $mail = new PHPMailer(true);
-    $mail->isSMTP();
-    $mail->Host = "smtp.gmail.com";
-    $mail->SMTPAuth = true;
-    $mail->Username = "boi.yourbook@gmail.com";
-    $mail->Password = "zffwybtbangyivph";
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
-    $mail->setFrom("boi.yourbook@gmail.com", "Boi");
-    $mail->isHTML(true);
-    $mail->Subject = "Regarding Your Book";
-    $mail->Body =
-        "<h3>Greetings, " .
-        $mail_name .
-        "!</h3><br/>
-    <p>Your book has been published/changed.</p>
-    <p><a href='http://boi-yourbook.herokuapp.com/book?book=" .
-        $id .
-        "'>Please check it out!</a></p><br/>
-    <p>Thank you for being with us!</p><p class='font-weight:bold'>It means a lot!</p><br>
-    <h1>Boi</h1>";
-    $mail->addBCC($mailid);
+    $datetime = getCurrentDateTime();
 
-    date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
-    $datetime = date("Y-m-d H:i:s");
-
-    $query = sprintf(
-        "update books set present_condition='%s', status='$status', updated_date='$datetime' where book_id='$id'",
-        mysqli_real_escape_string($connection, $details),
-    );
-    $query_run = mysqli_query($connection, $query);
-
-    if ($query_run) {
-        $mail->send();
-        $_SESSION["success"] = "Book data is updated";
+    $stmt = mysqli_prepare($connection, "UPDATE books SET present_condition = ?, status = ?, price = ?, updated_date = ? WHERE book_id = ?");
+    mysqli_stmt_bind_param($stmt, "siisi", $details, $status, $price, $datetime, $id);
+    
+    if (mysqli_stmt_execute($stmt)) {
+        $mail_sent = false;
+        try {
+            $mail = getPHPMailer();
+            $mail->addAddress($mailid, $mail_name);
+            $mail->isHTML(true);
+            
+            $mail->Subject = "Update Regarding Your Book Listing: " . htmlspecialchars($id);
+            $status_text = ($status == 1) ? "published and is now live" : "reviewed and updated by our moderator";
+            
+            $mail->Body = "
+                <div style='font-family: Arial, sans-serif; padding: 30px; border: 1px solid #eee; border-radius: 10px; max-width: 600px; margin: auto;'>
+                    <h2 style='color: #4e73df;'>Greetings, " . htmlspecialchars($mail_name) . "!</h2>
+                    <p style='font-size: 16px; line-height: 1.6;'>Your book listing (ID: <strong>$id</strong>) has been $status_text.</p>
+                    <div style='text-align: center; margin: 30px 0;'>
+                        <a href='http://boi-yourbook.herokuapp.com/book?book=$id' 
+                           style='background-color: #4e73df; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;'>
+                           View My Listing
+                        </a>
+                    </div>
+                    <p style='font-size: 14px; color: #666;'>Thank you for being a part of our community!</p>
+                    <hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>
+                    <p style='font-size: 11px; color: #999; text-align: center;'>This is an automated system message. Please do not reply directly to this email.</p>
+                </div>";
+            
+            $mail->send();
+            $mail_sent = true;
+        } catch (Exception $e) {
+            $_SESSION["status"] = "Data saved, but notification failed: " . $mail->ErrorInfo;
+        }
+        
+        if ($mail_sent) {
+            $_SESSION["success"] = "Book listing updated and user notified.";
+        }
         header("Location: bookinfo.php");
     } else {
-        $_SESSION["success"] = "Book data is not updated";
+        $_SESSION["status"] = "Database error: Failed to update book details.";
         header("Location: bookinfo.php");
     }
+    exit();
 }
 
-if (isset($_POST["registerbtnteam"])) {
-    $name = $_POST["team_name"];
-    $aust = $_POST["aust_id"];
-    $status = $_POST["status"];
-    $target_dir2 = "";
-    if (
-        !isset($_FILES["file_upload"]) ||
-        $_FILES["file_upload"]["error"] == UPLOAD_ERR_NO_FILE
-    ) {
-        $target_dir2 = "images/team/default-image.jpg";
-    } else {
-        $userFileName = "team_pic_" . $name;
-        $imageType = strtolower(
-            pathinfo($_FILES["file_upload"]["name"], PATHINFO_EXTENSION),
-        );
-        $target_dir = "../images/team/" . $userFileName . "." . $imageType;
-        $target_dir2 = "images/team/" . $userFileName . "." . $imageType;
-        $target_file = $target_dir;
-        $temp_file = $_FILES["file_upload"]["tmp_name"];
-        move_uploaded_file($temp_file, $target_file);
-    }
-    date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
-    $datetime = date("Y-m-d H:i:s");
-    $query = "INSERT INTO team (name,aust_id,image_path,status,created_date,updated_date)
-    VALUES ('$name','$aust','$target_dir2','$status','$datetime','$datetime')";
-    $query_run = mysqli_query($connection, $query);
-
-    if ($query_run) {
-        echo "done";
-        $_SESSION["success"] = "Member is Added Successfully";
-        header("Location: registerteam.php");
-    } else {
-        echo "not done";
-        $_SESSION["status"] = "Member is Not Added";
-        header("Location: registerteam.php");
-    }
-}
-
-if (isset($_POST["updatebtnteam"])) {
-    $id = $_POST["edit_id_team"];
-    $name = $_POST["edit_team_name"];
-    $aust = $_POST["edit_aust_id"];
-    $status = $_POST["edit_status"];
-    $image = $_POST["edit_image"];
-    date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
-    $datetime = date("Y-m-d H:i:s");
-    if (
-        !isset($_FILES["file_upload"]) ||
-        $_FILES["file_upload"]["error"] == UPLOAD_ERR_NO_FILE
-    ) {
-        $target_dir2 = $image;
-    } else {
-        $userFileName = "team_pic_" . $name;
-        $imageType = strtolower(
-            pathinfo($_FILES["file_upload"]["name"], PATHINFO_EXTENSION),
-        );
-        $target_dir = "../images/team/" . $userFileName . "." . $imageType;
-        $target_dir2 = "images/team/" . $userFileName . "." . $imageType;
-        $target_file = $target_dir;
-        $temp_file = $_FILES["file_upload"]["tmp_name"];
-        move_uploaded_file($temp_file, $target_file);
-    }
-    $query = "update team set name='$name',aust_id='$aust',image_path='$target_dir2',status='$status', updated_date='$datetime' where team_id='$id'";
-    $query_run = mysqli_query($connection, $query);
-
-    if ($query_run) {
-        $_SESSION["success"] = "Member data is updated";
-        header("Location: registerteam.php");
-    } else {
-        $_SESSION["success"] = "Member data is not updated";
-        header("Location: registerteam.php");
-    }
-}
-
+/* -------------------------------------------------------------------------- */
+/*                           4. User Status Update                            */
+/* -------------------------------------------------------------------------- */
 if (isset($_POST["updatebtnuser"])) {
     $id = $_POST["edit_id_user"];
     $status = $_POST["edit_status"];
-    date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
-    $datetime = date("Y-m-d H:i:s");
-    $query = "update user set status='$status', updated_date='$datetime' where user_id='$id'";
-    $query_run = mysqli_query($connection, $query);
+    $datetime = getCurrentDateTime();
 
-    if ($query_run) {
-        $_SESSION["success"] = "User data is updated";
+    $stmt = mysqli_prepare($connection, "UPDATE user SET status = ?, updated_date = ? WHERE user_id = ?");
+    mysqli_stmt_bind_param($stmt, "isi", $status, $datetime, $id);
+
+    if (mysqli_stmt_execute($stmt)) {
+        $_SESSION["success"] = "User status has been updated.";
         header("Location: userinfo.php");
     } else {
-        $_SESSION["success"] = "User data is not updated";
+        $_SESSION["status"] = "Error updating user status.";
         header("Location: userinfo.php");
     }
+    exit();
 }
 
-if (isset($_POST["registerbtnbrand"])) {
-    $name = $_POST["brand_name"];
-    $status = $_POST["status"];
-    date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
-    $datetime = date("Y-m-d H:i:s");
-    $query = "INSERT INTO brand (brand_name,status,created_date,updated_date)
-    VALUES ('$name','$status','$datetime','$datetime')";
-    $query_run = mysqli_query($connection, $query);
-
-    if ($query_run) {
-        echo "done";
-        $_SESSION["success"] = "Brand is Added Successfully";
-        header("Location: brand.php");
-    } else {
-        echo "not done";
-        $_SESSION["status"] = "Brand is Not Added";
-        header("Location: brand.php");
-    }
-}
-
-if (isset($_POST["updatebtnbrand"])) {
-    $id = $_POST["edit_id_brand"];
-    $name = $_POST["edit_brand_name"];
-    $status = $_POST["edit_status"];
-    date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
-    $datetime = date("Y-m-d H:i:s");
-    $query = "update brand set brand_name='$name',status='$status', updated_date='$datetime' where brand_id='$id'";
-    $query_run = mysqli_query($connection, $query);
-
-    if ($query_run) {
-        $_SESSION["success"] = "Brand data is updated";
-        header("Location: brand.php");
-    } else {
-        $_SESSION["success"] = "Brand data is not updated";
-        header("Location: brand.php");
-    }
-}
-
-if (isset($_POST["registerbtnslider1"])) {
-    $header = $_POST["header"];
-    $paragraph = $_POST["paragraph"];
-    $status = $_POST["status"];
-    $target_dir2 = "";
-    if (
-        !isset($_FILES["file_upload"]) ||
-        $_FILES["file_upload"]["error"] == UPLOAD_ERR_NO_FILE
-    ) {
-        $target_dir2 = "images/default-image.jpg";
-    } else {
-        $name = $_FILES["file_upload"]["name"];
-        $userFileName = "slider_pic_" . $name;
-        $imageType = strtolower(
-            pathinfo($_FILES["file_upload"]["name"], PATHINFO_EXTENSION),
-        );
-        $target_dir = "../images/slider1/" . $userFileName;
-        $target_dir2 = "images/slider1/" . $userFileName;
-        $target_file = $target_dir;
-        $temp_file = $_FILES["file_upload"]["tmp_name"];
-        move_uploaded_file($temp_file, $target_file);
-    }
-    date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
-    $datetime = date("Y-m-d H:i:s");
-    $query = "INSERT INTO slider1 (image,status,created_date,updated_date)
-    VALUES ('$target_dir2','$status','$datetime','$datetime')";
-    $query_run = mysqli_query($connection, $query);
-
-    if ($query_run) {
-        echo "done";
-        $_SESSION["success"] = "Image is Added Successfully";
-        header("Location: slider1.php");
-    } else {
-        echo "not done";
-        $_SESSION["status"] = "Image is Not Added";
-        header("Location: slider1.php");
-    }
-}
-
-if (isset($_POST["updatebtnslider1"])) {
-    $id = $_POST["edit_id_slider1"];
-    $status = $_POST["edit_status"];
-    $image = $_POST["edit_image"];
-    date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
-    $datetime = date("Y-m-d H:i:s");
-    if (
-        !isset($_FILES["file_upload"]) ||
-        $_FILES["file_upload"]["error"] == UPLOAD_ERR_NO_FILE
-    ) {
-        $target_dir2 = $image;
-    } else {
-        $name = $_FILES["file_upload"]["name"];
-        $userFileName = "slider_pic_" . $name;
-        $imageType = strtolower(
-            pathinfo($_FILES["file_upload"]["name"], PATHINFO_EXTENSION),
-        );
-        $target_dir = "../images/slider1/" . $userFileName;
-        $target_dir2 = "images/slider1/" . $userFileName;
-        $target_file = $target_dir;
-        $temp_file = $_FILES["file_upload"]["tmp_name"];
-        move_uploaded_file($temp_file, $target_file);
-    }
-    $query = "update slider1 set image='$target_dir2',status='$status', updated_date='$datetime' where slider_id='$id'";
-    $query_run = mysqli_query($connection, $query);
-
-    if ($query_run) {
-        $_SESSION["success"] = "Slider data is updated";
-        header("Location: slider1.php");
-    } else {
-        $_SESSION["success"] = "Slider data is not updated";
-        header("Location: slider1.php");
-    }
-}
-
-if (isset($_POST["registerbtnslider2"])) {
-    $status = $_POST["status"];
-    $target_dir2 = "";
-    if (
-        !isset($_FILES["file_upload"]) ||
-        $_FILES["file_upload"]["error"] == UPLOAD_ERR_NO_FILE
-    ) {
-        $target_dir2 = "images/default-image.jpg";
-    } else {
-        $name = $_FILES["file_upload"]["name"];
-        $userFileName = "slider_pic_" . $name;
-        $imageType = strtolower(
-            pathinfo($_FILES["file_upload"]["name"], PATHINFO_EXTENSION),
-        );
-        $target_dir = "../images/slider2/" . $userFileName;
-        $target_dir2 = "images/slider2/" . $userFileName;
-        $target_file = $target_dir;
-        $temp_file = $_FILES["file_upload"]["tmp_name"];
-        move_uploaded_file($temp_file, $target_file);
-    }
-    date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
-    $datetime = date("Y-m-d H:i:s");
-    $query = "INSERT INTO slider2 (image,status,created_date,updated_date)
-    VALUES ('$target_dir2','$status','$datetime','$datetime')";
-    $query_run = mysqli_query($connection, $query);
-
-    if ($query_run) {
-        echo "done";
-        $_SESSION["success"] = "Image is Added Successfully";
-        header("Location: slider2.php");
-    } else {
-        echo "not done";
-        $_SESSION["status"] = "Image is Not Added";
-        header("Location: slider2.php");
-    }
-}
-
-if (isset($_POST["updatebtnslider2"])) {
-    $id = $_POST["edit_id_slider2"];
-    $status = $_POST["edit_status"];
-    $image = $_POST["edit_image"];
-    date_default_timezone_set("Asia/Dhaka");
-    $datetime = "";
-    $datetime = date("Y-m-d H:i:s");
-    if (
-        !isset($_FILES["file_upload"]) ||
-        $_FILES["file_upload"]["error"] == UPLOAD_ERR_NO_FILE
-    ) {
-        $target_dir2 = $image;
-    } else {
-        $name = $_FILES["file_upload"]["name"];
-        $userFileName = "slider_pic_" . $name;
-        $imageType = strtolower(
-            pathinfo($_FILES["file_upload"]["name"], PATHINFO_EXTENSION),
-        );
-        $target_dir = "../images/slider2/" . $userFileName;
-        $target_dir2 = "images/slider2/" . $userFileName;
-        $target_file = $target_dir;
-        $temp_file = $_FILES["file_upload"]["tmp_name"];
-        move_uploaded_file($temp_file, $target_file);
-    }
-    $query = "update slider2 set image='$target_dir2',status='$status', updated_date='$datetime' where slider_id='$id'";
-    $query_run = mysqli_query($connection, $query);
-
-    if ($query_run) {
-        $_SESSION["success"] = "Slider data is updated";
-        header("Location: slider2.php");
-    } else {
-        $_SESSION["success"] = "Slider data is not updated";
-        header("Location: slider2.php");
-    }
-}
-
+/* -------------------------------------------------------------------------- */
+/*                            5. Broadcast Email                              */
+/* -------------------------------------------------------------------------- */
 if (isset($_POST["sendmail"])) {
     $subject = $_POST["subject"];
     $body = $_POST["body"];
-    $mail = new PHPMailer(true);
-    $mail->isSMTP();
-    $mail->Host = "smtp.gmail.com";
-    $mail->SMTPAuth = true;
-    $mail->Username = "boi.yourbook@gmail.com";
-    $mail->Password = "zffwybtbangyivph";
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
-    $mail->setFrom("boi.yourbook@gmail.com", "Boi");
-    $mail->isHTML(true);
-    $mail->Subject = $subject;
-    $mail->Body = $body;
+    $datetime = getCurrentDateTime();
 
-    $sql = "select email from user";
-    $query_run1 = mysqli_query($connection, $sql);
-    if (mysqli_num_rows($query_run1) > 0) {
-        while ($row = mysqli_fetch_assoc($query_run1)) {
+    try {
+        $mail = getPHPMailer();
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+
+        // Fetch all active user emails
+        $stmt_users = mysqli_prepare($connection, "SELECT email FROM user WHERE status = 1");
+        mysqli_stmt_execute($stmt_users);
+        $res_users = mysqli_stmt_get_result($stmt_users);
+        
+        $count = 0;
+        while ($row = mysqli_fetch_assoc($res_users)) {
             $mail->addBCC($row["email"]);
+            $count++;
         }
-        $mail->send();
-        date_default_timezone_set("Asia/Dhaka");
-        $datetime = "";
-        $datetime = date("Y-m-d H:i:s");
-        $query = sprintf(
-            "INSERT INTO mail (subject,body,date)
-        VALUES ('%s','$body','$datetime')",
-            mysqli_real_escape_string($connection, $subject),
-        );
-        $query_run = mysqli_query($connection, $query);
-    }
 
-    if ($query_run) {
-        echo "done";
-        $_SESSION["success"] = "Mail send Successfully";
-        header("Location: mail.php");
-    } else {
-        echo "not done";
-        $_SESSION["status"] = "Mail was not send";
-        header("Location: mail.php");
+        if ($count > 0) {
+            $mail->send();
+            
+            // Log the mail in history
+            $stmt_log = mysqli_prepare($connection, "INSERT INTO mail (subject, body, date) VALUES (?, ?, ?)");
+            mysqli_stmt_bind_param($stmt_log, "sss", $subject, $body, $datetime);
+            mysqli_stmt_execute($stmt_log);
+            
+            $_SESSION["success"] = "Success! Broadcast email sent to $count active users.";
+        } else {
+            $_SESSION["status"] = "No active users found to receive the broadcast.";
+        }
+    } catch (Exception $e) {
+        $_SESSION["status"] = "Mailer Execution Failed: " . $mail->ErrorInfo;
     }
+    
+    header("Location: mail.php");
+    exit();
 }
-
-
 ?>
+<!-- Footer JS dependencies for inclusion -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>

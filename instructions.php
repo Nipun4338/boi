@@ -1,105 +1,127 @@
 <?php
 session_start();
-include "database/dbconfig.php";
+include "includes/config/dbconfig.php";
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Instructions | বই</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Sell | বই</title>
+    
+    <!-- CSS Bundles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="assets/icons/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <meta name="viewport" content="width=device-width, initial-scale = 1.0">
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
-    </script>
-
-    <link rel="stylesheet"
-        href="A.assets,,_royalslider,,_royalslider.css+assets,,_royalslider,,_skins,,_default,,_rs-default.css+assets,,_royalslider,,_skins,,_minimal-white,,_rs-minimal-white.css+css,,_bootstrap.min.css+css,,_normalize.css+css,,_jquery-ui.css,Mcc.y-DhrddGnN.css.pagespeed.cf.Hfy0poW2iH.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="Iconsmind-Outline-Books-2.ico">
-
-
-    <style media="screen">
-    .mySlides {
-        display: none;
-    }
-
-    .header {
-        position: fixed;
-        top: 0;
-        z-index: 1;
-        width: 100%;
-        background-color: #f1f1f1;
-    }
-
-    .header h2 {
-        text-align: center;
-    }
-
-    .progress-container {
-        width: 100%;
-        height: 4px;
-        background: #ccc;
-    }
-
-    .progress-bar {
-        height: 4px;
-        background: #4caf50;
-        width: 0%;
-    }
-
-    .content {
-        padding: 100px 0;
-        margin: 50px auto 0 auto;
-        width: 80%;
-    }
-
-    .hello {
-        height: 70vh;
-        font-family: 'Roboto', sans-serif;
-    }
+    <style>
+        body { background-color: #f8f9fa; }
+        .instruction-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #0d6efd;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .instruction-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
     </style>
-
 </head>
 
 <body>
-    <?php include "includes/nav.php"; ?>
-    <div class="hello">
-        <h4 style="text-align:center;font-weight:bold">How To Upload Your Book Details</h4>
-        <div class="container">
-            <h6 style="font-weight:bold">1. Open an account on <a href="subscribe"> Boi</a> .</h6>
-            <h6 style="font-weight:bold">2. Go to <a href="sell"> SELL</a> .</h6>
-            <h6 style="font-weight:bold">3. Fillup all other options correctly.</h6>
-            <h6 style="font-weight:bold">4. Choose image for your book. You can add multiple images, but your first
-                image will be used as a cover image.</h6>
-            <h6 style="font-weight:bold">5. Submit!</h6><br>
-            <h6 style="font-weight:bold">We will review your ad before make it publish. After published or any kind of
-                change, you will get an email.</h6><br>
-            <h5 style="font-weight:bold;color:#df4759">**Incorrect or inappropriate ad will not be published and the
-                user will be banned or get penalty.</h5>
-            <p></p><br>
+    <?php include "includes/components/nav.php"; ?>
 
+    <div class="container py-5 mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="instruction-card p-4 p-md-5">
+                    <h2 class="fw-bold text-center mb-5">How to Sell Your Books</h2>
+                    
+                    <div class="instruction-step">
+                        <div class="step-number">1</div>
+                        <div>
+                            <h5 class="fw-bold mb-1">Create an Account</h5>
+                            <p class="text-muted">First, <a href="subscribe" class="text-decoration-none">sign up</a> or log in to your Boi account to start selling.</p>
+                        </div>
+                    </div>
 
+                    <div class="instruction-step">
+                        <div class="step-number">2</div>
+                        <div>
+                            <h5 class="fw-bold mb-1">Go to Sell Page</h5>
+                            <p class="text-muted">Click on the <a href="sell" class="text-decoration-none">SELL</a> button in the navigation menu.</p>
+                        </div>
+                    </div>
+
+                    <div class="instruction-step">
+                        <div class="step-number">3</div>
+                        <div>
+                            <h5 class="fw-bold mb-1">Fill in Book Details</h5>
+                            <p class="text-muted">Provide accurate information about the book, including title, author, category, price, and current condition.</p>
+                        </div>
+                    </div>
+
+                    <div class="instruction-step">
+                        <div class="step-number">4</div>
+                        <div>
+                            <h5 class="fw-bold mb-1">Upload Photos</h5>
+                            <p class="text-muted">Upload clear images of the book. You can add multiple photos to show its condition. The first image will be your cover.</p>
+                        </div>
+                    </div>
+
+                    <div class="instruction-step">
+                        <div class="step-number">5</div>
+                        <div>
+                            <h5 class="fw-bold mb-1">Submit & Wait for Review</h5>
+                            <p class="text-muted">After submission, our team will review your ad. Once approved, it will be visible to all buyers.</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning rounded-3 mt-4 border-0">
+                        <div class="d-flex">
+                            <i class="fas fa-exclamation-triangle mt-1 me-3"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1">Important Note</h6>
+                                <p class="small mb-0">Incorrect or inappropriate ads will not be published. Users posting misleading content may be permanently banned.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="progress-bar fixed-bottom" id="myBar" style="height:4px; background: #0d6efd; width: 0%;"></div>
+    <?php include "includes/components/footer.php"; ?>
+
+    <script>
+        window.onscroll = function() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+        };
+    </script>
 </body>
-<div class="progress-container fixed-bottom">
-    <div class="progress-bar" id="myBar">
-    </div>
-</div>
-<?php include "includes/footer.php";
-?>
+</html>

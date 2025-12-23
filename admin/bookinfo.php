@@ -2,150 +2,103 @@
 include "security.php";
 include "includes/header.php";
 include "includes/navbar.php";
-include "database/dbconfig.php";
+include "../includes/config/dbconfig.php";
 
-if (isset($_REQUEST["delete"])) {
-    $book = $_POST["book_id"];
-    $user = $_POST["user_id"];
-    $sql = "DELETE from books where book_id='$book' and owner_id='$user'";
-    ($result = mysqli_query($link, $sql)) or die(mysqli_error($link));
-    if ($result) {
-        $_SESSION["success"] = "Book is deleted!";
+if (isset($_POST["delete"]) && isset($_POST["book_id"])) {
+    $book_id = $_POST["book_id"];
+    $stmt = mysqli_prepare($connection, "DELETE FROM books WHERE book_id = ?");
+    mysqli_stmt_bind_param($stmt, "i", $book_id);
+    
+    if (mysqli_stmt_execute($stmt)) {
+        $_SESSION["success"] = "Book has been deleted successfully.";
+    } else {
+        $_SESSION["status"] = "Error deleting book: " . mysqli_error($connection);
     }
 }
 ?>
 
-
-
-
-<div class="container-fluid" style="text-align:center">
-
-    <!-- DataTales Example -->
+<div class="container-fluid">
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Book Details
-            </h6>
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Pending Books Management (Awaiting Approval)</h6>
         </div>
 
         <div class="card-body">
             <?php
             if (isset($_SESSION["success"]) && $_SESSION["success"] != "") {
-                echo "<h2>" . $_SESSION["success"] . "</h2>";
+                echo '<div class="alert alert-success">' . htmlspecialchars($_SESSION["success"]) . "</div>";
                 unset($_SESSION["success"]);
             }
             if (isset($_SESSION["status"]) && $_SESSION["status"] != "") {
-                echo '<h2 class="bg-info">' . $_SESSION["status"] . "</h2>";
+                echo '<div class="alert alert-danger">' . htmlspecialchars($_SESSION["status"]) . "</div>";
                 unset($_SESSION["status"]);
             }
             ?>
 
             <div class="table-responsive">
-                <?php
-                $query =
-                    "SELECT * FROM books where status='2' order by created_date desc";
-                $query_run1 = mysqli_query($connection, $query);
-                ?>
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="thead-light">
                         <tr>
-                            <th> ID </th>
-                            <th> Book Name </th>
-                            <th> Image </th>
+                            <th>Book ID</th>
+                            <th>Title</th>
+                            <th>Image</th>
                             <th>Author</th>
-                            <th>Owner Id</th>
                             <th>Price</th>
                             <th>Category</th>
-                            <th>Details</th>
+                            <th>Seller ID</th>
                             <th>Location</th>
-                            <th>Status</th>
-                            <th>Created Date</th>
-                            <th>Updated Date</th>
-                            <th>EDIT </th>
-                            <th>DELETE </th>
+                            <th>Created On</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (mysqli_num_rows($query_run1) > 0) {
-                            while ($row = mysqli_fetch_assoc($query_run1)) { ?>
-                        <tr>
-                            <td><?php echo $row["book_id"]; ?></td>
-                            <td><?php echo $row["name"]; ?></td>
-                            <td><img src="<?php echo $row[
-                                "image"
-                            ]; ?>" height="50px" width="50px" /></td>
-                            <td><?php echo $row["author"]; ?></td>
-                            <td><?php echo $row["owner_id"]; ?></td>
-                            <td><?php echo $row["price"]; ?></td>
-                            <td><?php echo $row["category"]; ?></td>
-                            <td><?php echo $row["present_condition"]; ?></td>
-                            <td><?php echo $row["location"]; ?></td>
-                            <td><?php echo $row["status"]; ?></td>
-                            <td><?php echo date(
-                                "M j, Y g:i A",
-                                strtotime($row["created_date"]),
-                            ); ?></td>
-                            <td><?php echo date(
-                                "M j, Y g:i A",
-                                strtotime($row["updated_date"]),
-                            ); ?></td>
-                            <td>
-                                <form action="book_edit.php" method="post">
-                                    <input type="hidden" name="edit_id_book" value="<?php echo $row[
-                                        "book_id"
-                                    ]; ?>">
-                                    <button type="submit" name="edit_btn_book" class="btn btn-success"> EDIT</button>
+                        <?php
+                        $query = "SELECT * FROM books WHERE status = '2' ORDER BY created_date DESC";
+                        $query_run = mysqli_query($connection, $query);
 
-                                </form>
-                            </td>
-                            <td>
-                                <form class="form-container" action="bookinfo.php" method="POST"
-                                    enctype="multipart/form-data">
-                                    <input type="hidden" name="book_id" value="<?php echo $row[
-                                        "book_id"
-                                    ]; ?>">
-                                    <input type="hidden" name="user_id" value="<?php echo $row[
-                                        "owner_id"
-                                    ]; ?>">
-                                    <button type="submit" id="submit" name="delete"
-                                        class="btn btn-danger btn-block submit2">DELETE</button>
-                                </form>
-                            </td>
-                        </tr>
+                        if (mysqli_num_rows($query_run) > 0) {
+                            while ($row = mysqli_fetch_assoc($query_run)) { ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row["book_id"]); ?></td>
+                                    <td><strong class="text-dark"><?php echo htmlspecialchars($row["name"]); ?></strong></td>
+                                    <td class="text-center">
+                                        <img src="<?php echo htmlspecialchars($row["image"]); ?>" class="rounded" height="50px" width="40px" style="object-fit: cover;">
+                                    </td>
+                                    <td><?php echo htmlspecialchars($row["author"]); ?></td>
+                                    <td><span class="text-primary fw-bold">৳<?php echo htmlspecialchars($row["price"]); ?></span></td>
+                                    <td><span class="badge badge-secondary"><?php echo htmlspecialchars($row["category"]); ?></span></td>
+                                    <td><?php echo htmlspecialchars($row["owner_id"]); ?></td>
+                                    <td><small><?php echo htmlspecialchars($row["location"]); ?></small></td>
+                                    <td><small><?php echo date("M j, Y", strtotime($row["created_date"])); ?></small></td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-1">
+                                            <form action="book_edit.php" method="post" class="mr-1">
+                                                <input type="hidden" name="edit_id_book" value="<?php echo $row["book_id"]; ?>">
+                                                <button type="submit" name="edit_btn_book" class="btn btn-sm btn-info" title="Review/Edit">
+                                                    <i class="fas fa-edit"></i> Review
+                                                </button>
+                                            </form>
+                                            <form action="bookinfo.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this book?');">
+                                                <input type="hidden" name="book_id" value="<?php echo $row["book_id"]; ?>">
+                                                <button type="submit" name="delete" class="btn btn-sm btn-danger" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
                         <?php }
                         } else {
-                            echo "No Record Found";
+                            echo "<tr><td colspan='10' class='text-center py-4'>No pending books found.</td></tr>";
                         } ?>
-                        <!--<tr>
-            <td> 1 </td>
-            <td> Funda of WEb IT</td>
-            <td> funda@example.com</td>
-            <td> *** </td>
-            <td>
-                <form action="" method="post">
-                    <input type="hidden" name="edit_id" value="">
-                    <button  type="submit" name="edit_btn" class="btn btn-success"> EDIT</button>
-                </form>
-            </td>
-            <td>
-                <form action="" method="post">
-                  <input type="hidden" name="delete_id" value="">
-                  <button type="submit" name="delete_btn" class="btn btn-danger"> DELETE</button>
-                </form>
-            </td>
-          </tr>-->
-
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
-
 </div>
-<!-- /.container-fluid -->
 
 <?php
 include "scripts.php";
 include "includes/footer.php";
-
 ?>

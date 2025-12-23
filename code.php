@@ -1,49 +1,41 @@
 <?php
-include "security.php";
-include "database/dbconfig.php";
+session_start();
+include "includes/config/dbconfig.php";
 
 if (isset($_POST["login"])) {
     $email_login = $_POST["email"];
+    // Note: Project currently uses MD5 for passwords. In a real production 
+    // environment, password_hash and password_verify should be used.
     $password_login = md5($_POST["password"]);
-    $query = "select * from user where email='$email_login' and password='$password_login'";
-    $query_run = mysqli_query($connection, $query);
-    $data = [];
-    $noOfRows = mysqli_num_rows($query_run);
-    $id = 0;
-    if (mysqli_num_rows($query_run) > 0) {
-        $flag = 0;
-        while ($row = mysqli_fetch_assoc($query_run)) {
-            if ($row["status"] == 1) {
-                $id = $row["user_id"];
-                /*echo "<pre>";
-                 print_r($row);*/
-                array_push($data, $row);
-                $flag = 1;
-                //echo "</pre>";
-            } elseif ($row["status"] == 2) {
-                $flag = 2;
-            }
-        }
-        if ($flag == 1) {
-            $_SESSION["username"] = $email_login;
-            $_SESSION["user_id"] = $id;
-            foreach ($data as $row) {
-                // code...
-                $name = $row["name"];
-                $_SESSION["user_name"] = $name;
-            }
+
+    $stmt = mysqli_prepare($connection, "SELECT * FROM user WHERE email = ? AND password = ?");
+    mysqli_stmt_bind_param($stmt, "ss", $email_login, $password_login);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($result)) {
+        if ($row["status"] == 1) {
+            $_SESSION["username"] = $row["email"];
+            $_SESSION["user_id"] = $row["user_id"];
+            $_SESSION["user_name"] = $row["name"];
             header("Location: profile");
-        } elseif ($flag == 2) {
-            $_SESSION["status"] = "Confirm your Email!";
+            exit();
+        } elseif ($row["status"] == 2) {
+            $_SESSION["status"] = "Please confirm your email address!";
             header("Location: login");
+            exit();
         } else {
-            $_SESSION["status"] = "Email id / Password is invalid";
+            $_SESSION["status"] = "Your account has been suspended.";
             header("Location: login");
+            exit();
         }
     } else {
-        $_SESSION["status"] = "Email id / Password is invalid";
+        $_SESSION["status"] = "Invalid Email or Password";
         header("Location: login");
+        exit();
     }
+} else {
+    header("Location: login");
+    exit();
 }
-
 ?>

@@ -1,7 +1,7 @@
 
 <?php
 session_start();
-include "database/dbconfig.php";
+include "../../includes/config/dbconfig.php";
 date_default_timezone_set("Asia/Dhaka");
 $datetime = "";
 $datetime = date("Y-m-d H:i:s");

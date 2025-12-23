@@ -1,416 +1,214 @@
 <?php
 session_start();
-ob_start();
-include "database/dbconfig.php";
-$sql = "";
-$category = "";
-$author = "";
-if (!empty($_GET["category"])) {
-    $category = $_GET["category"];
-    $sql = "SELECT * FROM books where category='$category'";
-} else {
-    $car = 1;
+include "includes/config/dbconfig.php";
+
+$category = $_GET["category"] ?? "";
+$author = $_GET["author"] ?? "";
+$user_id = $_GET["user"] ?? "";
+$sort_by = "name";
+$direction = "ASC";
+
+if (isset($_GET["booksort"])) {
+    $sort_by = "name";
+    $direction = ($_GET["booksort"] == "desc") ? "DESC" : "ASC";
+} elseif (isset($_GET["authorsort"])) {
+    $sort_by = "author";
+    $direction = ($_GET["authorsort"] == "desc") ? "DESC" : "ASC";
+} elseif (isset($_GET["pricesort"])) {
+    $sort_by = "price";
+    $direction = ($_GET["pricesort"] == "desc") ? "DESC" : "ASC";
 }
 
-if (!empty($_GET["author"])) {
-    $author = $_GET["author"];
-    $sql = "SELECT * FROM books where author='$author'";
-} else {
-    $car = 1;
+$query_parts = [];
+$params = [];
+$types = "";
+
+if (!empty($category)) {
+    $query_parts[] = "category = ?";
+    $params[] = $category;
+    $types .= "s";
+}
+if (!empty($author)) {
+    $query_parts[] = "author = ?";
+    $params[] = $author;
+    $types .= "s";
+}
+if (!empty($user_id)) {
+    $query_parts[] = "owner_id = ?";
+    $params[] = $user_id;
+    $types .= "i";
 }
 
-if (!empty($_GET["author"]) && !empty($_GET["authorsort"])) {
-    $author = $_GET["author"];
-    $sql = "SELECT * FROM books where author='$author'";
-} else {
-    $car = 1;
+$sql = "SELECT * FROM books";
+if (!empty($query_parts)) {
+    $sql .= " WHERE " . implode(" AND ", $query_parts);
 }
+$sql .= " ORDER BY $sort_by $direction";
 
-if (!empty($_GET["booksort"]) && !empty($_GET["author"])) {
-    $sort = $_GET["booksort"];
-    $author = $_GET["author"];
-    if ($sort == "asc") {
-        $sql = "SELECT * FROM books where author='$author' order by name";
-    } elseif ($sort == "desc") {
-        $sql = "SELECT * FROM books where author='$author' order by name desc";
-    }
-} else {
-    $car = 1;
+$stmt = mysqli_prepare($connection, $sql);
+if (!empty($params)) {
+    mysqli_stmt_bind_param($stmt, $types, ...$params);
 }
-
-if (!empty($_GET["pricesort"]) && !empty($_GET["author"])) {
-    $sort = $_GET["pricesort"];
-    $author = $_GET["author"];
-    if ($sort == "asc") {
-        $sql = "SELECT * FROM books where author='$author' order by price";
-    } elseif ($sort == "desc") {
-        $sql = "SELECT * FROM books where author='$author' order by price desc";
-    }
-} else {
-    $car = 1;
-}
-
-if (!empty($_GET["booksort"]) && !empty($_GET["category"])) {
-    $sort = $_GET["booksort"];
-    $category = $_GET["category"];
-    if ($sort == "asc") {
-        $sql = "SELECT * FROM books where category='$category' order by name";
-    } elseif ($sort == "desc") {
-        $sql = "SELECT * FROM books where category='$category' order by name desc";
-    }
-} else {
-    $car = 1;
-}
-
-if (!empty($_GET["authorsort"]) && !empty($_GET["category"])) {
-    $sort = $_GET["authorsort"];
-    $category = $_GET["category"];
-    if ($sort == "asc") {
-        $sql = "SELECT * FROM books where category='$category' order by author";
-    } elseif ($sort == "desc") {
-        $sql = "SELECT * FROM books where category='$category' order by author desc";
-    }
-} else {
-    $car = 1;
-}
-
-if (!empty($_GET["pricesort"]) && !empty($_GET["category"])) {
-    $sort = $_GET["pricesort"];
-    $category = $_GET["category"];
-    if ($sort == "asc") {
-        $sql = "SELECT * FROM books where category='$category' order by price";
-    } elseif ($sort == "desc") {
-        $sql = "SELECT * FROM books where category='$category' order by price desc";
-    }
-} else {
-    $car = 1;
-}
-
-($result = mysqli_query($link, $sql)) or die(mysqli_error($link));
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 $data = [];
-$noOfRows = mysqli_num_rows($result);
-if ($noOfRows) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        /*echo "<pre>";
-         print_r($row);*/
-        array_push($data, $row);
-        //echo "</pre>";
-    }
+while ($row = mysqli_fetch_assoc($result)) {
+    $data[] = $row;
 }
+$noOfRows = count($data);
 ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Filter | বই</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale = 1.0">
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Results | বই</title>
+    
+    <!-- CSS Bundles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="assets/icons/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <link rel="stylesheet"
-        href="A.assets,,_royalslider,,_royalslider.css+assets,,_royalslider,,_skins,,_default,,_rs-default.css+assets,,_royalslider,,_skins,,_minimal-white,,_rs-minimal-white.css+css,,_bootstrap.min.css+css,,_normalize.css+css,,_jquery-ui.css,Mcc.y-DhrddGnN.css.pagespeed.cf.Hfy0poW2iH.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="Iconsmind-Outline-Books-2.ico">
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
 
-
-
-    <!-- Bootstrap Stylesheet -->
-    <link rel="stylesheet" href="/path/to/bootstrap.min.css" />
-    <!-- Bootstrap JS -->
-    <script src="/path/to/jquery.min.js"></script>
-    <script src="/path/to/bootstrap.min.js"></script>
-    <!-- <a href="https://www.jqueryscript.net/tags.php?/Carousel/">Carousel</a> Extension -->
-    <script src="carousel.js"></script>
-
-
-
-    <style type="text/css">
-    .center {
-        text-align: center;
-    }
-
-    .pagination {
-        display: inline-block;
-    }
-
-    .pagination a {
-        color: black;
-        float: left;
-        padding: 8px 16px;
-        text-decoration: none;
-        transition: background-color .3s;
-        border: 1px solid #ddd;
-        margin: 0 4px;
-    }
-
-    .pagination a.active {
-        background-color: #4CAF50;
-        color: white;
-        border: 1px solid #4CAF50;
-    }
-
-    .pagination a:hover:not(.active) {
-        background-color: #ddd;
-    }
-
-    /*----  Main Style  ----*/
-    #cards_landscape_wrap-2 {
-        text-align: center;
-        background: #F7F7F7;
-    }
-
-    #cards_landscape_wrap-2 .container {
-        padding-top: 80px;
-        padding-bottom: 100px;
-    }
-
-    #cards_landscape_wrap-2 a {
-        text-decoration: none;
-        outline: none;
-    }
-
-    #cards_landscape_wrap-2 .card-flyer {
-        border-radius: 5px;
-    }
-
-    #cards_landscape_wrap-2 .card-flyer .image-box {
-        background: #ffffff;
-        overflow: hidden;
-        box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.50);
-        border-radius: 5px;
-    }
-
-    #cards_landscape_wrap-2 .card-flyer .image-box img {
-        -webkit-transition: all .9s ease;
-        -moz-transition: all .9s ease;
-        -o-transition: all .9s ease;
-        -ms-transition: all .9s ease;
-        width: 100%;
-        height: 200px;
-    }
-
-    #cards_landscape_wrap-2 .card-flyer:hover .image-box img {
-        opacity: 0.7;
-        -webkit-transform: scale(1.15);
-        -moz-transform: scale(1.15);
-        -ms-transform: scale(1.15);
-        -o-transform: scale(1.15);
-        transform: scale(1.15);
-    }
-
-    #cards_landscape_wrap-2 .card-flyer .text-box {
-        text-align: center;
-    }
-
-    #cards_landscape_wrap-2 .card-flyer .text-box .text-container {
-        padding: 30px 18px;
-    }
-
-    #cards_landscape_wrap-2 .card-flyer {
-        background: #FFFFFF;
-        margin-top: 50px;
-        -webkit-transition: all 0.2s ease-in;
-        -moz-transition: all 0.2s ease-in;
-        -ms-transition: all 0.2s ease-in;
-        -o-transition: all 0.2s ease-in;
-        transition: all 0.2s ease-in;
-        box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.40);
-    }
-
-    #cards_landscape_wrap-2 .card-flyer:hover {
-        background: #fff;
-        box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
-        -webkit-transition: all 0.2s ease-in;
-        -moz-transition: all 0.2s ease-in;
-        -ms-transition: all 0.2s ease-in;
-        -o-transition: all 0.2s ease-in;
-        transition: all 0.2s ease-in;
-        margin-top: 50px;
-    }
-
-    #cards_landscape_wrap-2 .card-flyer .text-box p {
-        margin-top: 10px;
-        margin-bottom: 0px;
-        padding-bottom: 0px;
-        font-size: 14px;
-        letter-spacing: 1px;
-        color: #000000;
-    }
-
-    #cards_landscape_wrap-2 .card-flyer .text-box h6 {
-        margin-top: 0px;
-        margin-bottom: 4px;
-        font-size: 18px;
-        font-weight: bold;
-        text-transform: uppercase;
-        font-family: 'Roboto Black', sans-serif;
-        letter-spacing: 1px;
-        color: #00acc1;
-    }
-
-    .header {
-        position: fixed;
-        top: 0;
-        z-index: 1;
-        width: 100%;
-        background-color: #f1f1f1;
-    }
-
-    .header h2 {
-        text-align: center;
-    }
-
-    .progress-container {
-        width: 100%;
-        height: 4px;
-        background: #ccc;
-    }
-
-    .progress-bar {
-        height: 4px;
-        background: #4caf50;
-        width: 0%;
-    }
-
-    .content {
-        padding: 100px 0;
-        margin: 50px auto 0 auto;
-        width: 80%;
-    }
-
-    a:link {
-        color: green;
-        background-color: transparent;
-        text-decoration: none;
-    }
-
-    a:visited {
-        color: red;
-        background-color: transparent;
-        text-decoration: none;
-    }
-
-    a:hover {
-        color: blue;
-        background-color: transparent;
-        text-decoration: underline;
-    }
-
-    a:active {
-        color: yellow;
-        background-color: transparent;
-        text-decoration: underline;
-    }
+    <style>
+        body { background-color: #f8f9fa; }
+        .filter-sidebar {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 90px;
+        }
+        .filter-link {
+            display: block;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            color: #495057;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .filter-link:hover {
+            background-color: #f1f3f5;
+            color: #0d6efd;
+            border-left-color: #0d6efd;
+        }
+        .filter-link.active {
+            background-color: #e7f1ff;
+            color: #0d6efd;
+            border-left-color: #0d6efd;
+            font-weight: bold;
+        }
+        .book-card {
+            border: none;
+            border-radius: 12px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+            background: #fff;
+            height: 100%;
+        }
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .book-card img {
+            height: 250px;
+            object-fit: cover;
+        }
+        .price-tag {
+            background: #0d6efd;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 
+<body>
+    <?php include "includes/components/nav.php"; ?>
 
-<body style="background:#fff">
-    <?php include "includes/nav.php"; ?>
-    <h6 style="text-align:center">Found <?php echo $noOfRows; ?> result/s.</h6>
+    <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="home" class="text-decoration-none">Home</a></li>
+                        <li class="breadcrumb-item active">Catalogue</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold">Found <span class="text-primary"><?php echo $noOfRows; ?></span> Results</h2>
+            </div>
+        </div>
 
-    <div class="container" style="margin:0 0 40px 0">
         <div class="row">
-            <div class="col-md-3 card-body shadow-lg p-3 mb-5 rounded"
-                style="background:#eee;text-shadow: black 0.05em 0.05em 0.1em;">
-                <h5 class="" style="text-shadow: black 0.1em 0.1em 0.2em;padding: 5px;border-bottom:1px dotted #000">
-                    SORT</h5>
-                <ul class="items">
-                    <li class="align-items-center">
-                        <a href="filter?category=<?php echo $category; ?>&author=<?php echo $author; ?>&booksort=asc">Book
-                            Name - Ascending</a>
-                    </li>
-                    <li class="align-items-center">
-                        <a href="filter?category=<?php echo $category; ?>&author=<?php echo $author; ?>&booksort=desc">Book
-                            Name - Descending</a>
-                    </li>
-                    <li class="align-items-center">
-                        <a href="filter?category=<?php echo $category; ?>&author=<?php echo $author; ?>&authorsort=asc">Author
-                            Name - Ascending</a>
-                    </li>
-                    <li class="align-items-center">
-                        <a
-                            href="filter?category=<?php echo $category; ?>&author=<?php echo $author; ?>&authorsort=desc">Author
-                            Name - Descending</a>
-                    </li>
-                    <li class="align-items-center">
-                        <a href="filter?category=<?php echo $category; ?>&author=<?php echo $author; ?>&pricesort=asc">Price
-                            - Low to High</a>
-                    </li>
-                    <li class="align-items-center">
-                        <a href="filter?category=<?php echo $category; ?>&author=<?php echo $author; ?>&pricesort=desc">Price
-                            - High to Low</a>
-                    </li>
-                </ul>
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="filter-sidebar">
+                    <h5 class="fw-bold mb-4 border-bottom pb-2">Sorting Options</h5>
+                    <?php
+                    $base_url = "filter?category=" . urlencode($category) . "&author=" . urlencode($author) . "&user=" . urlencode($user_id);
+                    ?>
+                    <a href="<?php echo $base_url; ?>&booksort=asc" class="filter-link">Book Name (A-Z)</a>
+                    <a href="<?php echo $base_url; ?>&booksort=desc" class="filter-link">Book Name (Z-A)</a>
+                    <a href="<?php echo $base_url; ?>&authorsort=asc" class="filter-link">Author Name (A-Z)</a>
+                    <a href="<?php echo $base_url; ?>&authorsort=desc" class="filter-link">Author Name (Z-A)</a>
+                    <a href="<?php echo $base_url; ?>&pricesort=asc" class="filter-link">Price: Low to High</a>
+                    <a href="<?php echo $base_url; ?>&pricesort=desc" class="filter-link">Price: High to Low</a>
+                </div>
             </div>
 
-            <div class="col-md-9">
-                <div class="container">
-                    <div class="row">
-
-
-                        <?php foreach ($data as $row1) { ?>
-
-                        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-
-                            <div id="cards_landscape_wrap-2">
-                                <!-- counter for chart-->
-
-                                <a href="book?book=<?php echo $row1[
-                                    "book_id"
-                                ]; ?>">
-                                    <div class="card-flyer">
-                                        <div class="text-box">
-                                            <div class="image-box">
-                                                <img style="width: 100%;object-fit: cover;"
-                                                    class="card-img card-img-bottom img-fluid" src="<?php echo $row1[
-                                                        "image"
-                                                    ]; ?>" alt="alt">
-                                            </div>
-                                            <div class="text-container">
-                                                <h6 style="font-weight: bold;"><?php echo $row1[
-                                                    "name"
-                                                ]; ?></h6>
-                                                <p><?php echo $row1[
-                                                    "author"
-                                                ]; ?></p>
-                                                <p style="font-weight: bold;">TK. <?php echo $row1[
-                                                    "price"
-                                                ]; ?></p>
-                                                <p><?php echo $row1[
-                                                    "location"
-                                                ]; ?></p>
+            <!-- Results -->
+            <div class="col-lg-9">
+                <div class="row g-4">
+                    <?php if ($noOfRows > 0): ?>
+                        <?php foreach ($data as $book): ?>
+                            <div class="col-md-6 col-lg-4">
+                                <a href="book?book=<?php echo $book['book_id']; ?>" class="text-decoration-none h-100 d-block">
+                                    <div class="card book-card">
+                                        <img src="<?php echo htmlspecialchars($book['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($book['name']); ?>">
+                                        <div class="card-body">
+                                            <h6 class="fw-bold text-dark mb-1 h-25 overflow-hidden"><?php echo htmlspecialchars($book['name']); ?></h6>
+                                            <p class="text-muted small mb-3">by <?php echo htmlspecialchars($book['author']); ?></p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="price-tag">৳<?php echo htmlspecialchars($book['price']); ?></span>
+                                                <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i><?php echo htmlspecialchars($book['location']); ?></small>
                                             </div>
                                         </div>
                                     </div>
                                 </a>
-
                             </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="col-12 text-center py-5">
+                            <i class="fas fa-search fa-4x text-light mb-4"></i>
+                            <h4 class="text-muted">No books found matching your criteria.</h4>
+                            <a href="home" class="btn btn-primary mt-3">Back to All Books</a>
                         </div>
-
-                        <?php } ?>
-
-                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
+    <div class="progress-bar fixed-bottom" id="myBar" style="height:4px; background: #0d6efd; width: 0%;"></div>
+    <?php include "includes/components/footer.php"; ?>
+
+    <script>
+        window.onscroll = function() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+        };
     </script>
 </body>
-
-<div class="progress-container fixed-bottom">
-    <div class="progress-bar" id="myBar">
-    </div>
-</div>
-<?php include "includes/footer.php";
-?>
+</html>

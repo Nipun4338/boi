@@ -18,9 +18,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://kit.fontawesome.com/a265bf9905.js" crossorigin="anonymous"></script>
-    <link rel="icon" href="Iconsmind-Outline-Books-2.ico">
+    <link rel="icon" href="assets/icons/favicon.ico">
 
     <style>
     .header {
@@ -69,7 +69,7 @@
 </head>
 
 <body style="background:#fff">
-    <?php include "includes/nav.php"; ?>
+    <?php include "includes/components/nav.php"; ?>
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
@@ -114,5 +114,5 @@
     <div class="progress-bar" id="myBar">
     </div>
 </div>
-<?php include "includes/footer.php";
+<?php include "includes/components/footer.php";
 ?>
