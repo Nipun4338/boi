@@ -12,9 +12,14 @@ $path = parse_url($request_uri, PHP_URL_PATH);
 
 // Simple routing logic
 // 1. Handle directory roots (e.g., /admin should load /admin/index.php)
-$clean_path = rtrim($path, '/');
-if (is_dir($base_path . $clean_path)) {
-    $index_file = $base_path . $clean_path . '/index.php';
+if (is_dir($base_path . $path)) {
+    // REDIRECT if no trailing slash (CRITICAL for relative CSS/JS paths)
+    if (!str_ends_with($path, '/')) {
+        header("Location: " . $path . "/");
+        exit;
+    }
+
+    $index_file = $base_path . $path . 'index.php';
     if (file_exists($index_file)) {
         chdir(dirname($index_file));
         require $index_file;
