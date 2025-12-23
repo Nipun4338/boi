@@ -1,6 +1,10 @@
 # Exclude heavy folders from the PHP builder scan
-# But keep images and vendors for static serving
+# This prevents "ENOENT" and "Exited with 4" errors
+vendor/
 sql/
 .git/
 node_modules/
 .phpintel/
+
+# We DO NOT ignore 'images/' and 'admin/vendor/' 
+# because they contain static assets that must be uploaded.
