@@ -74,10 +74,10 @@ include "../includes/config/dbconfig.php";
                                 <div class="mb-3">
                                     <label class="form-label font-weight-bold">Seller Information</label>
                                     <div class="p-3 bg-light rounded border">
-                                        <p class="mb-1"><strong>Name:</strong> <?php echo htmlspecialchars($owner["name"]); ?></p>
-                                        <p class="mb-1"><strong>Email:</strong> <?php echo htmlspecialchars($owner["email"]); ?></p>
-                                        <p class="mb-0"><strong>Location:</strong> <?php echo htmlspecialchars($row["location"]); ?></p>
-                                        <input type="hidden" name="edit_car_model" value="<?php echo $row["owner_id"]; ?>">
+                                        <p class="mb-1"><strong>Name:</strong> <?php echo htmlspecialchars($owner["name"] ?? 'Unknown / Deleted User'); ?></p>
+                                        <p class="mb-1"><strong>Email:</strong> <?php echo htmlspecialchars($owner["email"] ?? 'N/A'); ?></p>
+                                        <p class="mb-0"><strong>Location:</strong> <?php echo htmlspecialchars($row["location"] ?? 'N/A'); ?></p>
+                                        <input type="hidden" name="edit_car_model" value="<?php echo htmlspecialchars($row["owner_id"]); ?>">
                                     </div>
                                 </div>
 

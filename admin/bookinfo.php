@@ -68,7 +68,7 @@ if (isset($_POST["delete"]) && isset($_POST["book_id"])) {
                                     <td><span class="text-primary fw-bold">৳<?php echo htmlspecialchars($row["price"]); ?></span></td>
                                     <td><span class="badge badge-secondary"><?php echo htmlspecialchars($row["category"]); ?></span></td>
                                     <td><?php echo htmlspecialchars($row["owner_id"]); ?></td>
-                                    <td><small><?php echo htmlspecialchars($row["location"]); ?></small></td>
+                                    <td><small><?php echo htmlspecialchars($row["location"] ?? 'N/A'); ?></small></td>
                                     <td><small><?php echo date("M j, Y", strtotime($row["created_date"])); ?></small></td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-1">
