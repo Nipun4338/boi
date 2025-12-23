@@ -14,6 +14,8 @@ if (isset($_POST["delete"]) && isset($_POST["book_id"])) {
     } else {
         $_SESSION["status"] = "Error deleting book: " . mysqli_error($connection);
     }
+    header("Location: bookinfo.php");
+    exit();
 }
 ?>
 
@@ -62,7 +64,7 @@ if (isset($_POST["delete"]) && isset($_POST["book_id"])) {
                                     <td><?php echo htmlspecialchars($row["book_id"]); ?></td>
                                     <td><strong class="text-dark"><?php echo htmlspecialchars($row["name"]); ?></strong></td>
                                     <td class="text-center">
-                                        <img src="../<?php echo htmlspecialchars($row["image"]); ?>" class="rounded" height="50px" width="40px" style="object-fit: cover;">
+                                        <img src="<?php echo (strpos($row["image"], 'http') === 0) ? htmlspecialchars($row["image"]) : '../' . htmlspecialchars($row["image"]); ?>" class="rounded" height="50px" width="40px" style="object-fit: cover;">
                                     </td>
                                     <td><?php echo htmlspecialchars($row["author"]); ?></td>
                                     <td><span class="text-primary fw-bold">৳<?php echo htmlspecialchars($row["price"]); ?></span></td>

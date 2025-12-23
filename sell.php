@@ -14,7 +14,7 @@ include "includes/config/dbconfig.php";
     <!-- CSS Bundles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="icon" href="assets/icons/favicon.ico">
+    <link rel="icon" href="assets/icons/favicon.svg">
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -49,7 +49,16 @@ include "includes/config/dbconfig.php";
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-bold">Category</label>
-                                    <input type="text" class="form-control" name="category" placeholder="Enter Category (e.g. Science, Fiction)" required>
+                                    <select class="form-select" name="category" required>
+                                        <option value="" disabled selected>Select Genre</option>
+                                        <?php
+                                        $cat_query = "SELECT name FROM category ORDER BY name ASC";
+                                        $cat_run = mysqli_query($connection, $cat_query);
+                                        while($cat_row = mysqli_fetch_assoc($cat_run)) {
+                                            echo '<option value="'.htmlspecialchars($cat_row['name']).'">'.htmlspecialchars($cat_row['name']).'</option>';
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-bold">Price (TK)</label>

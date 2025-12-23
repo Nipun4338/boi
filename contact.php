@@ -44,7 +44,7 @@ if (isset($_POST["submit"])) {
     <!-- CSS Bundles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="icon" href="assets/icons/favicon.ico">
+    <link rel="icon" href="assets/icons/favicon.svg">
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

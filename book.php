@@ -11,13 +11,16 @@ if ($book_id == "") {
 }
 
 // Fetch book details
-$stmt = mysqli_prepare($link, "SELECT * FROM books WHERE book_id = ? AND status = 1");
+$stmt = mysqli_prepare($link, "SELECT * FROM books WHERE book_id = ?");
 mysqli_stmt_bind_param($stmt, "s", $book_id);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $book_data = mysqli_fetch_assoc($result);
 
-if (!$book_data) {
+// Check if book exists and is either active OR belongs to the current user
+$is_owner = (isset($_SESSION["user_id"]) && $book_data && $_SESSION["user_id"] == $book_data["owner_id"]);
+
+if (!$book_data || ($book_data["status"] != 1 && !$is_owner)) {
     header("Location: 404.php");
     exit();
 }
@@ -44,7 +47,7 @@ while ($row_img = mysqli_fetch_assoc($result_img)) {
     <!-- CSS Bundles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="icon" href="assets/icons/favicon.ico">
+    <link rel="icon" href="assets/icons/favicon.svg">
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -264,9 +267,12 @@ while ($row_img = mysqli_fetch_assoc($result_img)) {
 
 <body style="background:#EEEEEE">
     <?php include "includes/components/nav.php"; ?>
-    <?php
-    $i = 0;
-    ?>
+    <?php if (isset($is_owner) && $is_owner && $book_data["status"] != 1): ?>
+        <div class="alert alert-warning border-0 rounded-0 text-center mb-0">
+            <i class="fas fa-clock me-2"></i> 
+            <strong>This book is currently under review.</strong> It will be visible to other users once approved by the admin.
+        </div>
+    <?php endif; ?>
 
     <div class="container-fluid py-5">
         <div class="row">

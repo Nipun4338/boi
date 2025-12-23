@@ -20,7 +20,7 @@
 
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://kit.fontawesome.com/a265bf9905.js" crossorigin="anonymous"></script>
-    <link rel="icon" href="assets/icons/favicon.ico">
+    <link rel="icon" href="assets/icons/favicon.svg">
 
     <style>
     .header {

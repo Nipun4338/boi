@@ -70,7 +70,7 @@ shuffle($data);
     <!-- CSS Bundles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="icon" href="assets/icons/favicon.ico">
+    <link rel="icon" href="assets/icons/favicon.svg">
 
     <!-- Primary Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -206,34 +206,56 @@ shuffle($data);
         color: #00acc1;
     }
 
-    .header {
-        position: fixed;
-        top: 0;
-        z-index: 1;
-        width: 100%;
-        background-color: #f1f1f1;
+    .category-scroll-container {
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 10px 0;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        gap: 20px;
     }
-
-    .header h2 {
-        text-align: center;
+    .category-scroll-container::-webkit-scrollbar {
+        display: none;
     }
-
-    .progress-container {
-        width: 100%;
-        height: 4px;
-        background: #ccc;
+    .category-item {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none !important;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        padding: 8px;
+        min-width: 90px;
     }
-
-    .progress-bar {
-        height: 4px;
-        background: #4caf50;
-        width: 0%;
+    .category-item:hover {
+        transform: translateY(-5px);
     }
-
-    .content {
-        padding: 100px 0;
-        margin: 50px auto 0 auto;
-        width: 80%;
+    .category-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 8px;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+    }
+    .category-item:hover .category-icon-wrapper {
+        border-color: #00acc1;
+        box-shadow: 0 8px 20px rgba(0, 172, 193, 0.15);
+    }
+    .category-name {
+        font-size: 12px;
+        font-weight: 700;
+        color: #555;
+        transition: color 0.3s ease;
+    }
+    .category-item:hover .category-name {
+        color: #00acc1;
     }
     </style>
     <script src="carousel.js"></script>
@@ -258,35 +280,19 @@ shuffle($data);
     }
     shuffle($data1);
     ?>
-    <section id="home-featured" class="py-4">
+    <section id="home-categories" class="py-3 bg-white shadow-sm mb-4 border-bottom">
         <div class="container-fluid">
-            <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="row w-100 mx-auto">
-                            <?php
-                            $r = 0;
-                            foreach ($data1 as $row1):
-                                if ($r > 0 && $r % 6 == 0): ?>
-                                    </div></div><div class="carousel-item"><div class="row w-100 mx-auto">
-                                <?php endif; ?>
-                                <div class="col-lg-2 col-md-4 col-6 text-center">
-                                    <div class="p-2">
-                                        <img class="img-fluid rounded-circle mb-2" src="<?php echo htmlspecialchars($row1["image"]); ?>" 
-                                             style='height: 60px; width: 60px; object-fit: cover; border: 2px solid #eee'>
-                                        <div class="small fw-bold text-dark"><?php echo htmlspecialchars($row1["name"]); ?></div>
-                                    </div>
-                                </div>
-                            <?php $r++; endforeach; ?>
+            <div class="category-scroll-container px-lg-5 px-3">
+                <?php foreach ($data1 as $row1): ?>
+                    <a href="filter?category=<?php echo urlencode($row1["name"]); ?>" class="category-item">
+                        <div class="category-icon-wrapper">
+                            <img src="<?php echo htmlspecialchars($row1["image"]); ?>" 
+                                 style='height: 35px; width: 35px; object-fit: contain;'
+                                 alt="<?php echo htmlspecialchars($row1["name"]); ?>">
                         </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                    <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
-                </button>
+                        <span class="category-name"><?php echo htmlspecialchars($row1["name"]); ?></span>
+                    </a>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>

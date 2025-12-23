@@ -35,7 +35,7 @@ include "../includes/config/dbconfig.php";
                     <div class="row">
                         <div class="col-md-4 text-center mb-4">
                             <label class="d-block fw-bold text-muted mb-3">Current Cover</label>
-                            <img src="../<?php echo htmlspecialchars($row["image"]); ?>" class="img-fluid rounded shadow-sm" style="max-height: 400px; border: 1px solid #eee;">
+                            <img src="<?php echo (strpos($row["image"], 'http') === 0) ? htmlspecialchars($row["image"]) : '../' . htmlspecialchars($row["image"]); ?>" class="img-fluid rounded shadow-sm" style="max-height: 400px; border: 1px solid #eee;">
                         </div>
                         
                         <div class="col-md-8">
