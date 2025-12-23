@@ -1,6 +1,5 @@
-# Exclude heavy folders from the PHP builder scan
-# This prevents "ENOENT" and "Exited with 4" errors
-vendor/
+# Exclude only the root vendor folder (managed by composer)
+/vendor/
 sql/
 .git/
 node_modules/
@@ -8,3 +7,4 @@ node_modules/
 
 # We DO NOT ignore 'images/' and 'admin/vendor/' 
 # because they contain static assets that must be uploaded.
+# specifically, admin/vendor/ has the CSS/JS for the theme.
