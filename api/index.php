@@ -16,6 +16,7 @@ $clean_path = rtrim($path, '/');
 if (is_dir($base_path . $clean_path)) {
     $index_file = $base_path . $clean_path . '/index.php';
     if (file_exists($index_file)) {
+        chdir(dirname($index_file));
         require $index_file;
         exit;
     }
@@ -26,12 +27,13 @@ $php_file = $base_path . $clean_path . '.php';
 $direct_file = $base_path . $path;
 
 if (file_exists($php_file)) {
+    chdir(dirname($php_file));
     require $php_file;
 } elseif (file_exists($direct_file) && !is_dir($direct_file)) {
-    // This allows serving PHP files that were requested with .php extension
+    chdir(dirname($direct_file));
     require $direct_file;
 } else {
-    // Fallback to home if nothing else matches
+    chdir($base_path);
     require $base_path . '/index.php';
 }
 ?>
