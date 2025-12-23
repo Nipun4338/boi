@@ -34,10 +34,6 @@ A comprehensive platform for buying and selling used books. Built with a user-fi
 *   **Pending Book Preview**: Sellers can now **view their own "Pending" books** with a helpful status banner, instead of hitting a 404 wall.
 *   **Custom Error Pages**: Replaced generic server errors with a polished, branded **404 Page Not Found** experience.
 
-## 📸 Snapshots
-
-[Insert your screenshots here]
-
 ## 🔗 Links
 *   **Live Demo**: [https://boi-seven.vercel.app](https://boi-seven.vercel.app)
 *   **Video Demo**: [![For Details](https://img.youtube.com/vi/hw2w0dZb7EE/mqdefault.jpg)](https://youtu.be/hw2w0dZb7EE)
