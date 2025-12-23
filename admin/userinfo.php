@@ -61,7 +61,7 @@ if (isset($_POST["delete"]) && isset($_POST["user_id"])) {
                                     <td><?php echo htmlspecialchars($row["name"]); ?></td>
                                     <td><?php echo htmlspecialchars($row["email"]); ?></td>
                                     <td class="text-center">
-                                        <img src="<?php echo htmlspecialchars($row["image"]); ?>" class="rounded-circle" height="40px" width="40px" onerror="this.src='../assets/images/user.png'">
+                                        <img src="../<?php echo htmlspecialchars($row["image"]); ?>" class="rounded-circle" height="40px" width="40px" onerror="this.src='../assets/images/user.png'">
                                     </td>
                                     <td><?php echo htmlspecialchars($row["phone"]); ?></td>
                                     <td>

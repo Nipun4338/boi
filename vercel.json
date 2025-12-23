@@ -7,7 +7,11 @@
   },
   "routes": [
     {
-      "src": "/(assets|admin/vendor|includes|js|css|img|scss|icons|font-awesome-4.7.0|images)/(.*)",
+      "src": "/admin/images/(.*)",
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/(assets|admin/vendor|admin/css|admin/js|admin/img|includes|js|css|img|scss|icons|font-awesome-4.7.0|images)/(.*)",
       "dest": "/$1/$2"
     },
     {

@@ -11,21 +11,27 @@ $base_path = __DIR__ . '/..';
 $path = parse_url($request_uri, PHP_URL_PATH);
 
 // Simple routing logic
-if ($path == '/' || $path == '') {
-    require $base_path . '/index.php';
-} else {
-    // Check if the file exists with .php extension
-    $php_file = $base_path . $path . '.php';
-    $direct_file = $base_path . $path;
-
-    if (file_exists($php_file)) {
-        require $php_file;
-    } elseif (file_exists($direct_file) && !is_dir($direct_file)) {
-        // Serve static files if needed, though Vercel handles assets separately
-        return false; 
-    } else {
-        // Fallback to index or 404
-        require $base_path . '/index.php';
+// 1. Handle directory roots (e.g., /admin should load /admin/index.php)
+$clean_path = rtrim($path, '/');
+if (is_dir($base_path . $clean_path)) {
+    $index_file = $base_path . $clean_path . '/index.php';
+    if (file_exists($index_file)) {
+        require $index_file;
+        exit;
     }
+}
+
+// 2. Handle specific PHP files or extension-less URLs
+$php_file = $base_path . $clean_path . '.php';
+$direct_file = $base_path . $path;
+
+if (file_exists($php_file)) {
+    require $php_file;
+} elseif (file_exists($direct_file) && !is_dir($direct_file)) {
+    // This allows serving PHP files that were requested with .php extension
+    require $direct_file;
+} else {
+    // Fallback to home if nothing else matches
+    require $base_path . '/index.php';
 }
 ?>

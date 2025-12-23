@@ -30,7 +30,7 @@ include "../includes/config/dbconfig.php";
                         <div class="row">
                             <div class="col-md-4 text-center mb-4">
                                 <label class="d-block fw-bold text-muted mb-3">Profile Picture</label>
-                                <img src="<?php echo !empty($row["image"]) ? htmlspecialchars($row["image"]) : '../assets/images/icons/user.png'; ?>" 
+                                <img src="<?php echo !empty($row["image"]) ? '../' . htmlspecialchars($row["image"]) : '../assets/images/icons/user.png'; ?>" 
                                      class="img-profile rounded-circle shadow-sm" 
                                      style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #f8f9fc;"
                                      onerror="this.src='../assets/images/icons/user.png'">
