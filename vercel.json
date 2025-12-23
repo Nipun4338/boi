@@ -1,27 +1,22 @@
 {
+  "version": 2,
   "functions": {
-    "*.php": {
-      "runtime": "vercel-php@0.6.0"
-    },
-    "admin/*.php": {
-      "runtime": "vercel-php@0.6.0"
-    },
-    "actions/**/*.php": {
+    "**/*.php": {
       "runtime": "vercel-php@0.6.0"
     }
   },
   "routes": [
     {
-      "src": "/(assets|vendor|includes)/(.*)",
+      "src": "/(assets|vendor|includes|js|css|img|scss)/(.*)",
       "dest": "/$1/$2"
     },
     {
       "src": "/admin/(.*)",
-      "dest": "/admin/$1"
+      "dest": "/admin/$1.php"
     },
     {
       "src": "/actions/(.*)",
-      "dest": "/actions/$1"
+      "dest": "/actions/$1.php"
     },
     {
       "src": "/(.*)",
