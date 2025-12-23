@@ -26,12 +26,12 @@ function getPHPMailer($from_name = "Boi Administration") {
     
     // SMTP Configuration
     $mail->isSMTP();
-    $mail->Host = "smtp.gmail.com";
-    $mail->SMTPAuth = true;
-    $mail->Username = "boi.yourbook@gmail.com";
-    $mail->Password = "ejnw nqrk kadc tpps"; // Google App Password
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
+    $mail->Host       = getenv('MAIL_HOST') ?: "smtp.gmail.com";
+    $mail->SMTPAuth   = true;
+    $mail->Username   = getenv('MAIL_USERNAME') ?: "boi.yourbook@gmail.com";
+    $mail->Password   = getenv('MAIL_PASSWORD') ?: "ejnw nqrk kadc tpps"; // Google App Password
+    $mail->Port       = getenv('MAIL_PORT') ?: 587;
+    $mail->SMTPSecure = getenv('MAIL_ENCRYPTION') ?: PHPMailer::ENCRYPTION_STARTTLS;
     
     // SSL Verification Bypass (Commonly needed for local XAMPP environments)
     $mail->SMTPOptions = array(
@@ -42,7 +42,7 @@ function getPHPMailer($from_name = "Boi Administration") {
         )
     );
     
-    $mail->setFrom("boi.yourbook@gmail.com", $from_name);
+    $mail->setFrom(getenv('MAIL_USERNAME') ?: "boi.yourbook@gmail.com", $from_name);
     return $mail;
 }
 
